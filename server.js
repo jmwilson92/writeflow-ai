@@ -2,12 +2,13 @@
 // WriteFlow AI — Backend Server
 // Keeps your Claude API key secret from users
 // ============================================================
-// Setup: npm install express cors
+// Setup: npm install express cors dotenv
 // Run:   node server.js
 // ============================================================
 
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();   // Loads .env file automatically if present
 
 const app = express();
 app.use(cors());
@@ -15,21 +16,19 @@ app.use(express.json());
 app.use(express.static('.'));  // Serves index.html
 
 // ============================================================
-// CLAUDE API KEY (loaded from environment variable - NEVER hardcode!)
+// CLAUDE API KEY (loaded from environment variable or .env file)
 // ============================================================
-// Set locally before running:
-//   export ANTHROPIC_API_KEY="sk-ant-your-key-here"
+// Create a .env file in this folder with:
+//   ANTHROPIC_API_KEY=sk-ant-your-new-key-here
 //
-// For deployment (Railway / Render / etc.):
-//   Add Environment Variable: ANTHROPIC_API_KEY = your-key
-//
-// This keeps your key out of the codebase and git history.
+// .env is gitignored, so it's safe and never committed.
+// This is the easiest way to test locally.
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 if (!ANTHROPIC_API_KEY) {
-  console.error('\n❌ FATAL: ANTHROPIC_API_KEY environment variable is not set!');
-  console.error('   Run: export ANTHROPIC_API_KEY="your-key" && node server.js\n');
-  // process.exit(1); // Uncomment to hard-fail
+  console.error('\n❌ FATAL: ANTHROPIC_API_KEY is not set!');
+  console.error('   Create a .env file with: ANTHROPIC_API_KEY=your-key\n');
+  // process.exit(1);
 }
 
 // ============================================================
@@ -152,6 +151,6 @@ app.listen(PORT, () => {
   console.log(`
   ✦ WriteFlow AI server running!
   → Open: http://localhost:${PORT}
-  → API key: ${ANTHROPIC_API_KEY ? '✓ Set (from env)' : '✗ MISSING — set ANTHROPIC_API_KEY env var!'}
+  → API key: ${ANTHROPIC_API_KEY ? '✓ Set (from .env or env var)' : '✗ MISSING — create .env file!'}
   `);
 });
