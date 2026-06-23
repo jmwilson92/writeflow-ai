@@ -14,19 +14,23 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));  // Serves index.html
 
-// ⬇️ PASTE YOUR CLAUDE API KEY HERE
-// ⚠️⚠️⚠️ SECURITY WARNING ⚠️⚠️⚠️
-// This key is hardcoded because you requested it.
-// ⛔️ NEVER commit real API keys to GitHub in real projects (even private repos)!
-// ✅ BEST PRACTICE: Remove the hardcoded key below after testing.
-//    Use environment variable instead:
-//      Locally: export ANTHROPIC_API_KEY="your-key-here"
-//      Deployment (Railway/Render): Add as Environment Variable
-//    Then change code to: const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-// After done, ROTATE/DELETE this key at https://console.anthropic.com/settings/keys
-// and remove it from this file + git history (use git filter-repo or BFG).
+// ============================================================
+// CLAUDE API KEY (loaded from environment variable - NEVER hardcode!)
+// ============================================================
+// Set locally before running:
+//   export ANTHROPIC_API_KEY="sk-ant-your-key-here"
+//
+// For deployment (Railway / Render / etc.):
+//   Add Environment Variable: ANTHROPIC_API_KEY = your-key
+//
+// This keeps your key out of the codebase and git history.
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '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';
+if (!ANTHROPIC_API_KEY) {
+  console.error('\n❌ FATAL: ANTHROPIC_API_KEY environment variable is not set!');
+  console.error('   Run: export ANTHROPIC_API_KEY="your-key" && node server.js\n');
+  // process.exit(1); // Uncomment to hard-fail
+}
 
 // ============================================================
 // RATE LIMITING (basic — use Redis in production)
@@ -148,6 +152,6 @@ app.listen(PORT, () => {
   console.log(`
   ✦ WriteFlow AI server running!
   → Open: http://localhost:${PORT}
-  → API key: ${ANTHROPIC_API_KEY.startsWith('sk-ant') ? '✓ Set' : '✗ Not set — add your key!'}
+  → API key: ${ANTHROPIC_API_KEY ? '✓ Set (from env)' : '✗ MISSING — set ANTHROPIC_API_KEY env var!'}
   `);
 });
