@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WriteFlow — Professional Writing Templates</title>
+<!-- Backend API: see server.js -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06060a;
+  --surface: #0e0e14;
+  --card: #14141e;
+  --card2: #1a1a28;
+  --border: #1e1e2e;
+  --border2: #2a2a40;
+  --accent: #8b5cf6;
+  --accent-bright: #a78bfa;
+  --accent2: #06d6a0;
+  --accent3: #f59e0b;
+  --pink: #ec4899;
+  --blue: #38bdf8;
+  --text: #eeeef5;
+  --muted: #7070a0;
+  --muted2: #4a4a70;
+  --danger: #f43f5e;
+  --success: #10b981;
+  --r: 14px;
+  --r-sm: 8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* NOISE TEXTURE */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+/* GLOW ORBS */
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0}
+.orb-1{width:600px;height:600px;background:rgba(139,92,246,0.12);top:-200px;right:-200px}
+.orb-2{width:500px;height:500px;background:rgba(6,214,160,0.07);bottom:-150px;left:-150px}
+.orb-3{width:300px;height:300px;background:rgba(245,158,11,0.06);top:40%;left:30%}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid var(--border);background:rgba(6,6,10,0.85);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200}
+.logo{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;color:var(--text)}
+.logo-dot{color:var(--accent)}
+.nav-center{display:flex;gap:4px}
+.nav-tab{background:none;border:none;color:var(--muted);font-size:13px;font-weight:500;padding:7px 14px;border-radius:var(--r-sm);cursor:pointer;transition:all 0.15s;font-family:inherit}
+.nav-tab:hover{color:var(--text);background:var(--card)}
+.nav-tab.active{color:var(--text);background:var(--card2);border:1px solid var(--border2)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.credits-pill{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border2);padding:6px 14px;border-radius:20px;font-size:13px;color:var(--muted)}
+.credits-pill .val{color:var(--accent3);font-weight:700}
+.credits-pill .icon{font-size:14px}
+.btn{padding:8px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:inherit;letter-spacing:0.01em}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border2)}
+.btn-ghost:hover{background:var(--card2);color:var(--text)}
+.btn-upgrade{background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;box-shadow:0 0 20px rgba(139,92,246,0.3)}
+.btn-upgrade:hover{transform:translateY(-1px);box-shadow:0 4px 24px rgba(139,92,246,0.5)}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important}
+@media(max-width:768px){.nav-center{display:none}}
+
+/* HERO */
+.hero{position:relative;z-index:1;text-align:center;padding:90px 24px 60px;max-width:860px;margin:0 auto}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:var(--accent-bright);font-size:12px;font-weight:600;padding:6px 16px;border-radius:20px;margin-bottom:28px;letter-spacing:0.05em}
+.hero-eyebrow-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,7vw,76px);font-weight:700;line-height:1.0;letter-spacing:-2px;margin-bottom:20px}
+.h1-line2{display:block;background:linear-gradient(135deg,var(--accent-bright) 0%,var(--accent2) 50%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:18px;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.cta-primary{padding:14px 32px;font-size:16px;font-weight:700;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;border:none;cursor:pointer;transition:all 0.2s;font-family:inherit;box-shadow:0 0 40px rgba(139,92,246,0.3)}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(139,92,246,0.5)}
+.cta-secondary{padding:14px 32px;font-size:16px;font-weight:600;border-radius:var(--r);background:transparent;color:var(--text);border:1px solid var(--border2);cursor:pointer;transition:all 0.2s;font-family:inherit}
+.cta-secondary:hover{background:var(--card);border-color:var(--border2)}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--text)}
+.stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* MARQUEE */
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);padding:12px 0;margin-bottom:0;position:relative;z-index:1}
+.marquee-track{display:flex;gap:0;animation:marquee 30s linear infinite}
+.marquee-item{white-space:nowrap;font-size:12px;font-weight:500;color:var(--muted2);padding:0 24px;display:flex;align-items:center;gap:8px}
+.marquee-item .dot{width:4px;height:4px;background:var(--accent);border-radius:50%;flex-shrink:0}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* MAIN LAYOUT */
+.main{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:260px 1fr;gap:28px}
+@media(max-width:900px){.main{grid-template-columns:1fr}}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:80px;height:fit-content}
+.sidebar-section{margin-bottom:8px}
+.sidebar-cat{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted2);padding:10px 12px 6px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.sidebar-cat-count{background:var(--card2);color:var(--muted);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
+.sidebar-tools{display:flex;flex-direction:column;gap:2px}
+.sidebar-tool{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-sm);cursor:pointer;transition:all 0.12s;border:1px solid transparent}
+.sidebar-tool:hover{background:var(--card);color:var(--text)}
+.sidebar-tool.active{background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:var(--text)}
+.sidebar-tool-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.sidebar-tool-name{font-size:13px;font-weight:500;color:inherit}
+.sidebar-tool-name{color:var(--muted)}
+.sidebar-tool.active .sidebar-tool-name{color:var(--text)}
+.sidebar-search{width:100%;background:var(--card);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:13px;padding:9px 14px;font-family:inherit;margin-bottom:16px;transition:border-color 0.15s}
+.sidebar-search:focus{outline:none;border-color:var(--accent)}
+.sidebar-search::placeholder{color:var(--muted2)}
+@media(max-width:900px){.sidebar{position:static}}
+
+/* MOBILE CATEGORY PILLS */
+.mobile-cats{display:none;gap:8px;overflow-x:auto;padding:16px 24px 0;margin-bottom:-8px;position:relative;z-index:1}
+.mobile-cat{flex-shrink:0;padding:7px 16px;border-radius:20px;background:var(--card);border:1px solid var(--border2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
+.mobile-cat.active{background:rgba(139,92,252,0.15);border-color:var(--accent);color:var(--accent-bright)}
+@media(max-width:900px){.mobile-cats{display:flex}}
+
+/* GENERATOR PANEL */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.panel-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--card2) 0%,var(--card) 100%)}
+.panel-tool-meta{display:flex;align-items:flex-start;gap:16px;margin-bottom:0}
+.panel-icon-wrap{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:1px solid var(--border2)}
+.panel-info{flex:1}
+.panel-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;margin-bottom:4px}
+.panel-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.panel-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.panel-tag{font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600}
+.tag-free{background:rgba(16,185,129,0.12);color:var(--success);border:1px solid rgba(16,185,129,0.2)}
+.tag-credit{background:rgba(245,158,11,0.1);color:var(--accent3);border:1px solid rgba(245,158,11,0.2)}
+.tag-popular{background:rgba(139,92,246,0.12);color:var(--accent-bright);border:1px solid rgba(139,92,246,0.25)}
+
+.panel-body{padding:28px}
+
+/* FREE LIMIT BAR */
+.limit-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-sm);margin-bottom:24px;font-size:13px}
+.limit-label{color:var(--muted);flex:1}
+.limit-label strong{color:var(--text)}
+.limit-track{width:80px;height:4px;background:var(--border2);border-radius:2px;flex-shrink:0}
+.limit-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width 0.3s}
+.limit-upgrade{font-size:11px;font-weight:600;color:var(--accent-bright);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.limit-upgrade:hover{text-decoration:underline}
+
+/* FIELDS */
+.fields{display:grid;gap:16px;margin-bottom:20px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.field-row{grid-template-columns:1fr}}
+.field-label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;letter-spacing:0.02em}
+.field-label span{color:var(--danger);margin-left:2px}
+input,textarea,select{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:14px;padding:11px 14px;font-family:inherit;transition:all 0.15s}
+input:hover,textarea:hover,select:hover{border-color:var(--muted2)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);background:rgba(139,92,246,0.05);box-shadow:0 0 0 3px rgba(139,92,246,0.1)}
+textarea{resize:vertical;min-height:90px;line-height:1.6}
+select option{background:#1a1a28}
+::placeholder{color:var(--muted2)}
+
+/* ACTIONS BAR */
+.actions-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px 0 0;border-top:1px solid var(--border)}
+.gen-btn{display:flex;align-items:center;gap:8px;padding:12px 28px;font-size:15px;font-weight:700;border-radius:var(--r-sm);background:linear-gradient(135deg,var(--accent),#6d28d9);color:#fff;border:none;cursor:pointer;transition:all 0.18s;font-family:inherit;letter-spacing:0.01em}
+.gen-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 24px rgba(139,92,246,0.45)}
+.gen-btn:disabled{opacity:0.4;cursor:not-allowed}
+.gen-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
+.gen-btn.loading .spinner{display:block}
+.gen-btn.loading .btn-label{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tone-wrap{display:flex;align-items:center;gap:6px;flex:1;min-width:0;max-width:220px}
+.tone-label{font-size:12px;color:var(--muted);white-space:nowrap;font-weight:600}
+.tone-select{flex:1}
+
+/* OUTPUT */
+.output-section{margin-top:24px}
+.output-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.output-label{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.output-acts{display:flex;gap:6px}
+.output-act{font-size:12px;padding:5px 12px;background:var(--card2);border:1px solid var(--border2);border-radius:6px;color:var(--muted);cursor:pointer;transition:all 0.12s;font-family:inherit;display:flex;align-items:center;gap:5px}
+.output-act:hover{background:var(--border2);color:var(--text)}
+.output-box{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r-sm);padding:20px;min-height:140px;font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap;transition:border-color 0.2s;position:relative}
+.output-box.active{border-color:rgba(139,92,246,0.4);box-shadow:0 0 0 1px rgba(139,92,246,0.1) inset}
+.output-placeholder{color:var(--muted2);font-style:italic;font-size:13px}
+.cursor-blink{display:inline-block;width:2px;height:15px;background:var(--accent);animation:blink 0.85s steps(1) infinite;vertical-align:middle;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.word-count{font-size:11px;color:var(--muted2);margin-top:6px;text-align:right}
+
+/* ERROR */
+.error-msg{display:none;align-items:center;gap:8px;color:var(--danger);font-size:13px;margin-top:10px;padding:10px 14px;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);border-radius:var(--r-sm)}
+.error-msg.show{display:flex}
+
+/* CATEGORY SECTIONS TITLES */
+.cat-header{display:flex;align-items:center;gap:10px;padding:0 0 0 0;margin-bottom:16px;margin-top:40px}
+.cat-header:first-child{margin-top:0}
+.cat-icon{font-size:20px}
+.cat-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.3px}
+.cat-count{font-size:12px;color:var(--muted);background:var(--card2);padding:2px 8px;border-radius:10px;font-weight:600}
+
+/* PRICING PAGE */
+#page-pricing{display:none}
+.pricing-hero{text-align:center;padding:60px 24px 48px;max-width:680px;margin:0 auto;position:relative;z-index:1}
+.pricing-hero h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-1px;margin-bottom:12px}
+.pricing-hero p{font-size:17px;color:var(--muted);line-height:1.6}
+.toggle-wrap{display:flex;align-items:center;gap:12px;justify-content:center;margin:24px 0 40px;font-size:14px;font-weight:500;color:var(--muted)}
+.toggle-track{width:44px;height:24px;background:var(--border2);border-radius:12px;position:relative;cursor:pointer;transition:background 0.2s}
+.toggle-track.on{background:var(--accent)}
+.toggle-knob{position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.2s}
+.toggle-track.on .toggle-knob{transform:translateX(20px)}
+.save-badge{background:rgba(6,214,160,0.15);color:var(--accent2);font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;border:1px solid rgba(6,214,160,0.25)}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1000px;margin:0 auto 60px;padding:0 24px}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:all 0.2s;position:relative}
+.plan-featured{border-color:rgba(139,92,246,0.4);background:linear-gradient(180deg,rgba(139,92,246,0.06) 0%,var(--card) 60%)}
+.plan-featured-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;font-size:11px;font-weight:700;padding:4px 16px;border-radius:0 0 10px 10px;letter-spacing:0.05em;white-space:nowrap}
+.plan-name{font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.plan-price-wrap{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.plan-price{font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;letter-spacing:-2px}
+.plan-per{font-size:14px;color:var(--muted)}
+.plan-orig{font-size:14px;color:var(--muted2);text-decoration:line-through;margin-left:4px}
+.plan-tagline{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5}
+.plan-divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.plan-features li{font-size:13px;display:flex;align-items:flex-start;gap:9px;line-height:1.4}
+.plan-features li::before{content:'✓';color:var(--success);font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-features li.no::before{content:'—';color:var(--muted2)}
+.plan-features li.no{color:var(--muted2)}
+.plan-btn{width:100%;padding:13px;font-size:14px;font-weight:700;border-radius:var(--r-sm);cursor:pointer;font-family:inherit;transition:all 0.15s}
+.plan-btn-primary{background:linear-gradient(135deg,var(--accent),#6d28d9);color:#fff;border:none;box-shadow:0 0 20px rgba(139,92,246,0.25)}
+.plan-btn-primary:hover{box-shadow:0 4px 24px rgba(139,92,246,0.5);transform:translateY(-1px)}
+.plan-btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.plan-btn-ghost:hover{background:var(--card2)}
+
+.credits-section{max-width:1000px;margin:0 auto 80px;padding:0 24px}
+.credits-title{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
+.credits-sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+.packs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.pack{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;text-align:center;cursor:pointer;transition:all 0.18s;position:relative}
+.pack:hover{border-color:var(--accent);transform:translateY(-2px)}
+.pack-best{border-color:rgba(6,214,160,0.4);background:rgba(6,214,160,0.03)}
+.pack-best-label{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent2);color:#000;font-size:10px;font-weight:800;padding:3px 12px;border-radius:10px;letter-spacing:0.05em;white-space:nowrap}
+.pack-amount{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--accent2)}
+.pack-unit{font-size:12px;color:var(--muted);margin-bottom:12px}
+.pack-price-main{font-size:22px;font-weight:700;margin-bottom:3px}
+.pack-cpp{font-size:12px;color:var(--muted);margin-bottom:14px}
+.pack-btn{width:100%;padding:9px;font-size:13px;font-weight:600;border-radius:var(--r-sm);cursor:pointer;font-family:inherit;background:transparent;border:1px solid var(--border2);color:var(--text);transition:all 0.15s}
+.pack:hover .pack-btn{border-color:var(--accent);color:var(--accent-bright)}
+.pack-best:hover .pack-btn{border-color:var(--accent2);color:var(--accent2)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(8px)}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:36px;max-width:460px;width:100%;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--card2);border:1px solid var(--border2);color:var(--muted);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.modal-close:hover{color:var(--text);background:var(--border2)}
+.modal-icon{font-size:40px;margin-bottom:12px}
+.modal h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
+.modal-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.modal-perks{display:flex;flex-direction:column;gap:9px;margin-bottom:28px}
+.modal-perk{display:flex;align-items:center;gap:10px;font-size:14px}
+.modal-perk-icon{width:24px;height:24px;background:rgba(139,92,246,0.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.modal-cta{width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:var(--r-sm);background:linear-gradient(135deg,var(--accent),#6d28d9);color:#fff;border:none;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 0 30px rgba(139,92,246,0.3)}
+.modal-cta:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(139,92,246,0.5)}
+.modal-alt{text-align:center;margin-top:12px}
+.modal-alt button{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline}
+.modal-alt button:hover{color:var(--text)}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;padding:12px 20px;border-radius:var(--r-sm);font-size:14px;font-weight:500;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.25s;pointer-events:none;border:1px solid;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-success{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--success)}
+.toast-info{background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.3);color:var(--accent-bright)}
+.toast-error{background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.3);color:var(--danger)}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Write<span class="logo-dot">Flow</span></div>
+  <div class="nav-center">
+    <button class="nav-tab active" onclick="showPage('tools')">Templates</button>
+    <button class="nav-tab" onclick="showPage('pricing')">Pricing</button>
+  </div>
+  <div class="nav-right">
+    <div class="credits-pill"><span class="icon">⚡</span><span id="credits-display">5</span> <span class="val" style="color:var(--muted)">credits</span></div>
+    <button class="btn btn-upgrade" onclick="openUpgradeModal()">Upgrade ✦</button>
+  </div>
+</nav>
+
+<!-- ======================== TOOLS PAGE ======================== -->
+<div id="page-tools">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>40+ professional templates</div>
+
+  <h1>Words that work.<br><span class="h1-line2">Results that matter.</span></h1>
+  <p class="hero-sub">From cold emails that get replies to cover letters that get interviews — WriteFlow turns your rough ideas into polished, professional copy in seconds.</p>
+  <div class="hero-cta">
+    <button class="cta-primary" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})">Start writing free →</button>
+    <button class="cta-secondary" onclick="showPage('pricing')">View pricing</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Templates</div></div>
+    <div class="stat"><div class="stat-num">3 free</div><div class="stat-label">Per day</div></div>
+    <div class="stat"><div class="stat-num">&lt;5s</div><div class="stat-label">Generation time</div></div>
+    <div class="stat"><div class="stat-num">$0</div><div class="stat-label">To start</div></div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee-track"></div>
+</div>
+
+<!-- MOBILE CAT PILLS -->
+<div class="mobile-cats" id="mobile-cats"></div>
+
+<!-- MAIN GRID -->
+<div class="main">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <input class="sidebar-search" type="text" placeholder="🔍  Search templates..." id="search-input" oninput="filterTools(this.value)">
+    <div id="sidebar-inner"></div>
+  </aside>
+
+  <!-- PANEL -->
+  <div>
+    <div class="panel" id="gen-panel">
+      <div class="panel-header">
+        <div class="panel-tool-meta">
+          <div class="panel-icon-wrap" id="panel-icon-wrap"><span id="panel-icon">📝</span></div>
+          <div class="panel-info">
+            <div class="panel-title" id="panel-title">Cover Letter</div>
+            <div class="panel-desc" id="panel-desc">Tailored cover letters for any job application in seconds.</div>
+            <div class="panel-tags" id="panel-tags"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="limit-bar" id="limit-bar">
+          <div class="limit-label"><strong id="limit-text">3 free uses left today</strong></div>
+          <div class="limit-track"><div class="limit-fill" id="limit-fill" style="width:100%"></div></div>
+          <span class="limit-upgrade" onclick="openUpgradeModal()">Upgrade for unlimited →</span>
+        </div>
+        <div id="dynamic-fields" class="fields"></div>
+        <div class="actions-bar">
+          <button class="gen-btn" id="gen-btn" onclick="generate()">
+            <div class="spinner"></div>
+            <span class="btn-label">✦ &nbsp;Generate</span>
+          </button>
+          <div class="tone-wrap">
+            <span class="tone-label">Tone:</span>
+            <select class="tone-select" id="tone-select">
+              <option value="professional">Professional</option>
+              <option value="friendly">Friendly</option>
+              <option value="confident">Confident</option>
+              <option value="casual">Casual</option>
+              <option value="persuasive">Persuasive</option>
+              <option value="enthusiastic">Enthusiastic</option>
+              <option value="formal">Formal</option>
+              <option value="concise">Concise</option>
+            </select>
+          </div>
+        </div>
+        <div class="error-msg" id="error-msg">⚠ Please fill in the required fields marked with *</div>
+        <div class="output-section" id="output-section">
+          <div class="output-header">
+            <span class="output-label">Output</span>
+            <div class="output-acts" id="output-acts" style="display:none">
+              <button class="output-act" onclick="copyOutput()">📋 Copy</button>
+              <button class="output-act" onclick="generate()">↻ Redo</button>
+              <button class="output-act" onclick="downloadOutput()">↓ Save</button>
+            </div>
+          </div>
+          <div class="output-box" id="output-box">
+            <span class="output-placeholder">Your generated content will appear here — fill in the fields above and hit Generate.</span>
+          </div>
+          <div class="word-count" id="word-count"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- end page-tools -->
+
+<!-- ======================== PRICING PAGE ======================== -->
+<div id="page-pricing" style="display:none;position:relative;z-index:1">
+  <div class="pricing-hero">
+    <h2>Simple, honest pricing</h2>
+    <p>Start free. Upgrade when you need more. No hidden fees, no surprises.</p>
+    <div class="toggle-wrap">
+      <span>Monthly</span>
+      <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()"><div class="toggle-knob"></div></div>
+      <span>Annual</span>
+      <span class="save-badge">Save 40%</span>
+    </div>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan">
+      <div class="plan-name">Free</div>
+      <div class="plan-price-wrap"><span class="plan-price">$0</span><span class="plan-per">/mo</span></div>
+      <p class="plan-tagline">Try all 40+ templates with no credit card required.</p>
+      <hr class="plan-divider">
+      <ul class="plan-features">
+        <li>3 generations per day</li>
+        <li>All 40+ templates</li>
+        <li>Standard speed</li>
+        <li class="no">Unlimited generations</li>
+        <li class="no">Save output history</li>
+        <li class="no">Custom tone presets</li>
+        <li class="no">Priority processing</li>
+      </ul>
+      <button class="plan-btn plan-btn-ghost" onclick="showToast('You are on the free plan','info')">Current plan</button>
+    </div>
+
+    <div class="plan plan-featured">
+      <div class="plan-featured-badge">⭐ MOST POPULAR</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price-wrap">
+        <span class="plan-price" id="pro-price">$12</span>
+        <span class="plan-per">/mo</span>
+        <span class="plan-orig" id="pro-orig" style="display:none">$20</span>
+      </div>
+      <p class="plan-tagline">Everything you need to write faster and better every day.</p>
+      <hr class="plan-divider">
+      <ul class="plan-features">
+        <li>Unlimited generations</li>
+        <li>All 40+ templates</li>
+        <li>Priority processing</li>
+        <li>Save output history</li>
+        <li>5 custom tone presets</li>
+        <li>Export as .txt / .docx</li>
+        <li class="no">Team seats</li>
+      </ul>
+      <button class="plan-btn plan-btn-primary" onclick="handleCheckout('pro')">Get Pro → <span id="pro-cta-price">$12/mo</span></button>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Business</div>
+      <div class="plan-price-wrap">
+        <span class="plan-price" id="biz-price">$39</span>
+        <span class="plan-per">/mo</span>
+        <span class="plan-orig" id="biz-orig" style="display:none">$65</span>
+      </div>
+      <p class="plan-tagline">For teams, agencies, and high-volume writers.</p>
+      <hr class="plan-divider">
+      <ul class="plan-features">
+        <li>Everything in Pro</li>
+        <li>5 team seats</li>
+        <li>Unlimited tone presets</li>
+        <li>Bulk generation (coming)</li>
+        <li>API access (coming)</li>
+        <li>Custom templates (coming)</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="plan-btn plan-btn-ghost" onclick="handleCheckout('business')">Get Business</button>
+    </div>
+  </div>
+
+  <div class="credits-section">
+    <h3 class="credits-title">Buy credits instead</h3>
+    <p class="credits-sub">No subscription. Pay as you go. Credits never expire.</p>
+    <div class="packs-grid">
+      <div class="pack" onclick="handleCheckout('pack-50')">
+        <div class="pack-amount">50</div>
+        <div class="pack-unit">credits</div>
+        <div class="pack-price-main">$5</div>
+        <div class="pack-cpp">$0.10 each</div>
+        <button class="pack-btn">Buy →</button>
+      </div>
+      <div class="pack pack-best" onclick="handleCheckout('pack-200')">
+        <div class="pack-best-label">BEST VALUE</div>
+        <div class="pack-amount">200</div>
+        <div class="pack-unit">credits</div>
+        <div class="pack-price-main">$15</div>
+        <div class="pack-cpp">$0.075 each</div>
+        <button class="pack-btn">Buy →</button>
+      </div>
+      <div class="pack" onclick="handleCheckout('pack-500')">
+        <div class="pack-amount">500</div>
+        <div class="pack-unit">credits</div>
+        <div class="pack-price-main">$30</div>
+        <div class="pack-cpp">$0.06 each</div>
+        <button class="pack-btn">Buy →</button>
+      </div>
+      <div class="pack" onclick="handleCheckout('pack-1000')">
+        <div class="pack-amount">1,000</div>
+        <div class="pack-unit">credits</div>
+        <div class="pack-price-main">$49</div>
+        <div class="pack-cpp">$0.049 each</div>
+        <button class="pack-btn">Buy →</button>
+      </div>
+    </div>
+  </div>
+</div><!-- end page-pricing -->
+
+<!-- UPGRADE MODAL -->
+<div class="modal-overlay hidden" id="upgrade-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
+    <div class="modal-icon">🚀</div>
+    <h2>Unlock unlimited writing</h2>
+    <p class="modal-desc">You've used your free generations for today. Upgrade to Pro and write as much as you want, every day.</p>
+    <div class="modal-perks">
+      <div class="modal-perk"><div class="modal-perk-icon">♾️</div> Unlimited generations across all 40+ templates</div>
+      <div class="modal-perk"><div class="modal-perk-icon">⚡</div> Priority processing — results in under 3 seconds</div>
+      <div class="modal-perk"><div class="modal-perk-icon">💾</div> Save, export and revisit your output history</div>
+      <div class="modal-perk"><div class="modal-perk-icon">🎨</div> Custom tone presets saved to your account</div>
+    </div>
+    <button class="modal-cta" onclick="handleCheckout('pro')">Upgrade to Pro — $12/month →</button>
+    <div class="modal-alt"><button onclick="handleCheckout('pack-200');closeUpgradeModal()">Or buy 200 credits for $15 instead</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ================================================================
+// TOOL DEFINITIONS — 40+ templates across 8 categories
+// ================================================================
+const TOOLS = [
+  // CAREER & JOB SEARCH
+  { id:'cover-letter', cat:'Career', icon:'📝', name:'Cover letter', desc:'Tailored cover letters that get you interviews', popular:true,
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Alex Johnson',half:true},
+      {id:'role',label:'Job title applying for',req:true,ph:'Senior Product Manager',half:true},
+      {id:'company',label:'Company name',req:true,ph:'Acme Corp',half:true},
+      {id:'exp',label:'Years of experience',req:false,ph:'5 years',half:true},
+      {id:'skills',label:'Key skills & achievements',req:true,ph:'Led a team of 8\nGrew revenue by 40%\nExpert in Agile, SQL, Figma',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a compelling cover letter for ${f.name} applying for ${f.role} at ${f.company}. Experience: ${f.exp}. Skills/achievements: ${f.skills}. Tone: ${tone}. 3-4 paragraphs, specific and tailored. No generic phrases. Ready to send.`
+  },
+  { id:'resume-summary', cat:'Career', icon:'📄', name:'Resume summary', desc:'Powerful resume headline & summary section', popular:true,
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Jordan Lee',half:true},
+      {id:'role',label:'Target job title',req:true,ph:'Data Scientist',half:true},
+      {id:'years',label:'Total years experience',req:false,ph:'7 years',half:true},
+      {id:'industry',label:'Industry',req:false,ph:'FinTech',half:true},
+      {id:'skills',label:'Top 5 skills or achievements',req:true,ph:'Python, ML models, reduced churn 25%, team lead, published researcher',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a professional resume summary for ${f.name}, targeting the role of ${f.role} with ${f.years} of experience in ${f.industry}. Key skills: ${f.skills}. Tone: ${tone}. Include a punchy headline (1 line) then a 3-sentence summary paragraph. Quantify achievements. ATS-friendly.`
+  },
+  { id:'linkedin-bio', cat:'Career', icon:'💼', name:'LinkedIn bio', desc:'Standout LinkedIn summary that attracts recruiters', popular:true,
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Marcus Chen',half:true},
+      {id:'role',label:'Current role / industry',req:true,ph:'Startup Founder | Fintech',half:true},
+      {id:'achievements',label:'Top achievements',req:true,ph:'Built and sold a SaaS company\n10+ years in finance\nAngel investor in 12 startups',type:'textarea'},
+      {id:'goal',label:'What you\'re looking for',req:false,ph:'Open to advisory roles and board positions'},
+    ],
+    prompt:(f,tone)=>`Write a LinkedIn About section for ${f.name}, ${f.role}. Achievements: ${f.achievements}. Goal: ${f.goal}. Tone: ${tone}. 3 short paragraphs. Open with a hook (not "I am a..."), show personality, quantify wins, end with what they want next. First person.`
+  },
+  { id:'resignation-letter', cat:'Career', icon:'🚪', name:'Resignation letter', desc:'Professional, graceful resignation letters',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Sam Rivera',half:true},
+      {id:'company',label:'Company name',req:true,ph:'Globex Corp',half:true},
+      {id:'role',label:'Your current role',req:true,ph:'Marketing Manager',half:true},
+      {id:'date',label:'Last working day',req:true,ph:'June 30, 2025',half:true},
+      {id:'reason',label:'Reason (optional)',req:false,ph:'Pursuing a new opportunity'},
+    ],
+    prompt:(f,tone)=>`Write a professional resignation letter for ${f.name}, currently ${f.role} at ${f.company}. Last day: ${f.date}. Reason: ${f.reason||'not stated'}. Tone: ${tone}. Brief, graceful, positive. Thank the company. Offer to help with transition. Formal letter format.`
+  },
+  { id:'job-offer-negotiation', cat:'Career', icon:'💰', name:'Salary negotiation email', desc:'Negotiate your job offer with confidence',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Taylor Kim',half:true},
+      {id:'company',label:'Company',req:true,ph:'TechCorp',half:true},
+      {id:'offer',label:'Current offer',req:true,ph:'$85,000',half:true},
+      {id:'target',label:'Target salary',req:true,ph:'$95,000-$100,000',half:true},
+      {id:'reason',label:'Why you deserve it',req:true,ph:'7 years experience, led $2M project, competing offer from another company',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a salary negotiation email for ${f.name} at ${f.company}. Current offer: ${f.offer}. Target: ${f.target}. Justification: ${f.reason}. Tone: ${tone}. Confident but collegial. Reference market rates and their specific value. Leave room for compromise. Short.`
+  },
+  { id:'interview-thank-you', cat:'Career', icon:'🙏', name:'Interview thank-you', desc:'Follow-up emails that keep you top of mind',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Casey Morgan',half:true},
+      {id:'interviewer',label:'Interviewer\'s name',req:true,ph:'Dr. Patel',half:true},
+      {id:'company',label:'Company',req:true,ph:'Innovate Inc.',half:true},
+      {id:'role',label:'Role you interviewed for',req:true,ph:'Head of Product',half:true},
+      {id:'highlight',label:'A moment to reference',req:false,ph:'Our conversation about scaling the mobile team'},
+    ],
+    prompt:(f,tone)=>`Write a post-interview thank-you email from ${f.name} to ${f.interviewer} at ${f.company} for the ${f.role} role. Reference: ${f.highlight||'the great conversation'}. Tone: ${tone}. Short (5-8 sentences). Reinforce enthusiasm + one key strength. Personal and memorable.`
+  },
+  { id:'reference-request', cat:'Career', icon:'🤝', name:'Reference request', desc:'Ask for a reference with grace and clarity',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Jamie Blake',half:true},
+      {id:'ref',label:'Reference\'s name',req:true,ph:'Professor Williams',half:true},
+      {id:'relationship',label:'Your relationship',req:false,ph:'My manager at XYZ for 3 years',half:true},
+      {id:'applying',label:'What you\'re applying for',req:true,ph:'MBA program at Wharton',half:true},
+      {id:'context',label:'What to highlight',req:false,ph:'Leadership on the Jordan project, analytical skills',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a reference request email from ${f.name} to ${f.ref} (${f.relationship}). Applying for: ${f.applying}. Would like them to highlight: ${f.context||'general strengths'}. Tone: ${tone}. Polite, grateful, provides context. Offers to share resume. Short.`
+  },
+
+  // SALES & BUSINESS
+  { id:'cold-email', cat:'Sales', icon:'✉️', name:'Cold email', desc:'High-converting cold outreach that gets replies', popular:true,
+    fields:[
+      {id:'sender',label:'Your name & company',req:true,ph:'Sarah, Founder of LeadCo',half:true},
+      {id:'prospect',label:'Prospect\'s name & company',req:true,ph:'John at TechStart Inc',half:true},
+      {id:'offer',label:'What you\'re offering',req:true,ph:'We help B2B SaaS companies reduce churn by 30% using AI workflows.',type:'textarea'},
+      {id:'cta',label:'Desired CTA',req:false,ph:'15-minute call this week?'},
+    ],
+    prompt:(f,tone)=>`Write a cold email from ${f.sender} to ${f.prospect}. Offer: ${f.offer}. CTA: ${f.cta||'a quick call'}. Tone: ${tone}. Subject line at top. Under 120 words. No buzzwords. Lead with their problem, not your product. Low-friction CTA.`
+  },
+  { id:'follow-up-email', cat:'Sales', icon:'🔁', name:'Follow-up email', desc:'Persistent follow-ups that don\'t feel pushy',
+    fields:[
+      {id:'sender',label:'Your name',req:true,ph:'Alex',half:true},
+      {id:'prospect',label:'Prospect\'s name',req:true,ph:'Maria',half:true},
+      {id:'context',label:'What you previously sent / discussed',req:true,ph:'A proposal for website redesign last Tuesday',type:'textarea'},
+      {id:'touch',label:'Which follow-up is this?',req:false,ph:'2nd follow-up',half:true},
+    ],
+    prompt:(f,tone)=>`Write a follow-up email from ${f.sender} to ${f.prospect}. Context: ${f.context}. This is the ${f.touch||'follow-up'}. Tone: ${tone}. Brief, adds new value or a different angle. No guilt-tripping. Ends with a clear easy CTA.`
+  },
+  { id:'sales-proposal', cat:'Sales', icon:'📊', name:'Sales proposal', desc:'Professional proposals that close deals',
+    fields:[
+      {id:'company',label:'Your company',req:true,ph:'DesignPro Agency',half:true},
+      {id:'client',label:'Client name',req:true,ph:'RetailBrand Co.',half:true},
+      {id:'service',label:'Service / solution offered',req:true,ph:'Full website redesign + SEO package'},
+      {id:'price',label:'Price / investment',req:true,ph:'$12,500',half:true},
+      {id:'timeline',label:'Delivery timeline',req:false,ph:'8 weeks',half:true},
+      {id:'value',label:'Key value / ROI',req:true,ph:'Expected 40% increase in organic traffic, 15% conversion uplift',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a sales proposal from ${f.company} to ${f.client} for: ${f.service}. Price: ${f.price}. Timeline: ${f.timeline}. Value/ROI: ${f.value}. Tone: ${tone}. Include: executive summary, what's included, timeline, investment, next steps. Professional document format.`
+  },
+  { id:'testimonial-request', cat:'Sales', icon:'⭐', name:'Testimonial request', desc:'Ask for reviews and testimonials effortlessly',
+    fields:[
+      {id:'name',label:'Your name / brand',req:true,ph:'WriteFlow',half:true},
+      {id:'customer',label:'Customer\'s name',req:true,ph:'Chris',half:true},
+      {id:'product',label:'Product / service they used',req:false,ph:'our Pro writing plan',half:true},
+      {id:'result',label:'Result they got (if known)',req:false,ph:'Landed 3 job interviews in one week'},
+    ],
+    prompt:(f,tone)=>`Write a testimonial request email from ${f.name} to ${f.customer} who used ${f.product||'the service'}. Result: ${f.result||'great results'}. Tone: ${tone}. Short and friendly. Explain why it helps, make it easy (offer 2-3 specific guiding questions). Thank them in advance.`
+  },
+  { id:'partnership-pitch', cat:'Sales', icon:'🤝', name:'Partnership pitch', desc:'Win strategic partnerships and collaborations',
+    fields:[
+      {id:'sender',label:'Your brand / name',req:true,ph:'GrowthLabs',half:true},
+      {id:'target',label:'Target partner',req:true,ph:'ProductHunt',half:true},
+      {id:'offer',label:'What you\'re proposing',req:true,ph:'Co-host a monthly webinar series for SaaS founders',type:'textarea'},
+      {id:'value',label:'Value for them',req:true,ph:'Access to our 8K email list, cross-promotion to 15K followers',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a partnership pitch email from ${f.sender} to ${f.target}. Proposal: ${f.offer}. Value for them: ${f.value}. Tone: ${tone}. Lead with the mutual benefit. Specific and credible. Short. Clear ask.`
+  },
+
+  // MARKETING & CONTENT
+  { id:'ad-copy', cat:'Marketing', icon:'📣', name:'Ad copy', desc:'Facebook, Google & Instagram ads that convert', popular:true,
+    fields:[
+      {id:'product',label:'Product / service',req:true,ph:'FitTrack App',half:true},
+      {id:'platform',label:'Platform',req:true,type:'select',opts:['Facebook','Instagram','Google','TikTok','LinkedIn','Twitter/X'],half:true},
+      {id:'audience',label:'Target audience',req:true,ph:'Women 25-45 interested in fitness'},
+      {id:'benefit',label:'Main benefit / offer',req:true,ph:'Lose 10lbs in 30 days with personalized AI plans. 7-day free trial.',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a ${f.platform} ad for "${f.product}" targeting ${f.audience}. Benefit/offer: ${f.benefit}. Tone: ${tone}. Include: scroll-stopping headline, 2-3 sentence body (pain → solution), CTA. Optimized for ${f.platform}. Power words. Urgency without spam.`
+  },
+  { id:'product-description', cat:'Marketing', icon:'🛍️', name:'Product description', desc:'Persuasive product copy that sells more', popular:true,
+    fields:[
+      {id:'product',label:'Product name',req:true,ph:'ProGrip Standing Desk',half:true},
+      {id:'customer',label:'Target customer',req:true,ph:'Remote workers & freelancers',half:true},
+      {id:'features',label:'Key features',req:true,ph:'Height adjustable, anti-fatigue mat, cable management, holds 3 monitors',type:'textarea'},
+      {id:'price',label:'Price',req:false,ph:'$349',half:true},
+      {id:'platform',label:'Platform',req:false,type:'select',opts:['Amazon','Shopify store','Etsy','SaaS landing page','General'],half:true},
+    ],
+    prompt:(f,tone)=>`Write a product description for "${f.product}" targeting ${f.customer}. Price: ${f.price}. Platform: ${f.platform}. Features: ${f.features}. Tone: ${tone}. Lead with biggest benefit, sensory language, punchy headline, bulleted features, strong CTA. Premium feel.`
+  },
+  { id:'email-subject-lines', cat:'Marketing', icon:'📬', name:'Email subject lines', desc:'Open-rate-boosting subject lines (10 variants)',
+    fields:[
+      {id:'topic',label:'Email topic',req:true,ph:'Black Friday sale — 50% off all plans'},
+      {id:'audience',label:'Audience',req:false,ph:'SaaS professionals',half:true},
+      {id:'goal',label:'Goal',req:false,type:'select',opts:['Maximize opens','Drive clicks','Re-engage','Announce','Urgency/scarcity'],half:true},
+    ],
+    prompt:(f,tone)=>`Generate 10 email subject lines for: "${f.topic}". Audience: ${f.audience||'general'}. Goal: ${f.goal||'maximize opens'}. Tone: ${tone}. Mix of styles: curiosity gap, direct, question, personalized, urgency, benefit-led, emoji-enhanced. Number them 1-10.`
+  },
+  { id:'blog-post-outline', cat:'Marketing', icon:'📰', name:'Blog post outline', desc:'SEO-structured outlines ready to write',
+    fields:[
+      {id:'topic',label:'Blog post topic',req:true,ph:'How to use AI to grow your freelance business'},
+      {id:'audience',label:'Target reader',req:false,ph:'Freelancers and solopreneurs',half:true},
+      {id:'keywords',label:'Target keywords (optional)',req:false,ph:'AI freelance, side hustle AI tools',half:true},
+      {id:'length',label:'Desired length',req:false,type:'select',opts:['Short (500-800 words)','Medium (1,000-1,500 words)','Long-form (2,000-3,000 words)','Pillar (3,000+ words)']},
+    ],
+    prompt:(f,tone)=>`Create a detailed SEO blog post outline for: "${f.topic}". Target reader: ${f.audience}. Keywords: ${f.keywords||'none specified'}. Length: ${f.length||'medium'}. Tone: ${tone}. Include: H1, meta description, introduction hook, H2 sections with H3 sub-points, internal link opportunities, conclusion + CTA. Ready to write from.`
+  },
+  { id:'social-captions', cat:'Marketing', icon:'📱', name:'Social media captions', desc:'Engaging captions for all platforms',
+    fields:[
+      {id:'topic',label:'What you\'re posting about',req:true,ph:'Launching our new feature — real-time collaboration'},
+      {id:'brand',label:'Brand / person name',req:false,ph:'WriteFlow',half:true},
+      {id:'platform',label:'Platform',req:true,type:'select',opts:['Instagram','Twitter/X','LinkedIn','TikTok','Facebook','All platforms'],half:true},
+      {id:'cta',label:'Call to action',req:false,ph:'Link in bio / try it free'},
+    ],
+    prompt:(f,tone)=>`Write 3 social media caption options for ${f.brand||'a brand'} on ${f.platform} about: "${f.topic}". CTA: ${f.cta||'engage with post'}. Tone: ${tone}. Each caption different style (informational, story, punchy). Include relevant hashtags. Format as Option 1, 2, 3.`
+  },
+  { id:'newsletter', cat:'Marketing', icon:'💌', name:'Newsletter', desc:'Compelling newsletters people actually read',
+    fields:[
+      {id:'brand',label:'Newsletter / brand name',req:true,ph:'The Growth Dispatch',half:true},
+      {id:'topic',label:'Main topic this issue',req:true,ph:'5 AI tools that saved us 10 hours this week'},
+      {id:'audience',label:'Subscriber audience',req:false,ph:'Startup founders',half:true},
+      {id:'extras',label:'Secondary items / links (optional)',req:false,ph:'A tweet we loved, a tool recommendation, a quick tip',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a newsletter issue for "${f.brand}" (audience: ${f.audience}). Main topic: "${f.topic}". Secondary items: ${f.extras||'none'}. Tone: ${tone}. Include: catchy subject line, warm opener, main story (3-4 paragraphs), secondary section, sign-off. Conversational, feels personal not corporate.`
+  },
+  { id:'press-release', cat:'Marketing', icon:'📢', name:'Press release', desc:'Newsworthy press releases that get picked up',
+    fields:[
+      {id:'company',label:'Company name',req:true,ph:'WriteFlow',half:true},
+      {id:'news',label:'The news (what happened)',req:true,ph:'Launch of WriteFlow 2.0 with 40+ AI writing templates'},
+      {id:'date',label:'Date / location',req:false,ph:'San Francisco, June 2025',half:true},
+      {id:'quote',label:'Quote from a spokesperson',req:false,ph:'CEO: "We\'re making professional writing accessible to everyone"'},
+      {id:'boilerplate',label:'About the company (1-2 sentences)',req:false,ph:'WriteFlow is a professional writing platform...'},
+    ],
+    prompt:(f,tone)=>`Write a press release for ${f.company}. News: ${f.news}. Date/location: ${f.date||'today'}. Quote: ${f.quote||'generate a relevant quote'}. Boilerplate: ${f.boilerplate||'write a brief company description'}. Tone: ${tone}. Proper AP-style format: headline, dateline, lead paragraph, body, quote, boilerplate, ### end.`
+  },
+  { id:'landing-page-copy', cat:'Marketing', icon:'🎯', name:'Landing page copy', desc:'Conversion-focused copy for any landing page',
+    fields:[
+      {id:'product',label:'Product / service name',req:true,ph:'WriteFlow',half:true},
+      {id:'audience',label:'Target customer',req:true,ph:'Freelancers and small business owners',half:true},
+      {id:'problem',label:'Problem you solve',req:true,ph:'Spending too long writing professional copy from scratch',type:'textarea'},
+      {id:'cta',label:'Primary CTA',req:false,ph:'Start free →',half:true},
+      {id:'price',label:'Price / offer',req:false,ph:'Free to start, Pro at $12/mo',half:true},
+    ],
+    prompt:(f,tone)=>`Write a full landing page copy for "${f.product}" targeting ${f.audience}. Problem solved: ${f.problem}. CTA: ${f.cta}. Price: ${f.price}. Tone: ${tone}. Include: Hero headline + subhead, Pain section, Solution section, 3 key benefits (with headlines), Social proof placeholder, Pricing teaser, FAQ (3 questions), Footer CTA.`
+  },
+  { id:'brand-tagline', cat:'Marketing', icon:'✨', name:'Brand tagline', desc:'Memorable taglines that define your brand (10 options)',
+    fields:[
+      {id:'brand',label:'Brand / product name',req:true,ph:'WriteFlow',half:true},
+      {id:'what',label:'What you do',req:true,ph:'AI-powered professional writing templates',half:true},
+      {id:'audience',label:'Who it\'s for',req:false,ph:'Professionals, freelancers, founders',half:true},
+      {id:'feeling',label:'Feeling you want to evoke',req:false,ph:'Confident, fast, effortless',half:true},
+    ],
+    prompt:(f,tone)=>`Generate 10 tagline options for "${f.brand}" — ${f.what}. Audience: ${f.audience}. Desired feeling: ${f.feeling}. Tone: ${tone}. Mix of styles: punchy (2-4 words), benefit-led, emotional, aspirational, clever wordplay. Number 1-10 with a 1-sentence rationale for each.`
+  },
+
+  // PERSONAL & PROFESSIONAL
+  { id:'personal-bio', cat:'Personal', icon:'👤', name:'Personal bio', desc:'Speaker, author & executive bios that impress', popular:true,
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Dr. Elena Vasquez',half:true},
+      {id:'role',label:'Title / profession',req:true,ph:'AI Researcher & Speaker',half:true},
+      {id:'achievements',label:'Key achievements',req:true,ph:'Published 40+ papers\nTEDx speaker\nForbes 30 Under 30',type:'textarea'},
+      {id:'use',label:'Where it will be used',req:false,type:'select',opts:['Speaker page','Author website','Press kit','Conference program','Twitter/X bio','Dating profile (fun)']},
+    ],
+    prompt:(f,tone)=>`Write a professional bio for ${f.name}, ${f.role}. Achievements: ${f.achievements}. Usage: ${f.use||'general'}. Tone: ${tone}. Third person. 2-3 paragraphs. Open with biggest credential, build credibility, end with something personal. Polished but human.`
+  },
+  { id:'recommendation-letter', cat:'Personal', icon:'🏅', name:'Recommendation letter', desc:'Write glowing recommendations for others',
+    fields:[
+      {id:'writer',label:'Letter writer\'s name & role',req:true,ph:'Professor John Smith, Harvard Business School'},
+      {id:'subject',label:'Person being recommended',req:true,ph:'Maria Gonzalez',half:true},
+      {id:'relationship',label:'Relationship',req:true,ph:'Her thesis advisor for 2 years',half:true},
+      {id:'purpose',label:'What it\'s for',req:true,ph:'MBA application to Stanford'},
+      {id:'strengths',label:'Key strengths to highlight',req:true,ph:'Exceptional analytical mind, natural leader, presented at 2 conferences',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a recommendation letter from ${f.writer} for ${f.subject} (relationship: ${f.relationship}) for: ${f.purpose}. Strengths: ${f.strengths}. Tone: ${tone}. Formal letter format. 3 paragraphs: intro/context, specific examples, strong close. Enthusiastic and credible.`
+  },
+  { id:'apology-email', cat:'Personal', icon:'🙇', name:'Apology email', desc:'Sincere apologies that repair relationships',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Jordan',half:true},
+      {id:'recipient',label:'Recipient\'s name',req:true,ph:'Client / colleague / friend',half:true},
+      {id:'situation',label:'What happened',req:true,ph:'Missed a project deadline that caused delays for the team',type:'textarea'},
+      {id:'context',label:'Professional or personal?',req:false,type:'select',opts:['Professional','Personal','Customer service']},
+    ],
+    prompt:(f,tone)=>`Write an apology email from ${f.name} to ${f.recipient}. Situation: ${f.situation}. Context: ${f.context||'professional'}. Tone: ${tone}. Genuine, takes full responsibility, no excuses. Acknowledge impact. Clear plan to fix. Forward-looking. Not overly groveling.`
+  },
+  { id:'bio-twitter', cat:'Personal', icon:'🐦', name:'Twitter/X bio', desc:'160-char bios that make people hit Follow',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'@SarahBuilds',half:true},
+      {id:'what',label:'What you do',req:true,ph:'Founder building AI tools for creatives',half:true},
+      {id:'creds',label:'Notable credentials',req:false,ph:'Ex-Google, 2x founder, Forbes 30U30'},
+      {id:'personality',label:'One personality trait',req:false,ph:'Obsessed with clean design',half:true},
+    ],
+    prompt:(f,tone)=>`Write 5 Twitter/X bio options for ${f.name}. What they do: ${f.what}. Credentials: ${f.creds||'none'}. Personality: ${f.personality||'authentic'}. Tone: ${tone}. Max 160 chars each. Mix: punchy, credential-led, personality-first, achievement-focused, curiosity-gap. Include emoji. Number 1-5.`
+  },
+  { id:'complaint-letter', cat:'Personal', icon:'😤', name:'Complaint letter', desc:'Firm, effective complaint letters that get results',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Sam Williams',half:true},
+      {id:'company',label:'Company / person to complain to',req:true,ph:'Amazon / hotel manager / landlord',half:true},
+      {id:'issue',label:'What happened',req:true,ph:'Received a damaged product, customer service refused refund despite warranty',type:'textarea'},
+      {id:'resolution',label:'What you want',req:true,ph:'Full refund of $249 within 7 days',half:true},
+    ],
+    prompt:(f,tone)=>`Write a complaint letter from ${f.name} to ${f.company}. Issue: ${f.issue}. Desired resolution: ${f.resolution}. Tone: ${tone}. Firm and assertive but not aggressive. State facts clearly. Reference any policies. Give a clear deadline. Imply next steps if unresolved.`
+  },
+
+  // ENTREPRENEURSHIP
+  { id:'elevator-pitch', cat:'Business', icon:'🛗', name:'Elevator pitch', desc:'60-second pitches that hook investors and partners', popular:true,
+    fields:[
+      {id:'company',label:'Company / product name',req:true,ph:'WriteFlow',half:true},
+      {id:'problem',label:'Problem you solve',req:true,ph:'Professionals waste hours writing repetitive documents from scratch',type:'textarea'},
+      {id:'solution',label:'Your solution',req:true,ph:'AI-powered template engine for professional writing',type:'textarea'},
+      {id:'traction',label:'Traction / metrics (optional)',req:false,ph:'500 users, $2K MRR, growing 20% MoM'},
+      {id:'ask',label:'What you\'re looking for',req:false,ph:'$150K seed round / partnership / feedback',half:true},
+    ],
+    prompt:(f,tone)=>`Write a compelling 60-second elevator pitch for ${f.company}. Problem: ${f.problem}. Solution: ${f.solution}. Traction: ${f.traction||'early stage'}. Ask: ${f.ask||'interest/meeting'}. Tone: ${tone}. Hook opening line, clear problem, crisp solution, differentiator, traction, ask. Max 150 words. Punchy.`
+  },
+  { id:'investor-email', cat:'Business', icon:'💸', name:'Investor cold email', desc:'Outreach emails that get VC meetings',
+    fields:[
+      {id:'founder',label:'Founder name & company',req:true,ph:'Alex, founder of WriteFlow',half:true},
+      {id:'investor',label:'Investor name / firm',req:true,ph:'Sarah at Andreessen Horowitz',half:true},
+      {id:'stage',label:'Stage & raise',req:true,ph:'Pre-seed, raising $200K',half:true},
+      {id:'metrics',label:'Key metrics',req:true,ph:'$5K MRR, 800 users, 15% weekly growth',half:true},
+      {id:'why',label:'Why this investor specifically',req:false,ph:'You invested in Notion and Loom — WriteFlow is in that same productivity space'},
+    ],
+    prompt:(f,tone)=>`Write a cold investor email from ${f.founder} to ${f.investor}. Stage: ${f.stage}. Metrics: ${f.metrics}. Why this investor: ${f.why||'their portfolio focus'}. Tone: ${tone}. Under 150 words. Subject line first. Hook with metrics. One-liner on what you do. Ask for a 20-min call. Specific and credible.`
+  },
+  { id:'startup-one-pager', cat:'Business', icon:'📋', name:'Startup one-pager', desc:'Investor-ready company summaries',
+    fields:[
+      {id:'company',label:'Company name',req:true,ph:'WriteFlow',half:true},
+      {id:'tagline',label:'One-line tagline',req:true,ph:'Professional writing templates powered by AI',half:true},
+      {id:'problem',label:'Problem',req:true,ph:'Professionals waste 3+ hours/week writing repetitive documents',type:'textarea'},
+      {id:'solution',label:'Solution',req:true,ph:'40+ AI-powered templates for every professional writing need',type:'textarea'},
+      {id:'market',label:'Market size & target',req:false,ph:'$4B professional writing tools market, targeting 50M knowledge workers'},
+      {id:'metrics',label:'Traction & metrics',req:false,ph:'$3K MRR, 600 active users, 22% MoM growth'},
+      {id:'team',label:'Team',req:false,ph:'2 founders: ex-Google PM + full-stack engineer'},
+    ],
+    prompt:(f,tone)=>`Write a startup one-pager for ${f.company} — "${f.tagline}". Problem: ${f.problem}. Solution: ${f.solution}. Market: ${f.market||'large and growing'}. Traction: ${f.metrics||'early stage'}. Team: ${f.team||'experienced founders'}. Tone: ${tone}. Structured document with clear sections, scannable, investor-ready. Bold key stats.`
+  },
+  { id:'terms-conditions', cat:'Business', icon:'📜', name:'Terms & conditions template', desc:'Basic T&C for SaaS and digital products',
+    fields:[
+      {id:'company',label:'Company / product name',req:true,ph:'WriteFlow',half:true},
+      {id:'type',label:'Product type',req:true,type:'select',opts:['SaaS / web app','E-commerce store','Digital downloads','Mobile app','Marketplace'],half:true},
+      {id:'country',label:'Based in (country/state)',req:false,ph:'United States / California',half:true},
+      {id:'email',label:'Contact email',req:false,ph:'legal@writeflow.com',half:true},
+    ],
+    prompt:(f,tone)=>`Write a Terms and Conditions document for "${f.company}", a ${f.type} based in ${f.country||'the United States'}. Contact: ${f.email||'[email]'}. Tone: ${tone}. Include: Agreement to terms, use of service, accounts, payment and refunds, IP/content ownership, prohibited uses, disclaimers, limitation of liability, termination, governing law. Note: this is a template, not legal advice.`
+  },
+  { id:'privacy-policy', cat:'Business', icon:'🔒', name:'Privacy policy template', desc:'GDPR & CCPA-aware privacy policy templates',
+    fields:[
+      {id:'company',label:'Company / product name',req:true,ph:'WriteFlow',half:true},
+      {id:'type',label:'Data you collect',req:true,ph:'Email, name, usage data, payment info (via Stripe)',type:'textarea'},
+      {id:'country',label:'Based in',req:false,ph:'United States',half:true},
+      {id:'email',label:'Contact email',req:false,ph:'privacy@writeflow.com',half:true},
+    ],
+    prompt:(f,tone)=>`Write a Privacy Policy for "${f.company}". Data collected: ${f.type}. Based in: ${f.country||'United States'}. Contact: ${f.email||'[email]'}. Tone: ${tone}. Include: what data is collected, how it's used, storage and security, third-party sharing, cookies, user rights (GDPR/CCPA), contact info. Plain language. Note: consult a lawyer for final version.`
+  },
+  { id:'job-posting', cat:'Business', icon:'📌', name:'Job posting', desc:'Attract top talent with compelling job listings',
+    fields:[
+      {id:'company',label:'Company name',req:true,ph:'WriteFlow',half:true},
+      {id:'role',label:'Role title',req:true,ph:'Senior Full-Stack Engineer',half:true},
+      {id:'type',label:'Employment type',req:false,type:'select',opts:['Full-time','Part-time','Contract','Freelance','Internship'],half:true},
+      {id:'location',label:'Location / remote',req:false,ph:'Remote-first (US timezone)',half:true},
+      {id:'salary',label:'Salary range (optional)',req:false,ph:'$120K-$150K + equity'},
+      {id:'requirements',label:'Key requirements & responsibilities',req:true,ph:'5+ years React/Node\nBuild new API features\nOwn frontend architecture',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a job posting for ${f.company} hiring a ${f.role} (${f.type}, ${f.location}). Salary: ${f.salary||'competitive'}. Requirements/responsibilities: ${f.requirements}. Tone: ${tone}. Include: exciting intro about the company, what you'll do, what we're looking for, nice-to-haves, what we offer, how to apply. Welcoming and energetic — attract A-players.`
+  },
+
+  // CUSTOMER SUCCESS
+  { id:'customer-onboarding', cat:'Customer', icon:'🎉', name:'Onboarding email', desc:'Welcome emails that activate new customers',
+    fields:[
+      {id:'product',label:'Product / app name',req:true,ph:'WriteFlow',half:true},
+      {id:'customer',label:'Customer\'s first name (or merge tag)',req:false,ph:'{{first_name}}',half:true},
+      {id:'quickwin',label:'Quickest win / first action',req:true,ph:'Generate your first cover letter in 60 seconds'},
+      {id:'resources',label:'Key resources (optional)',req:false,ph:'Tutorial video, help docs, Slack community'},
+    ],
+    prompt:(f,tone)=>`Write a customer onboarding email for ${f.product} addressed to ${f.customer||'the new user'}. First action to take: "${f.quickwin}". Resources: ${f.resources||'none listed'}. Tone: ${tone}. Warm welcome, set expectations, guide to first value immediately. Short (aim for 150 words). Ends with one clear CTA.`
+  },
+  { id:'support-response', cat:'Customer', icon:'💬', name:'Support response', desc:'Empathetic, effective customer support replies',
+    fields:[
+      {id:'issue',label:'Customer\'s issue or complaint',req:true,ph:'They were charged twice and can\'t find the cancellation button',type:'textarea'},
+      {id:'resolution',label:'Your resolution',req:true,ph:'Issuing a full refund within 3-5 business days, added a cancel link to their account'},
+      {id:'brand',label:'Your brand name',req:false,ph:'WriteFlow',half:true},
+    ],
+    prompt:(f,tone)=>`Write a customer support response for ${f.brand||'the company'} to this issue: "${f.issue}". Resolution: ${f.resolution}. Tone: ${tone}. Empathetic opener, acknowledge frustration, clear explanation of what happened, resolution steps, timeline, apology if needed, offer further help. Human and warm.`
+  },
+  { id:'churn-win-back', cat:'Customer', icon:'🔄', name:'Win-back email', desc:'Re-engage churned customers and cancellations',
+    fields:[
+      {id:'product',label:'Product name',req:true,ph:'WriteFlow',half:true},
+      {id:'timeframe',label:'How long since they left',req:false,ph:'3 months ago',half:true},
+      {id:'improvement',label:'What\'s new / improved since they left',req:true,ph:'40+ new templates, 3x faster, new team features'},
+      {id:'offer',label:'Win-back offer (optional)',req:false,ph:'30% off for 3 months with code COMEBACK'},
+    ],
+    prompt:(f,tone)=>`Write a win-back email for ${f.product} targeting customers who left ${f.timeframe||'a while ago'}. What's new: ${f.improvement}. Offer: ${f.offer||'no special offer'}. Tone: ${tone}. Acknowledge they left (no guilt). Lead with what changed. Make it feel personal. Clear CTA. Short.`
+  },
+  { id:'review-response', cat:'Customer', icon:'⭐', name:'Review response', desc:'Respond to positive and negative reviews',
+    fields:[
+      {id:'brand',label:'Brand / business name',req:true,ph:'WriteFlow',half:true},
+      {id:'review',label:'Paste the review',req:true,ph:'The software is okay but keeps crashing and support never responds to my tickets',type:'textarea'},
+      {id:'type',label:'Review type',req:false,type:'select',opts:['Negative — needs repair','Positive — amplify it','Mixed — address both','1-star with no text']},
+    ],
+    prompt:(f,tone)=>`Write a response from ${f.brand} to this review: "${f.review}". Review type: ${f.type||'mixed'}. Tone: ${tone}. Acknowledge specific points raised, respond to criticism constructively, thank for positive points, offer next step (if negative). Professional. Shows you care without being defensive.`
+  },
+
+  // REAL ESTATE & PROPERTY
+  { id:'property-listing', cat:'Real Estate', icon:'🏠', name:'Property listing', desc:'Listings that sell homes faster',
+    fields:[
+      {id:'address',label:'Property type & area',req:true,ph:'3-bed townhouse in Austin, TX',half:true},
+      {id:'price',label:'Asking price',req:false,ph:'$425,000',half:true},
+      {id:'features',label:'Standout features',req:true,ph:'Renovated kitchen, rooftop deck, 2-car garage, walkable to downtown',type:'textarea'},
+      {id:'buyer',label:'Ideal buyer',req:false,ph:'Young professionals or growing families',half:true},
+    ],
+    prompt:(f,tone)=>`Write a real estate listing description for: ${f.address}. Price: ${f.price||'priced competitively'}. Features: ${f.features}. Ideal buyer: ${f.buyer||'general buyers'}. Tone: ${tone}. Evocative, specific, emotional. Lead with lifestyle. Highlight unique features. Short punchy headline, 2-3 paragraph body. No clichés like "must see".`
+  },
+  { id:'rental-listing', cat:'Real Estate', icon:'🏢', name:'Rental listing', desc:'Rental listings that attract quality tenants',
+    fields:[
+      {id:'property',label:'Property type & location',req:true,ph:'1-bed apartment in Brooklyn, NY',half:true},
+      {id:'rent',label:'Monthly rent',req:false,ph:'$2,200/mo',half:true},
+      {id:'features',label:'Key features & amenities',req:true,ph:'Exposed brick, in-unit laundry, gym, roof deck, near G train',type:'textarea'},
+      {id:'requirements',label:'Tenant requirements (optional)',req:false,ph:'No smoking, credit check, 1 year lease'},
+    ],
+    prompt:(f,tone)=>`Write a rental listing for: ${f.property}. Rent: ${f.rent}. Features: ${f.features}. Requirements: ${f.requirements||'standard'}. Tone: ${tone}. Lifestyle-focused headline, highlight best amenities, be specific about location benefits, clear requirements, professional tone. Stand out from generic listings.`
+  },
+
+  // CREATIVE & MISC
+  { id:'thank-you-note', cat:'Creative', icon:'💛', name:'Thank-you note', desc:'Genuine, memorable thank-you messages',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Alex',half:true},
+      {id:'recipient',label:'Recipient\'s name',req:true,ph:'Sarah',half:true},
+      {id:'reason',label:'What you\'re thanking them for',req:true,ph:'Mentoring me through the startup fundraise',type:'textarea'},
+      {id:'context',label:'Context',req:false,type:'select',opts:['Professional','Personal','Gift','Hospitality','Wedding/Event']},
+    ],
+    prompt:(f,tone)=>`Write a thank-you note from ${f.name} to ${f.recipient} for: "${f.reason}". Context: ${f.context||'general'}. Tone: ${tone}. Warm, specific, genuine. Reference exactly what they did. Show the impact it had. Personal and memorable — not generic.`
+  },
+  { id:'fundraising-appeal', cat:'Creative', icon:'❤️', name:'Fundraising appeal', desc:'Compelling donation asks that move people to give',
+    fields:[
+      {id:'org',label:'Organization name',req:true,ph:'Clean Ocean Foundation',half:true},
+      {id:'cause',label:'The cause',req:true,ph:'Removing plastic from Pacific coastal communities',type:'textarea'},
+      {id:'ask',label:'Specific ask / goal',req:true,ph:'$50 donation to fund 10 beach cleanups',half:true},
+      {id:'impact',label:'Impact of that amount',req:false,ph:'Removes 200lbs of plastic and employs 3 local workers',half:true},
+    ],
+    prompt:(f,tone)=>`Write a fundraising appeal email for ${f.org}. Cause: ${f.cause}. Ask: ${f.ask}. Impact: ${f.impact||'significant positive change'}. Tone: ${tone}. Open with a story or vivid scene, create emotional connection, be specific about impact, make the ask clear and easy, urgent but not guilt-inducing. 250-350 words.`
+  },
+  { id:'wedding-speech', cat:'Creative', icon:'💍', name:'Wedding speech', desc:'Heartfelt wedding toasts that make people cry and laugh',
+    fields:[
+      {id:'speaker',label:'Who\'s giving the speech',req:true,ph:'Best man / Maid of honor / Father of bride',half:true},
+      {id:'couple',label:'The couple\'s names',req:true,ph:'Jamie and Alex',half:true},
+      {id:'stories',label:'Funny or touching stories / memories',req:true,ph:'How Jamie always burns toast but Alex eats it anyway. The time they got lost in Portugal.',type:'textarea'},
+      {id:'length',label:'Approximate length',req:false,type:'select',opts:['Short (1-2 min)','Standard (3-4 min)','Long (5+ min)']},
+    ],
+    prompt:(f,tone)=>`Write a wedding speech from the ${f.speaker} for ${f.couple}. Stories/memories: ${f.stories}. Length: ${f.length||'3-4 minutes'}. Tone: ${tone}. Structure: warm opener, personal story, qualities of the couple, funny moment (if appropriate), heartfelt close, toast. Natural, human, not too polished.`
+  },
+  { id:'airbnb-description', cat:'Creative', icon:'🏡', name:'Airbnb listing', desc:'Airbnb descriptions that maximize bookings',
+    fields:[
+      {id:'property',label:'Type of property',req:true,ph:'Cozy beach cottage',half:true},
+      {id:'location',label:'Location',req:true,ph:'Malibu, CA — 2 min walk to beach',half:true},
+      {id:'features',label:'Standout features & amenities',req:true,ph:'Ocean view, hot tub, fire pit, kayaks, full kitchen, sleeps 6',type:'textarea'},
+      {id:'vibe',label:'The vibe',req:false,ph:'Romantic escape / family adventure / digital nomad retreat'},
+    ],
+    prompt:(f,tone)=>`Write an Airbnb listing description for: "${f.property}" in ${f.location}. Features: ${f.features}. Vibe: ${f.vibe||'relaxing and memorable'}. Tone: ${tone}. Lifestyle-led headline. First paragraph: paint the scene, make them feel they're there. Second: features and amenities. Third: what guests can do nearby. Short, vivid, no fluff.`
+  },
+  { id:'farewell-message', cat:'Creative', icon:'👋', name:'Farewell message', desc:'Memorable goodbye messages for colleagues and friends',
+    fields:[
+      {id:'name',label:'Your name',req:true,ph:'Marcus',half:true},
+      {id:'context',label:'Leaving / occasion',req:true,ph:'Leaving the company after 4 years',half:true},
+      {id:'audience',label:'Who\'s this for?',req:false,ph:'My whole team / Slack channel / colleagues',half:true},
+      {id:'highlights',label:'Memories / people to mention',req:false,ph:'The late nights on Project Atlas, the best team lunches, Sarah and Tom specifically',type:'textarea'},
+    ],
+    prompt:(f,tone)=>`Write a farewell message from ${f.name} leaving ${f.context}. Audience: ${f.audience||'colleagues'}. Memories/people: ${f.highlights||'the whole team'}. Tone: ${tone}. Warm, genuine, specific. A touch of humor if appropriate. Express gratitude. Look forward without being clichéd. 100-200 words.`
+  },
+];
+
+// ================================================================
+// STATE
+// ================================================================
+const FREE_LIMIT = 3;
+let credits    = parseInt(localStorage.getItem('wf_credits') || '5');
+let freeToday  = parseInt(localStorage.getItem('wf_free_today') || '0');
+let freeDate   = localStorage.getItem('wf_free_date') || '';
+let isPro      = localStorage.getItem('wf_pro') === 'true';
+let annualBilling = false;
+let currentTool = TOOLS[0];
+let currentOutput = '';
+
+const today = new Date().toDateString();
+if (freeDate !== today) { freeToday = 0; localStorage.setItem('wf_free_today','0'); localStorage.setItem('wf_free_date',today); }
+
+// ================================================================
+// SIDEBAR BUILD
+// ================================================================
+function buildSidebar() {
+  const cats = {};
+  TOOLS.forEach(t => { if (!cats[t.cat]) cats[t.cat] = []; cats[t.cat].push(t); });
+
+  const inner = document.getElementById('sidebar-inner');
+  inner.innerHTML = '';
+
+  Object.entries(cats).forEach(([cat, tools]) => {
+    const sec = document.createElement('div');
+    sec.className = 'sidebar-section';
+    sec.innerHTML = `<div class="sidebar-cat">${cat} <span class="sidebar-cat-count">${tools.length}</span></div><div class="sidebar-tools" id="scat-${cat.replace(/\s/g,'_')}"></div>`;
+    inner.appendChild(sec);
+    const wrap = sec.querySelector('.sidebar-tools');
+    tools.forEach(t => {
+      const el = document.createElement('div');
+      el.className = 'sidebar-tool' + (t.id === currentTool.id ? ' active' : '');
+      el.id = 'st-' + t.id;
+      el.onclick = () => selectTool(t.id);
+      el.innerHTML = `<span class="sidebar-tool-icon">${t.icon}</span><span class="sidebar-tool-name">${t.name}</span>`;
+      wrap.appendChild(el);
+    });
+  });
+}
+
+function buildMobileCats() {
+  const cats = [...new Set(TOOLS.map(t => t.cat))];
+  const wrap = document.getElementById('mobile-cats');
+  cats.forEach((cat, i) => {
+    const el = document.createElement('button');
+    el.className = 'mobile-cat' + (i === 0 ? ' active' : '');
+    el.textContent = cat;
+    el.id = 'mcat-' + cat;
+    el.onclick = () => {
+      document.querySelectorAll('.mobile-cat').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      const first = TOOLS.find(t => t.cat === cat);
+      if (first) selectTool(first.id);
+    };
+    wrap.appendChild(el);
+  });
+}
+
+function buildMarquee() {
+  const names = TOOLS.map(t => t.name);
+  const track = document.getElementById('marquee-track');
+  const double = [...names, ...names];
+  track.innerHTML = double.map(n => `<span class="marquee-item"><span class="dot"></span>${n}</span>`).join('');
+}
+
+// ================================================================
+// TOOL SELECTION
+// ================================================================
+function selectTool(id) {
+  const tool = TOOLS.find(t => t.id === id);
+  if (!tool) return;
+  currentTool = tool;
+  currentOutput = '';
+
+  // Sidebar highlight
+  document.querySelectorAll('.sidebar-tool').forEach(el => el.classList.remove('active'));
+  const stEl = document.getElementById('st-' + id);
+  if (stEl) { stEl.classList.add('active'); stEl.scrollIntoView({ block: 'nearest' }); }
+
+  // Mobile cats
+  document.querySelectorAll('.mobile-cat').forEach(el => {
+    el.classList.toggle('active', el.id === 'mcat-' + tool.cat);
+  });
+
+  // Panel header
+  document.getElementById('panel-icon').textContent = tool.icon;
+  document.getElementById('panel-icon-wrap').style.background = catColor(tool.cat).bg;
+  document.getElementById('panel-title').textContent = tool.name;
+  document.getElementById('panel-desc').textContent = tool.desc;
+
+  const tagsEl = document.getElementById('panel-tags');
+  tagsEl.innerHTML = '';
+  if (tool.popular) tagsEl.innerHTML += `<span class="panel-tag tag-popular">⭐ Popular</span>`;
+  tagsEl.innerHTML += `<span class="panel-tag tag-credit">⚡ 1 credit</span>`;
+
+  // Build fields
+  buildFields(tool);
+
+  // Reset output
+  document.getElementById('output-box').innerHTML = '<span class="output-placeholder">Fill in the fields above and hit Generate.</span>';
+  document.getElementById('output-acts').style.display = 'none';
+  document.getElementById('word-count').textContent = '';
+  document.getElementById('error-msg').classList.remove('show');
+  updateLimitBar();
+}
+
+function catColor(cat) {
+  const map = {
+    Career:    { bg:'rgba(99,102,241,0.15)' },
+    Sales:     { bg:'rgba(236,72,153,0.15)' },
+    Marketing: { bg:'rgba(245,158,11,0.15)' },
+    Personal:  { bg:'rgba(6,214,160,0.15)' },
+    Business:  { bg:'rgba(56,189,248,0.15)' },
+    Customer:  { bg:'rgba(251,146,60,0.15)' },
+    'Real Estate': { bg:'rgba(163,230,53,0.12)' },
+    Creative:  { bg:'rgba(244,114,182,0.15)' },
+  };
+  return map[cat] || { bg:'rgba(139,92,246,0.12)' };
+}
+
+function buildFields(tool) {
+  const wrap = document.getElementById('dynamic-fields');
+  wrap.innerHTML = '';
+  let i = 0;
+  const fields = tool.fields;
+  while (i < fields.length) {
+    const f = fields[i];
+    const next = fields[i+1];
+    if (f.half && next && next.half) {
+      const row = document.createElement('div');
+      row.className = 'field-row';
+      row.appendChild(buildField(f));
+      row.appendChild(buildField(next));
+      wrap.appendChild(row);
+      i += 2;
+    } else {
+      wrap.appendChild(buildField(f));
+      i++;
+    }
+  }
+}
+
+function buildField(f) {
+  const wrap = document.createElement('div');
+  const label = document.createElement('label');
+  label.className = 'field-label';
+  label.setAttribute('for', 'f-' + f.id);
+  label.innerHTML = f.label + (f.req ? '<span>*</span>' : '');
+  wrap.appendChild(label);
+
+  let el;
+  if (f.type === 'textarea') {
+    el = document.createElement('textarea');
+    el.placeholder = f.ph || '';
+    el.rows = 3;
+  } else if (f.type === 'select') {
+    el = document.createElement('select');
+    (f.opts || []).forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o; opt.textContent = o;
+      el.appendChild(opt);
+    });
+  } else {
+    el = document.createElement('input');
+    el.type = 'text';
+    el.placeholder = f.ph || '';
+  }
+  el.id = 'f-' + f.id;
+  wrap.appendChild(el);
+  return wrap;
+}
+
+function getFieldValues() {
+  const vals = {};
+  currentTool.fields.forEach(f => {
+    const el = document.getElementById('f-' + f.id);
+    vals[f.id] = el ? el.value.trim() : '';
+  });
+  return vals;
+}
+
+function validateFields() {
+  const vals = getFieldValues();
+  return currentTool.fields.filter(f => f.req).every(f => vals[f.id]);
+}
+
+// ================================================================
+// LIMIT BAR
+// ================================================================
+function updateLimitBar() {
+  const remaining = Math.max(0, FREE_LIMIT - freeToday);
+  const pct = (remaining / FREE_LIMIT) * 100;
+  document.getElementById('limit-fill').style.width = pct + '%';
+  if (isPro) {
+    document.getElementById('limit-text').textContent = '∞ Unlimited generations — Pro plan';
+  } else if (credits > 0) {
+    document.getElementById('limit-text').textContent = `${credits} credits + ${remaining} free uses left today`;
+  } else {
+    document.getElementById('limit-text').textContent = `${remaining} free ${remaining === 1 ? 'use' : 'uses'} remaining today`;
+  }
+  document.getElementById('credits-display').textContent = credits;
+}
+
+// ================================================================
+// GENERATE
+// ================================================================
+async function generate() {
+  if (!validateFields()) {
+    document.getElementById('error-msg').classList.add('show');
+    return;
+  }
+  document.getElementById('error-msg').classList.remove('show');
+
+  if (!isPro && credits <= 0 && freeToday >= FREE_LIMIT) {
+    openUpgradeModal(); return;
+  }
+
+  // Deduct
+  if (!isPro) {
+    if (credits > 0) { credits--; localStorage.setItem('wf_credits', credits); }
+    else { freeToday++; localStorage.setItem('wf_free_today', freeToday); }
+    updateLimitBar();
+  }
+
+  const vals = getFieldValues();
+  const tone = document.getElementById('tone-select').value;
+  const prompt = currentTool.prompt(vals, tone);
+
+  // Loading state
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const box = document.getElementById('output-box');
+  box.className = 'output-box active';
+  box.innerHTML = '<span class="cursor-blink"></span>';
+  document.getElementById('output-acts').style.display = 'none';
+  document.getElementById('word-count').textContent = '';
+  currentOutput = '';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        stream: true,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) throw new Error('API returned ' + res.status);
+
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '';
+    box.innerHTML = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const raw = line.slice(6).trim();
+        if (raw === '[DONE]') continue;
+        try {
+          const ev = JSON.parse(raw);
+          if (ev.type === 'content_block_delta' && ev.delta?.text) {
+            currentOutput += ev.delta.text;
+            box.textContent = currentOutput;
+          }
+        } catch {}
+      }
+    }
+
+    box.className = 'output-box';
+    document.getElementById('output-acts').style.display = 'flex';
+    const wc = currentOutput.split(/\s+/).filter(Boolean).length;
+    document.getElementById('word-count').textContent = `${wc} words · ${currentOutput.length} characters`;
+
+  } catch (err) {
+    box.className = 'output-box';
+    box.innerHTML = `<span style="color:#f43f5e">⚠ Error: ${err.message}<br><br>Make sure your server is running and the API key is set in server.js</span>`;
+  }
+
+  btn.disabled = false;
+  btn.classList.remove('loading');
+}
+
+// ================================================================
+// COPY / DOWNLOAD
+// ================================================================
+function copyOutput() {
+  if (!currentOutput) return;
+  navigator.clipboard.writeText(currentOutput).then(() => showToast('Copied to clipboard!', 'success'));
+}
+function downloadOutput() {
+  if (!currentOutput) return;
+  const blob = new Blob([currentOutput], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = currentTool.id + '.txt'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ================================================================
+// SEARCH
+// ================================================================
+function filterTools(q) {
+  const query = q.toLowerCase();
+  TOOLS.forEach(t => {
+    const el = document.getElementById('st-' + t.id);
+    if (!el) return;
+    const match = !query || t.name.toLowerCase().includes(query) || t.cat.toLowerCase().includes(query) || t.desc.toLowerCase().includes(query);
+    el.style.display = match ? '' : 'none';
+  });
+}
+
+// ================================================================
+// PAGE NAV
+// ================================================================
+function showPage(page) {
+  document.getElementById('page-tools').style.display = page === 'tools' ? '' : 'none';
+  document.getElementById('page-pricing').style.display = page === 'pricing' ? '' : 'none';
+  document.querySelectorAll('.nav-tab').forEach((t, i) => t.classList.toggle('active', (i===0 && page==='tools') || (i===1 && page==='pricing')));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ================================================================
+// BILLING TOGGLE
+// ================================================================
+function toggleBilling() {
+  annualBilling = !annualBilling;
+  const tr = document.getElementById('billing-toggle');
+  tr.classList.toggle('on', annualBilling);
+  document.getElementById('pro-price').textContent = annualBilling ? '$7' : '$12';
+  document.getElementById('biz-price').textContent = annualBilling ? '$23' : '$39';
+  document.getElementById('pro-orig').style.display = annualBilling ? '' : 'none';
+  document.getElementById('biz-orig').style.display = annualBilling ? '' : 'none';
+  document.getElementById('pro-cta-price').textContent = annualBilling ? '$7/mo billed annually' : '$12/mo';
+}
+
+// ================================================================
+// MODAL
+// ================================================================
+function openUpgradeModal() { document.getElementById('upgrade-modal').classList.remove('hidden'); }
+function closeUpgradeModal() { document.getElementById('upgrade-modal').classList.add('hidden'); }
+document.getElementById('upgrade-modal').addEventListener('click', e => { if (e.target.id === 'upgrade-modal') closeUpgradeModal(); });
+
+// ================================================================
+// CHECKOUT
+// ================================================================
+function handleCheckout(plan) {
+  const links = {
+    'pro':       'https://buy.stripe.com/YOUR_PRO_LINK',
+    'business':  'https://buy.stripe.com/YOUR_BIZ_LINK',
+    'pack-50':   'https://buy.stripe.com/YOUR_50_LINK',
+    'pack-200':  'https://buy.stripe.com/YOUR_200_LINK',
+    'pack-500':  'https://buy.stripe.com/YOUR_500_LINK',
+    'pack-1000': 'https://buy.stripe.com/YOUR_1000_LINK',
+  };
+  if (links[plan]?.includes('YOUR_')) {
+    const demo = { 'pro': () => { isPro=true; localStorage.setItem('wf_pro','true'); updateLimitBar(); closeUpgradeModal(); showToast('Pro activated (demo mode)!','success'); },
+      'pack-50':()=>addCredits(50),'pack-200':()=>addCredits(200),'pack-500':()=>addCredits(500),'pack-1000':()=>addCredits(1000),
+      'business':()=>{ isPro=true; localStorage.setItem('wf_pro','true'); updateLimitBar(); showToast('Business activated (demo mode)!','success'); }
+    };
+    if (demo[plan]) demo[plan]();
+    return;
+  }
+  window.open(links[plan], '_blank');
+}
+function addCredits(n) {
+  credits += n; localStorage.setItem('wf_credits', credits);
+  updateLimitBar(); closeUpgradeModal();
+  showToast(`${n} credits added (demo mode)!`, 'success');
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+function showToast(msg, type = 'info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast show toast-${type}`;
+  setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+// ================================================================
+// INIT
+// ================================================================
+buildMarquee();
+buildSidebar();
+buildMobileCats();
+selectTool(TOOLS[0].id);
+updateLimitBar();
+</script>
+</body>
+</html>
