@@ -134,7 +134,6 @@ h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,7vw,76px);font-we
 /* FREE LIMIT BAR */
 .limit-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-sm);margin-bottom:24px;font-size:13px}
 .limit-label{color:var(--muted);flex:1}
-.limit-label strong{color:var(--text)}
 .limit-track{width:80px;height:4px;background:var(--border2);border-radius:2px;flex-shrink:0}
 .limit-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width 0.3s}
 .limit-upgrade{font-size:11px;font-weight:600;color:var(--accent-bright);cursor:pointer;white-space:nowrap;flex-shrink:0}
@@ -186,7 +185,6 @@ select option{background:#1a1a28}
 
 /* CATEGORY SECTIONS TITLES */
 .cat-header{display:flex;align-items:center;gap:10px;padding:0 0 0 0;margin-bottom:16px;margin-top:40px}
-.cat-header:first-child{margin-top:0}
 .cat-icon{font-size:20px}
 .cat-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.3px}
 .cat-count{font-size:12px;color:var(--muted);background:var(--card2);padding:2px 8px;border-radius:10px;font-weight:600}
@@ -301,7 +299,7 @@ select option{background:#1a1a28}
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Templates</div></div>
     <div class="stat"><div class="stat-num">3 free</div><div class="stat-label">Per day</div></div>
-    <div class="stat"><div class="stat-num">&lt;5s</div><div class="stat-label">Generation time</div></div>
+    <div class="stat"><div class="stat-num"><5s</div><div class="stat-label">Generation time</div></div>
     <div class="stat"><div class="stat-num">$0</div><div class="stat-label">To start</div></div>
   </div>
 </div>
@@ -515,7 +513,7 @@ select option{background:#1a1a28}
 <div class="toast" id="toast"></div>
 
 <script>
-// ================================================================
+// ================================================================ 
 // TOOL DEFINITIONS — 40+ templates across 8 categories
 // ================================================================
 const TOOLS = [
@@ -649,7 +647,7 @@ const TOOLS = [
     ],
     prompt:(f,tone)=>`Write a ${f.platform} ad for "${f.product}" targeting ${f.audience}. Benefit/offer: ${f.benefit}. Tone: ${tone}. Include: scroll-stopping headline, 2-3 sentence body (pain → solution), CTA. Optimized for ${f.platform}. Power words. Urgency without spam.`
   },
-  { id:'product-description', cat:'Marketing', icon:'🛍️', name:'Product description', desc:'Persuasive product copy that sells more', popular:true,
+  { id:'product-description', cat:'Marketing', icon:'🛒', name:'Product description', desc:'Persuasive product copy that sells more', popular:true,
     fields:[
       {id:'product',label:'Product name',req:true,ph:'ProGrip Standing Desk',half:true},
       {id:'customer',label:'Target customer',req:true,ph:'Remote workers & freelancers',half:true},
@@ -744,7 +742,7 @@ const TOOLS = [
     ],
     prompt:(f,tone)=>`Write a recommendation letter from ${f.writer} for ${f.subject} (relationship: ${f.relationship}) for: ${f.purpose}. Strengths: ${f.strengths}. Tone: ${tone}. Formal letter format. 3 paragraphs: intro/context, specific examples, strong close. Enthusiastic and credible.`
   },
-  { id:'apology-email', cat:'Personal', icon:'🙇', name:'Apology email', desc:'Sincere apologies that repair relationships',
+  { id:'apology-email', cat:'Personal', icon:'😇', name:'Apology email', desc:'Sincere apologies that repair relationships',
     fields:[
       {id:'name',label:'Your name',req:true,ph:'Jordan',half:true},
       {id:'recipient',label:'Recipient\'s name',req:true,ph:'Client / colleague / friend',half:true},
@@ -939,7 +937,7 @@ const TOOLS = [
   },
 ];
 
-// ================================================================
+// ================================================================ 
 // STATE
 // ================================================================
 const FREE_LIMIT = 3;
@@ -954,7 +952,7 @@ let currentOutput = '';
 const today = new Date().toDateString();
 if (freeDate !== today) { freeToday = 0; localStorage.setItem('wf_free_today','0'); localStorage.setItem('wf_free_date',today); }
 
-// ================================================================
+// ================================================================ 
 // SIDEBAR BUILD
 // ================================================================
 function buildSidebar() {
@@ -1006,7 +1004,7 @@ function buildMarquee() {
   track.innerHTML = double.map(n => `<span class="marquee-item"><span class="dot"></span>${n}</span>`).join('');
 }
 
-// ================================================================
+// ================================================================ 
 // TOOL SELECTION
 // ================================================================
 function selectTool(id) {
@@ -1127,7 +1125,7 @@ function validateFields() {
   return currentTool.fields.filter(f => f.req).every(f => vals[f.id]);
 }
 
-// ================================================================
+// ================================================================ 
 // LIMIT BAR
 // ================================================================
 function updateLimitBar() {
@@ -1144,8 +1142,8 @@ function updateLimitBar() {
   document.getElementById('credits-display').textContent = credits;
 }
 
-// ================================================================
-// GENERATE
+// ================================================================ 
+// GENERATE — Fixed to use backend proxy
 // ================================================================
 async function generate() {
   if (!validateFields()) {
@@ -1182,41 +1180,48 @@ async function generate() {
   currentOutput = '';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1200,
-        stream: true,
-        messages: [{ role: 'user', content: prompt }]
+        prompt: prompt,
+        isPro: isPro,
+        credits: credits
       })
     });
 
-    if (!res.ok) throw new Error('API returned ' + res.status);
+    if (!res.ok) throw new Error('Server error: ' + res.status);
 
     const reader = res.body.getReader();
-    const dec = new TextDecoder();
-    let buf = '';
+    const decoder = new TextDecoder();
+    let buffer = '';
     box.innerHTML = '';
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      buf += dec.decode(value, { stream: true });
-      const lines = buf.split('\n');
-      buf = lines.pop();
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
-        const raw = line.slice(6).trim();
-        if (raw === '[DONE]') continue;
+        const data = line.slice(6).trim();
+        if (!data || data === '[DONE]') continue;
+
         try {
-          const ev = JSON.parse(raw);
-          if (ev.type === 'content_block_delta' && ev.delta?.text) {
-            currentOutput += ev.delta.text;
+          const event = JSON.parse(data);
+          if (event.type === 'content_block_delta' && event.delta?.text) {
+            currentOutput += event.delta.text;
             box.textContent = currentOutput;
           }
-        } catch {}
+        } catch (e) {
+          if (data.length > 5) {
+            currentOutput += data;
+            box.textContent = currentOutput;
+          }
+        }
       }
     }
 
@@ -1227,14 +1232,14 @@ async function generate() {
 
   } catch (err) {
     box.className = 'output-box';
-    box.innerHTML = `<span style="color:#f43f5e">⚠ Error: ${err.message}<br><br>Make sure your server is running and the API key is set in server.js</span>`;
+    box.innerHTML = `<span style="color:#f43f5e">⚠ Error: ${err.message}<br><br>Make sure the backend server is running.</span>`;
   }
 
   btn.disabled = false;
   btn.classList.remove('loading');
 }
 
-// ================================================================
+// ================================================================ 
 // COPY / DOWNLOAD
 // ================================================================
 function copyOutput() {
@@ -1250,7 +1255,7 @@ function downloadOutput() {
   URL.revokeObjectURL(url);
 }
 
-// ================================================================
+// ================================================================ 
 // SEARCH
 // ================================================================
 function filterTools(q) {
@@ -1263,7 +1268,7 @@ function filterTools(q) {
   });
 }
 
-// ================================================================
+// ================================================================ 
 // PAGE NAV
 // ================================================================
 function showPage(page) {
@@ -1273,7 +1278,7 @@ function showPage(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ================================================================
+// ================================================================ 
 // BILLING TOGGLE
 // ================================================================
 function toggleBilling() {
@@ -1287,14 +1292,14 @@ function toggleBilling() {
   document.getElementById('pro-cta-price').textContent = annualBilling ? '$7/mo billed annually' : '$12/mo';
 }
 
-// ================================================================
+// ================================================================ 
 // MODAL
 // ================================================================
 function openUpgradeModal() { document.getElementById('upgrade-modal').classList.remove('hidden'); }
 function closeUpgradeModal() { document.getElementById('upgrade-modal').classList.add('hidden'); }
 document.getElementById('upgrade-modal').addEventListener('click', e => { if (e.target.id === 'upgrade-modal') closeUpgradeModal(); });
 
-// ================================================================
+// ================================================================ 
 // CHECKOUT
 // ================================================================
 function handleCheckout(plan) {
@@ -1322,7 +1327,7 @@ function addCredits(n) {
   showToast(`${n} credits added (demo mode)!`, 'success');
 }
 
-// ================================================================
+// ================================================================ 
 // TOAST
 // ================================================================
 function showToast(msg, type = 'info') {
@@ -1332,7 +1337,7 @@ function showToast(msg, type = 'info') {
   setTimeout(() => el.classList.remove('show'), 3200);
 }
 
-// ================================================================
+// ================================================================ 
 // INIT
 // ================================================================
 buildMarquee();
