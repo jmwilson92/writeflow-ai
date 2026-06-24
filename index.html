@@ -2340,7 +2340,7 @@ async function syncBilling() {
       renderAccountPanel();
       if (usage.unlimited) loadPresets();
     } else {
-      showToast(data.message || data.error || 'No purchase found for this email', 'error');
+      showToast(data.hint || data.message || data.error || 'No purchase found for this email', 'error');
     }
   } catch (e) {
     showToast('Could not sync with Stripe', 'error');
