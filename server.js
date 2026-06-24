@@ -34,10 +34,19 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+function getAllowedOrigins() {
+  const fromEnv = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+  const auto = [process.env.RENDER_EXTERNAL_URL, process.env.APP_URL]
+    .filter(Boolean)
+    .map(s => s.replace(/\/$/, ''));
+  return [...new Set([...fromEnv, ...auto])];
+}
+
+const allowedOrigins = getAllowedOrigins();
 app.use(cors({
   origin(origin, cb) {
-    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return cb(null, true);
+    if (!origin) return cb(null, true);
+    if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return cb(null, true);
     return cb(new Error('Not allowed by CORS'));
   },
   credentials: true,

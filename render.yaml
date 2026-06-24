@@ -49,5 +49,6 @@ services:
         sync: false
       - key: STRIPE_LINK_PACK_1000
         sync: false
+      # Optional — leave unset; Render URL is auto-allowed via RENDER_EXTERNAL_URL
       - key: ALLOWED_ORIGINS
         sync: false
