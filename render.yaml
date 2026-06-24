@@ -7,7 +7,7 @@ services:
     runtime: node
     region: oregon
     plan: free
-    buildCommand: npm install
+    buildCommand: npm install && npm rebuild better-sqlite3
     startCommand: npm start
     healthCheckPath: /health
     autoDeploy: true
@@ -16,6 +16,8 @@ services:
         value: production
       - key: NODE_VERSION
         value: "20"
+      - key: HOST
+        value: "0.0.0.0"
       - key: ALLOW_DEMO_CHECKOUT
         value: "false"
       - key: JWT_SECRET

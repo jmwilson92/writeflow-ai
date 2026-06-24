@@ -123,12 +123,15 @@ if (isProd && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'dev-only-c
   console.warn('⚠️  WARNING: Set a strong JWT_SECRET in production.\n');
 }
 
-app.listen(PORT, () => {
+const HOST = process.env.HOST || '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
   console.log(`
   ✦ WriteFlow AI — production server
-  → http://localhost:${PORT}
-  → Health: http://localhost:${PORT}/health
+  → Listening on ${HOST}:${PORT}
+  → Health: /health
   → Mode: ${isProd ? 'production' : 'development'}
   → API key: ${process.env.ANTHROPIC_API_KEY ? '✓' : '✗'}
+  → Node: ${process.version}
   `);
 });
