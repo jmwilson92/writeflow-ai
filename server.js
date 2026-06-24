@@ -1,156 +1,134 @@
-// ============================================================
-// WriteFlow AI — Backend Server
-// Keeps your Claude API key secret from users
-// ============================================================
-// Setup: npm install express cors dotenv
-// Run:   node server.js
-// ============================================================
+require('dotenv').config({ override: process.env.NODE_ENV !== 'production' });
 
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();   // Loads .env file automatically if present
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
+const path = require('path');
+
+require('./lib/db');
+const { authMiddleware } = require('./lib/auth');
+
+const authRoutes = require('./routes/auth');
+const generateRoutes = require('./routes/generate');
+const historyRoutes = require('./routes/history');
+const presetsRoutes = require('./routes/presets');
+const configRoutes = require('./routes/config');
+const stripeRoutes = require('./routes/stripe');
+const devRoutes = require('./routes/dev');
+const parseRoutes = require('./routes/parse');
+const teamRoutes = require('./routes/team');
+const keysRoutes = require('./routes/keys');
+const v1Routes = require('./routes/v1');
+const { getEffectivePlan, isPaidPlan } = require('./lib/entitlements');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.static('.'));  // Serves index.html
+const PORT = process.env.PORT || 3000;
+const isProd = process.env.NODE_ENV === 'production';
 
-// ============================================================
-// CLAUDE API KEY (loaded from environment variable or .env file)
-// ============================================================
-// Create a .env file in this folder with:
-//   ANTHROPIC_API_KEY=sk-ant-your-new-key-here
-//
-// .env is gitignored, so it's safe and never committed.
-// This is the easiest way to test locally.
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+app.set('trust proxy', 1);
 
-if (!ANTHROPIC_API_KEY) {
-  console.error('\n❌ FATAL: ANTHROPIC_API_KEY is not set!');
-  console.error('   Create a .env file with: ANTHROPIC_API_KEY=your-key\n');
-  // process.exit(1);
-}
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
 
-// ============================================================
-// RATE LIMITING (basic — use Redis in production)
-// ============================================================
-const usageMap = {}; // ip -> { count, date }
-const FREE_LIMIT = 3;
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 
-function checkRateLimit(ip) {
-  const today = new Date().toDateString();
-  if (!usageMap[ip] || usageMap[ip].date !== today) {
-    usageMap[ip] = { count: 0, date: today };
-  }
-  return usageMap[ip].count < FREE_LIMIT;
-}
+app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), stripeRoutes);
 
-function incrementUsage(ip) {
-  usageMap[ip].count++;
-}
+app.use(express.json({ limit: '64kb' }));
+app.use(cookieParser());
+app.use(authMiddleware);
 
-// ============================================================
-// GENERATE ENDPOINT
-// ============================================================
-app.post('/api/generate', async (req, res) => {
-  const { prompt, isPro, credits } = req.body;
-  const ip = req.ip;
-
-  if (!prompt) {
-    return res.status(400).json({ error: 'No prompt provided' });
-  }
-
-  // Check limits for free users
-  if (!isPro && !credits) {
-    if (!checkRateLimit(ip)) {
-      return res.status(429).json({
-        error: 'Free limit reached',
-        upgrade: true,
-        message: 'You have used your 3 free generations today. Upgrade to Pro or buy credits.'
-      });
-    }
-  }
-
-  try {
-    // Forward to Anthropic with streaming
-    const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        stream: true,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
-
-    if (!anthropicRes.ok) {
-      const err = await anthropicRes.text();
-      return res.status(500).json({ error: 'Claude API error', detail: err });
-    }
-
-    // Track usage for free users
-    if (!isPro && !credits) incrementUsage(ip);
-
-    // Stream response back to client
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-
-    const reader = anthropicRes.body.getReader();
-    const decoder = new TextDecoder();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      res.write(decoder.decode(value));
-    }
-
-    res.end();
-
-  } catch (err) {
-    console.error('Generate error:', err);
-    res.status(500).json({ error: err.message });
-  }
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_PER_MIN || '30', 10),
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please slow down.' },
 });
 
-// ============================================================
-// STRIPE WEBHOOK (for auto-activating paid accounts)
-// ============================================================
-// npm install stripe
-// Then uncomment and set STRIPE_WEBHOOK_SECRET below
-//
-// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-// app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
-//   const sig = req.headers['stripe-signature'];
-//   let event;
-//   try {
-//     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-//   } catch (err) {
-//     return res.status(400).send(`Webhook Error: ${err.message}`);
-//   }
-//   if (event.type === 'checkout.session.completed') {
-//     const session = event.data.object;
-//     const email = session.customer_email;
-//     const plan = session.metadata.plan;
-//     console.log(`✓ Payment received: ${email} → ${plan}`);
-//     // TODO: save to your database and grant access
-//   }
-//   res.json({ received: true });
-// });
+const generateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: parseInt(process.env.GENERATE_LIMIT_PER_MIN || '10', 10),
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => isPaidPlan(getEffectivePlan(req.user)),
+  message: { error: 'Generation rate limit exceeded. Upgrade for priority processing.' },
+});
 
-// ============================================================
-// START
-// ============================================================
-const PORT = process.env.PORT || 3000;
+app.use('/api', apiLimiter);
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    uptime: process.uptime(),
+    anthropic: !!process.env.ANTHROPIC_API_KEY,
+    stripe: !!process.env.STRIPE_SECRET_KEY,
+  });
+});
+
+app.use('/api/auth', authRoutes);
+app.use('/api/generate', generateLimiter, generateRoutes);
+app.use('/api/history', historyRoutes);
+app.use('/api/presets', presetsRoutes);
+app.use('/api/config', configRoutes);
+app.use('/api/dev', devRoutes);
+app.use('/api/parse', apiLimiter, parseRoutes);
+app.use('/api/team', teamRoutes);
+app.use('/api/keys', keysRoutes);
+app.use('/api/v1', v1Routes);
+
+// Page routes (before static — avoids 404 on /api-docs etc.)
+app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'privacy.html')));
+app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
+app.get('/api-docs', (req, res) => res.sendFile(path.join(__dirname, 'api-docs.html')));
+
+const BLOCKED_PREFIXES = ['/lib', '/routes', '/data', '/node_modules', '/.git'];
+app.use((req, res, next) => {
+  if (BLOCKED_PREFIXES.some(p => req.path.startsWith(p)) || req.path === '/server.js' || req.path === '/package.json') {
+    return res.status(404).end();
+  }
+  next();
+});
+
+app.use(express.static(path.join(__dirname), {
+  index: 'index.html',
+  dotfiles: 'ignore',
+}));
+
+app.use((err, req, res, next) => {
+  if (err.message === 'Not allowed by CORS') {
+    return res.status(403).json({ error: 'CORS blocked' });
+  }
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({ error: 'File too large (max 5 MB)' });
+  }
+  console.error(err);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.warn('\n⚠️  WARNING: ANTHROPIC_API_KEY is not set — generation will fail.\n');
+}
+if (isProd && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'dev-only-change-in-production')) {
+  console.warn('⚠️  WARNING: Set a strong JWT_SECRET in production.\n');
+}
+
 app.listen(PORT, () => {
   console.log(`
-  ✦ WriteFlow AI server running!
-  → Open: http://localhost:${PORT}
-  → API key: ${ANTHROPIC_API_KEY ? '✓ Set (from .env or env var)' : '✗ MISSING — create .env file!'}
+  ✦ WriteFlow AI — production server
+  → http://localhost:${PORT}
+  → Health: http://localhost:${PORT}/health
+  → Mode: ${isProd ? 'production' : 'development'}
+  → API key: ${process.env.ANTHROPIC_API_KEY ? '✓' : '✗'}
   `);
 });

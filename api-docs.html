@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Documentation — WriteFlow AI</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060a;--card:#14141e;--border:#1e1e2e;--accent:#a78bfa;--accent2:#06d6a0;--text:#eeeef5;--muted:#7070a0;--muted2:#4a4a70}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px 24px 80px}
+.wrap{max-width:780px;margin:0 auto}
+a{color:var(--accent)}
+.back{display:inline-block;margin-bottom:24px;color:var(--accent);text-decoration:none;font-size:14px}
+h1{font-family:'Space Grotesk',sans-serif;font-size:2rem;margin-bottom:6px;letter-spacing:-0.5px}
+.sub{color:var(--muted);font-size:15px;margin-bottom:36px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;margin:36px 0 12px;padding-top:8px;border-top:1px solid var(--border)}
+h3{font-size:14px;font-weight:600;margin:20px 0 8px;color:var(--text)}
+p,li{color:var(--muted);font-size:14px}
+ul,ol{padding-left:20px;margin:8px 0}
+li{margin:4px 0}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:8px;background:rgba(6,214,160,0.12);color:var(--accent2);border:1px solid rgba(6,214,160,0.25);margin-left:8px;vertical-align:middle}
+.endpoint{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:12px 0;font-size:14px}
+.method{font-weight:700;color:var(--accent2);font-family:monospace;margin-right:10px}
+.path{font-family:monospace;color:var(--text)}
+pre{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;overflow-x:auto;font-size:13px;line-height:1.5;margin:12px 0;color:#c4b5fd}
+code{font-family:'Consolas','Monaco',monospace;font-size:13px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
+th{color:var(--text);font-weight:600}
+.warn{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--muted);margin:16px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to WriteFlow</a>
+  <h1>API Reference <span class="badge">Business</span></h1>
+  <p class="sub">Generate professional writing with Claude via HTTP. Requires a Business plan API key.</p>
+
+  <h2>Quick start</h2>
+  <ol>
+    <li>Subscribe to the <strong>Business</strong> plan and sign in.</li>
+    <li>Open <strong>Account</strong> → <strong>API keys</strong> → <strong>Generate API key</strong>.</li>
+    <li>Copy the key immediately — it is only shown once.</li>
+    <li>Send requests with <code>Authorization: Bearer wf_...</code></li>
+  </ol>
+
+  <h2>Base URL</h2>
+  <pre><code>https://your-domain.com</code></pre>
+  <p>Locally: <code>http://localhost:3000</code></p>
+
+  <h2>Authentication</h2>
+  <p>Include your API key in every request:</p>
+  <pre><code>Authorization: Bearer wf_your_api_key_here</code></pre>
+  <ul>
+    <li>Keys start with <code>wf_</code></li>
+    <li>Up to <strong>3 active keys</strong> per account</li>
+    <li>Revoke keys anytime from your Account page</li>
+    <li>Never expose keys in client-side browser code</li>
+  </ul>
+
+  <h2>Endpoints</h2>
+
+  <div class="endpoint">
+    <span class="method">POST</span><span class="path">/api/v1/generate</span>
+    <p style="margin-top:10px">Stream an AI-generated response from your prompt.</p>
+  </div>
+
+  <h3>Request headers</h3>
+  <table>
+    <tr><th>Header</th><th>Required</th><th>Description</th></tr>
+    <tr><td><code>Authorization</code></td><td>Yes</td><td><code>Bearer wf_...</code></td></tr>
+    <tr><td><code>Content-Type</code></td><td>Yes</td><td><code>application/json</code></td></tr>
+  </table>
+
+  <h3>Request body (JSON)</h3>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td><code>prompt</code></td><td>string</td><td>Yes</td><td>Full writing instruction (max 12,000 characters)</td></tr>
+    <tr><td><code>toolId</code></td><td>string</td><td>No</td><td>Template ID for history (e.g. <code>cover-letter</code>)</td></tr>
+    <tr><td><code>toolName</code></td><td>string</td><td>No</td><td>Human-readable label saved to history</td></tr>
+    <tr><td><code>tone</code></td><td>string</td><td>No</td><td>Tone used (e.g. <code>professional</code>)</td></tr>
+  </table>
+
+  <pre><code>{
+  "prompt": "Write a cover letter for Alex Johnson applying for Senior PM at Acme Corp...",
+  "toolId": "cover-letter",
+  "toolName": "Cover letter",
+  "tone": "professional"
+}</code></pre>
+
+  <h3>Response — streaming (SSE)</h3>
+  <p>Returns <code>text/event-stream</code> in Anthropic-compatible SSE format. Parse <code>data:</code> lines as JSON events. Text arrives in <code>content_block_delta</code> events:</p>
+  <pre><code>data: {"type":"content_block_delta","delta":{"type":"text_delta","text":"Hello"}}
+
+data: {"type":"message_stop"}</code></pre>
+
+  <h3>Response headers</h3>
+  <table>
+    <tr><th>Header</th><th>Description</th></tr>
+    <tr><td><code>X-Plan-Tier</code></td><td>Your effective plan (<code>business</code>)</td></tr>
+    <tr><td><code>X-Priority</code></td><td><code>true</code> for priority processing</td></tr>
+  </table>
+
+  <h2>Examples</h2>
+
+  <h3>cURL</h3>
+  <pre><code>curl -N -X POST https://your-domain.com/api/v1/generate \
+  -H "Authorization: Bearer wf_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Write a professional cold email to a SaaS founder about partnership opportunities.","tone":"confident"}'</code></pre>
+
+  <h3>Node.js</h3>
+  <pre><code>const res = await fetch('https://your-domain.com/api/v1/generate', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer wf_YOUR_KEY',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    prompt: 'Write a LinkedIn bio for a fintech founder...',
+    toolId: 'linkedin-bio',
+    tone: 'professional',
+  }),
+});
+
+const reader = res.body.getReader();
+const decoder = new TextDecoder();
+let output = '';
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  for (const line of decoder.decode(value).split('\n')) {
+    if (!line.startsWith('data: ')) continue;
+    try {
+      const event = JSON.parse(line.slice(6));
+      if (event.type === 'content_block_delta' && event.delta?.text) {
+        output += event.delta.text;
+        process.stdout.write(event.delta.text);
+      }
+    } catch {}
+  }
+}</code></pre>
+
+  <h3>Python</h3>
+  <pre><code>import requests, json
+
+url = "https://your-domain.com/api/v1/generate"
+headers = {
+    "Authorization": "Bearer wf_YOUR_KEY",
+    "Content-Type": "application/json",
+}
+payload = {"prompt": "Write ad copy for a fitness app...", "tone": "persuasive"}
+
+with requests.post(url, headers=headers, json=payload, stream=True) as r:
+    r.raise_for_status()
+    for line in r.iter_lines():
+        if not line or not line.startswith(b"data: "):
+            continue
+        data = line[6:].decode()
+        try:
+            event = json.loads(data)
+            if event.get("type") == "content_block_delta":
+                print(event["delta"].get("text", ""), end="", flush=True)
+        except json.JSONDecodeError:
+            pass</code></pre>
+
+  <h2>Error codes</h2>
+  <table>
+    <tr><th>Status</th><th>Meaning</th></tr>
+    <tr><td><code>400</code></td><td>Missing or invalid <code>prompt</code>, or prompt too long</td></tr>
+    <tr><td><code>401</code></td><td>Invalid or missing API key</td></tr>
+    <tr><td><code>403</code></td><td>API access requires Business plan</td></tr>
+    <tr><td><code>429</code></td><td>Rate or usage limit reached</td></tr>
+    <tr><td><code>502</code></td><td>Upstream AI service error</td></tr>
+    <tr><td><code>503</code></td><td>AI service not configured on server</td></tr>
+  </table>
+
+  <p>JSON error shape:</p>
+  <pre><code>{"error": "Invalid or missing API key. Use Authorization: Bearer wf_..."}</code></pre>
+
+  <h2>Limits</h2>
+  <table>
+    <tr><th>Limit</th><th>Business plan</th></tr>
+    <tr><td>Generations</td><td>Unlimited</td></tr>
+    <tr><td>Max prompt length</td><td>12,000 characters</td></tr>
+    <tr><td>Max output tokens</td><td>2,000 per request</td></tr>
+    <tr><td>API keys per account</td><td>3</td></tr>
+    <tr><td>Rate limit (free-tier fallback)</td><td>Skipped for Business</td></tr>
+  </table>
+
+  <div class="warn">
+    <strong>Server-side only.</strong> Call the API from your backend, scripts, or integrations — never embed API keys in frontend JavaScript or mobile apps where they can be extracted.
+  </div>
+
+  <h2>Manage keys</h2>
+  <p>Generate and revoke keys from the web app: <strong>Account → API keys</strong>. Team members on a Business account inherit Business features but only the account owner can manage billing; API keys are tied to the user who creates them.</p>
+
+  <h2>Support</h2>
+  <p>Business customers get priority support: <a href="mailto:hello@writeflow.ai?subject=API%20Support">hello@writeflow.ai</a></p>
+</div>
+</body>
+</html>

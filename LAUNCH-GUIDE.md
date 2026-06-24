@@ -1,158 +1,149 @@
-# WriteFlow AI — Complete Launch Guide
-## From zero to making money in 7 days
+# WriteFlow AI — Production Launch Guide
+
+## What you have (v2.0)
+
+- **43 AI writing templates** across 8 categories
+- **Production backend** — auth, SQLite DB, server-side limits, Stripe webhooks
+- **Pro features** — output history, tone presets, Word export
+- **Legal pages** — `/privacy`, `/terms`
+- **SEO** — meta tags, sitemap, robots.txt
 
 ---
 
-## What you have
+## Step 1: Configure environment (10 min)
 
-- `index.html` — Your complete AI SaaS app (6 tools, freemium, pricing page, credit packs)
-- `server.js` — Backend server (keeps your API key secret, handles rate limiting)
-- `package.json` — Node.js dependencies
-- This guide
+```bash
+cp .env.example .env
+```
+
+**Required:**
+- `ANTHROPIC_API_KEY` — from https://console.anthropic.com
+- `JWT_SECRET` — run `openssl rand -hex 32` or use a long random string
+
+**For payments:**
+- `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_LINK_*` — Payment Link URLs for each plan/pack
+
+**For production:**
+- `NODE_ENV=production`
+- `ALLOWED_ORIGINS=https://yourdomain.com`
+- `ALLOW_DEMO_CHECKOUT=false` (never true in prod)
 
 ---
 
-## STEP 1: Get your Claude API key (5 min)
-
-1. Go to https://console.anthropic.com
-2. Sign up or log in
-3. Click "API Keys" → "Create Key"
-4. Copy your key (starts with `sk-ant-...`)
-5. Open `server.js` and replace `sk-ant-YOUR_KEY_HERE` with your real key
-
-**Cost check:** claude-sonnet-4-6 costs ~$0.003 per generation.
-At $12/mo Pro, a user needs 4,000 generations to cost you more than their subscription. You're safe.
-
----
-
-## STEP 2: Test it locally (10 min)
-
-You need Node.js installed. Download it free at https://nodejs.org (get the LTS version).
-
-Then open a terminal/command prompt in your project folder and run:
+## Step 2: Test locally
 
 ```bash
 npm install
-node server.js
+npm start
 ```
 
-Open your browser at http://localhost:3000 — your app is running!
+1. Open http://localhost:3000
+2. Try a free generation (3/day without account)
+3. Create an account (Sign up)
+4. With `ALLOW_DEMO_CHECKOUT=true`, test Upgrade flow in dev
 
 ---
 
-## STEP 3: Deploy to the internet (20 min — FREE)
+## Step 3: Stripe setup (30 min)
 
-### Option A: Railway (easiest, recommended)
-1. Go to https://railway.app and sign up (free)
-2. Click "New Project" → "Deploy from GitHub"
-3. Upload your 3 files to a new GitHub repo first (github.com → New Repository)
-4. Connect Railway to that repo
-5. Add environment variable: `ANTHROPIC_API_KEY` = your key
-6. Click Deploy — Railway gives you a live URL like `yourapp.railway.app`
+1. Create products at https://dashboard.stripe.com/products:
+   - Pro Monthly ($12), Pro Annual ($84)
+   - Business Monthly ($39), Business Annual ($276)
+   - Credit packs: 50/$5, 200/$15, 500/$30, 1000/$49
 
-### Option B: Render (also free)
-1. Go to https://render.com
-2. New → Web Service → Connect GitHub repo
-3. Build command: `npm install`
-4. Start command: `node server.js`
-5. Add env var: `ANTHROPIC_API_KEY`
+2. Create **Payment Links** for each product
 
-### Option C: Just the HTML file (simplest but API key exposed)
-Open `index.html` in a browser. Works immediately for testing.
-⚠️ Don't put your real API key in index.html for production — use the server.
+3. Add metadata to each link: `plan` = `pro`, `business`, `pack-50`, etc.
+
+4. Copy Payment Link URLs into `.env` as `STRIPE_LINK_*`
+
+5. Webhook endpoint: `https://yourdomain.com/api/webhooks/stripe`
+   - Events: `checkout.session.completed`, `customer.subscription.deleted`
+
+6. Users who pay **before** signing up get access when they register with the same email.
 
 ---
 
-## STEP 4: Set up payments (30 min)
+## Step 4: Deploy on Render (recommended)
 
-### Stripe (most popular)
-1. Sign up at https://stripe.com
-2. Go to Products → Create product for each plan:
-   - "Pro Monthly" → $12/month (recurring)
-   - "Business Monthly" → $39/month (recurring)
-   - "50 Credits" → $5 (one-time)
-   - "200 Credits" → $15 (one-time)
-   - "500 Credits" → $30 (one-time)
-   - "1000 Credits" → $49 (one-time)
-3. Get each product's "Payment link"
-4. Open `index.html`, find the `handleCheckout` function, replace the placeholder URLs
+### Option A — Blueprint (fastest)
 
-### LemonSqueezy (easier, handles VAT globally)
-1. Sign up at https://lemonsqueezy.com
-2. Create your products the same way
-3. Get your checkout URLs and paste them in `index.html`
+1. Push this repo to GitHub
+2. Go to [render.com](https://render.com) → **New** → **Blueprint**
+3. Connect your GitHub repo — Render reads `render.yaml` automatically
+4. Fill in secret env vars when prompted:
+   - `ANTHROPIC_API_KEY`
+   - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
+   - All `STRIPE_LINK_*` URLs
+   - `ALLOWED_ORIGINS` → `https://your-app.onrender.com` (update after custom domain)
+5. Deploy — Render provisions a **persistent disk** for SQLite at `data/`
 
----
+### Option B — Manual Web Service
 
-## STEP 5: Get a custom domain (optional, $10-15/yr)
+1. **New** → **Web Service** → connect GitHub repo
+2. Settings:
+   - **Runtime:** Node
+   - **Build command:** `npm install`
+   - **Start command:** `npm start`
+   - **Health check path:** `/health`
+3. **Disks** → Add disk:
+   - Mount path: `/opt/render/project/src/data`
+   - Size: 1 GB
+4. **Environment** → add all vars from `.env.example`
+   - Set `DATABASE_PATH=/opt/render/project/src/data/writeflow.db`
+   - Set `NODE_ENV=production`
+   - Set `ALLOW_DEMO_CHECKOUT=false`
+5. Deploy
 
-1. Buy a domain at Namecheap or Cloudflare (e.g. `writeflowai.com`)
-2. Point it to your Railway/Render deployment
-3. Both services have instructions for custom domains
+### After deploy
 
----
-
-## STEP 6: Launch and get your first customers
-
-### Day 1: Product Hunt
-- Go to https://producthunt.com → Submit your product
-- Best to launch on Tuesday–Thursday
-- Write a compelling tagline: "AI writing tools that get you hired and close deals"
-
-### Week 1: Reddit
-Post in these subreddits (share value, don't just spam):
-- r/jobsearch (cover letter tool)
-- r/entrepreneur (cold email tool)
-- r/ecommerce (product description tool)
-- r/forhire (LinkedIn bio tool)
-- r/SideProject
-
-### SEO pages to build (copy from index.html, change the content):
-- `/cover-letter-generator` — target "AI cover letter generator"
-- `/cold-email-generator` — target "cold email writer AI"
-- `/product-description-generator` — target "AI product description generator"
-
-### Twitter/X: Build in public
-Post daily: your revenue, user count, what you're building. People love this.
+- Your URL: `https://writeflow.onrender.com` (or your service name)
+- Stripe webhook: `https://YOUR-URL.onrender.com/api/webhooks/stripe`
+- Update `ALLOWED_ORIGINS` to your Render URL (and custom domain when added)
 
 ---
 
-## Revenue projections
+## Step 5: Custom domain
 
-| Monthly visitors | Free→Paid rate | Price | MRR |
-|-----------------|----------------|-------|-----|
+1. Buy domain (Namecheap, Cloudflare)
+2. Point DNS to your host
+3. Update `ALLOWED_ORIGINS` in env
+4. Update `sitemap.xml` and canonical URLs in `index.html`
+
+---
+
+## Step 6: Launch marketing
+
+- **Product Hunt** — Tuesday–Thursday launch
+- **Reddit** — r/SideProject, r/entrepreneur, niche subs per template
+- **SEO** — Add landing pages for top templates (cover letter, cold email)
+- **Build in public** — Share MRR and user growth on X
+
+---
+
+## Revenue math
+
+| Visitors/mo | Conversion | Price | MRR |
+|-------------|------------|-------|-----|
 | 1,000 | 3% | $12 | $360 |
 | 5,000 | 3% | $12 | $1,800 |
-| 10,000 | 3% | $12 | $3,600 |
-| 20,000 | 5% | $12 | $12,000 |
+| 10,000 | 5% | $12 | $6,000 |
 
-Your API cost is ~$0.003/generation. Even at 100 uses/user/month that's $0.30 per user.
-Margin on a $12 Pro plan: **97.5%**
+API cost ~$0.003/generation. Margin on $12 Pro: **~97%**.
 
 ---
 
-## Files overview
+## Checklist before going live
 
-```
-writeflow-ai/
-├── index.html    ← Your complete app (6 tools + pricing + freemium)
-├── server.js     ← Backend (API key protection + rate limiting)
-├── package.json  ← Node dependencies
-└── GUIDE.md      ← This file
-```
+- [ ] `ANTHROPIC_API_KEY` set
+- [ ] `JWT_SECRET` is strong and unique
+- [ ] `ALLOW_DEMO_CHECKOUT=false`
+- [ ] All `STRIPE_LINK_*` configured
+- [ ] Stripe webhook tested
+- [ ] `NODE_ENV=production`
+- [ ] Persistent storage for `data/`
+- [ ] Custom domain + HTTPS
+- [ ] Privacy & Terms reviewed
 
----
-
-## Need more tools? Add one in 3 steps:
-
-1. Add a `.tool-card` div in `index.html` (copy an existing one)
-2. Add a `fields-TOOLNAME` div with your input fields
-3. Add a prompt function in `buildPrompt()` for your tool
-
----
-
-## Questions?
-
-Ask Claude: "How do I [specific thing] in WriteFlow AI?"
-
-Good luck. Your first paying customer is closer than you think. 🚀
+Good luck — your first paying customer is closer than you think.

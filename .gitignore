@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Database
+data/
+
 # Environment variables (NEVER commit real keys)
 .env
 .env.local
@@ -32,3 +35,8 @@ build/
 
 # Misc
 *.tgz
+
+# Local dev / IDE
+mcps/
+terminals/
+scripts/check-api-key.js

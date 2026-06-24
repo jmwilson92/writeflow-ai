@@ -1,0 +1,54 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Connect your GitHub repo: Dashboard → New → Blueprint → select this repo
+
+services:
+  - type: web
+    name: writeflow
+    runtime: node
+    region: oregon
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: writeflow-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_PATH
+        value: /opt/render/project/src/data/writeflow.db
+      - key: ALLOW_DEMO_CHECKOUT
+        value: "false"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: IP_HASH_SALT
+        generateValue: true
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_LINK_PRO
+        sync: false
+      - key: STRIPE_LINK_PRO_ANNUAL
+        sync: false
+      - key: STRIPE_LINK_BUSINESS
+        sync: false
+      - key: STRIPE_LINK_BUSINESS_ANNUAL
+        sync: false
+      - key: STRIPE_LINK_PACK_50
+        sync: false
+      - key: STRIPE_LINK_PACK_200
+        sync: false
+      - key: STRIPE_LINK_PACK_500
+        sync: false
+      - key: STRIPE_LINK_PACK_1000
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: CONTACT_EMAIL
+        value: hello@writeflow.ai

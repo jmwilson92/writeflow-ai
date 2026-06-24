@@ -3,8 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WriteFlow — Professional Writing Templates</title>
-<!-- Backend API: see server.js -->
+<title>WriteFlow AI — 40+ Professional Writing Templates</title>
+<meta name="description" content="AI writing tools for cover letters, cold emails, product descriptions, and more. 43 templates, freemium plan, powered by Claude.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://writeflow.ai/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WriteFlow AI — Words that work">
+<meta property="og:description" content="43 AI writing templates for career, sales, marketing, and business. Start free.">
+<meta property="og:url" content="https://writeflow.ai/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WriteFlow AI">
+<meta name="twitter:description" content="43 AI writing templates. Cover letters, cold emails, ad copy, and more.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WriteFlow AI","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"43 AI-powered professional writing templates for career, sales, marketing, and business."}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -152,6 +163,17 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 select option{background:#1a1a28}
 ::placeholder{color:var(--muted2)}
 
+/* FILE UPLOAD */
+.file-upload-wrap{border:1px dashed var(--border2);border-radius:var(--r-sm);padding:18px;text-align:center;transition:all .15s;background:rgba(255,255,255,0.02)}
+.file-upload-wrap:hover,.file-upload-wrap.has-file{border-color:rgba(139,92,246,0.45);background:rgba(139,92,246,0.04)}
+.file-upload-wrap input[type=file]{display:none}
+.file-upload-label{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--accent-bright);cursor:pointer}
+.file-upload-meta{font-size:12px;color:var(--muted);margin-top:10px;min-height:18px}
+.file-upload-meta.ok{color:var(--success)}
+.file-upload-meta.err{color:var(--danger)}
+.file-hint{font-size:11px;color:var(--muted2);margin-top:6px}
+.file-upload-wrap.loading{opacity:0.6;pointer-events:none}
+
 /* ACTIONS BAR */
 .actions-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px 0 0;border-top:1px solid var(--border)}
 .gen-btn{display:flex;align-items:center;gap:8px;padding:12px 28px;font-size:15px;font-weight:700;border-radius:var(--r-sm);background:linear-gradient(135deg,var(--accent),#6d28d9);color:#fff;border:none;cursor:pointer;transition:all 0.18s;font-family:inherit;letter-spacing:0.01em}
@@ -178,6 +200,13 @@ select option{background:#1a1a28}
 .cursor-blink{display:inline-block;width:2px;height:15px;background:var(--accent);animation:blink 0.85s steps(1) infinite;vertical-align:middle;margin-left:1px}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .word-count{font-size:11px;color:var(--muted2);margin-top:6px;text-align:right}
+.output-export-hint{font-size:12px;color:var(--muted);margin-top:8px;padding:8px 12px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r-sm);line-height:1.45}
+.output-export-hint.hidden{display:none}
+.variant-tabs{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.variant-tabs.hidden{display:none}
+.variant-tab{font-size:12px;padding:6px 14px;background:var(--card2);border:1px solid var(--border2);border-radius:6px;color:var(--muted);cursor:pointer;transition:all 0.12s;font-family:inherit}
+.variant-tab:hover{color:var(--text);border-color:var(--border2)}
+.variant-tab.active{background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.4);color:var(--accent-bright);font-weight:600}
 
 /* ERROR */
 .error-msg{display:none;align-items:center;gap:8px;color:var(--danger);font-size:13px;margin-top:10px;padding:10px 14px;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);border-radius:var(--r-sm)}
@@ -190,8 +219,17 @@ select option{background:#1a1a28}
 .cat-count{font-size:12px;color:var(--muted);background:var(--card2);padding:2px 8px;border-radius:10px;font-weight:600}
 
 /* PRICING PAGE */
-#page-pricing{display:none}
 .pricing-hero{text-align:center;padding:60px 24px 48px;max-width:680px;margin:0 auto;position:relative;z-index:1}
+.pricing-note{max-width:680px;margin:0 auto 32px;padding:0 24px}
+.pricing-note-inner{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.25);border-radius:var(--r-sm);padding:16px 20px;font-size:14px;color:var(--muted);line-height:1.6;text-align:center}
+.pricing-note-inner strong{color:var(--text)}
+.pricing-faq{max-width:680px;margin:0 auto 80px;padding:0 24px}
+.pricing-faq h3{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:16px;letter-spacing:-0.3px}
+.faq-item{border-top:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:1px solid var(--border)}
+.faq-q{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.faq-a{font-size:13px;color:var(--muted);line-height:1.6}
+.plan-btn.current{background:var(--card2);color:var(--muted);cursor:default;opacity:0.8}
 .pricing-hero h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-1px;margin-bottom:12px}
 .pricing-hero p{font-size:17px;color:var(--muted);line-height:1.6}
 .toggle-wrap{display:flex;align-items:center;gap:12px;justify-content:center;margin:24px 0 40px;font-size:14px;font-weight:500;color:var(--muted)}
@@ -262,6 +300,69 @@ select option{background:#1a1a28}
 .toast-success{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--success)}
 .toast-info{background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.3);color:var(--accent-bright)}
 .toast-error{background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.3);color:var(--danger)}
+
+/* AUTH */
+.auth-btn{font-size:13px}
+.user-pill{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border2);padding:6px 12px;border-radius:20px;font-size:12px;color:var(--muted);max-width:180px}
+.user-pill strong{color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.auth-form{display:flex;flex-direction:column;gap:14px}
+.auth-form input{background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:14px;padding:11px 14px;font-family:inherit}
+.auth-form input:focus{outline:none;border-color:var(--accent)}
+.auth-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--card2);padding:4px;border-radius:var(--r-sm)}
+.auth-tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:600;border-radius:6px;cursor:pointer;font-family:inherit}
+.auth-tab.active{background:var(--card);color:var(--text)}
+.auth-error{color:var(--danger);font-size:13px;display:none}
+.auth-error.show{display:block}
+
+/* HISTORY */
+.history-toggle{margin-left:auto}
+.history-panel{display:none;margin-top:20px;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r-sm);padding:16px;max-height:280px;overflow-y:auto}
+.history-panel.open{display:block}
+.history-item{padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.history-item:last-child{border-bottom:none}
+.history-item:hover .history-title{color:var(--accent-bright)}
+.history-title{font-size:13px;font-weight:600;color:var(--text)}
+.history-meta{font-size:11px;color:var(--muted2);margin-top:2px}
+.preset-row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.preset-chip{font-size:11px;padding:4px 10px;border-radius:12px;background:var(--card2);border:1px solid var(--border2);color:var(--muted);cursor:pointer}
+.preset-chip:hover{border-color:var(--accent);color:var(--accent-bright)}
+.preset-chip .del{margin-left:6px;opacity:0.6;font-size:10px}
+.preset-limit{font-size:11px;color:var(--muted2);width:100%}
+.priority-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--accent2);background:rgba(6,214,160,0.12);border:1px solid rgba(6,214,160,0.25);padding:3px 10px;border-radius:12px;margin-left:8px}
+.settings-panel{background:var(--card);border:1px solid var(--border2);border-radius:var(--r-sm);padding:16px;margin-top:16px}
+.settings-panel h4{font-size:14px;font-weight:700;margin-bottom:10px}
+.settings-list{font-size:13px;color:var(--muted);line-height:1.7}
+.settings-list code{background:var(--card2);padding:2px 6px;border-radius:4px;font-size:12px;color:var(--accent-bright)}
+.member-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.member-row:last-child{border-bottom:none}
+.settings-input{display:flex;gap:8px;margin-top:10px}
+.settings-input input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);padding:9px 12px;font-size:13px;font-family:inherit}
+
+/* ACCOUNT PAGE */
+.account-page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:48px 24px 80px}
+.account-page h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1px;margin-bottom:8px}
+.account-page .sub{color:var(--muted);font-size:15px;margin-bottom:32px}
+.account-grid{display:grid;gap:16px}
+.account-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px}
+.account-card h3{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.plan-badge{display:inline-block;font-size:11px;font-weight:700;padding:4px 12px;border-radius:12px;background:rgba(139,92,246,0.15);color:var(--accent-bright);border:1px solid rgba(139,92,246,0.3)}
+.plan-badge.biz{background:rgba(6,214,160,0.12);color:var(--accent2);border-color:rgba(6,214,160,0.3)}
+.account-stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}
+.account-stat:last-child{border-bottom:none}
+.account-stat span{color:var(--muted)}
+.feature-check{font-size:13px;color:var(--muted);line-height:1.8}
+.feature-check li{display:flex;gap:8px;margin:4px 0}
+.user-pill{cursor:pointer}
+.user-pill:hover{border-color:var(--accent)}
+
+/* FOOTER */
+.site-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:32px 24px 48px;margin-top:40px}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--muted);text-decoration:none}
+.footer-links a:hover{color:var(--accent-bright)}
+.footer-copy{font-size:12px;color:var(--muted2)}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
@@ -274,12 +375,16 @@ select option{background:#1a1a28}
 <nav>
   <div class="logo">Write<span class="logo-dot">Flow</span></div>
   <div class="nav-center">
-    <button class="nav-tab active" onclick="showPage('tools')">Templates</button>
-    <button class="nav-tab" onclick="showPage('pricing')">Pricing</button>
+    <button class="nav-tab active" id="nav-tab-tools" onclick="showPage('tools')">Templates</button>
+    <button class="nav-tab" id="nav-tab-pricing" onclick="showPage('pricing')">Pricing</button>
+    <button class="nav-tab hidden" id="nav-tab-account" onclick="showPage('account')">Account</button>
   </div>
   <div class="nav-right">
-    <div class="credits-pill"><span class="icon">⚡</span><span id="credits-display">5</span> <span class="val" style="color:var(--muted)">credits</span></div>
-    <button class="btn btn-upgrade" onclick="openUpgradeModal()">Upgrade ✦</button>
+    <div class="credits-pill" id="credits-pill"><span class="icon">⚡</span><span id="credits-display">3 free</span> <span class="val" id="credits-label" style="color:var(--muted)">today</span></div>
+    <div class="user-pill hidden" id="user-pill" onclick="showPage('account')" title="Open account"><strong id="user-email">—</strong></div>
+    <button class="btn btn-ghost auth-btn" id="btn-login" onclick="openAuthModal('login')">Log in</button>
+    <button class="btn btn-upgrade" id="btn-upgrade" onclick="openUpgradeModal()">Upgrade ✦</button>
+    <button class="btn btn-ghost auth-btn hidden" id="btn-logout" onclick="logout()">Log out</button>
   </div>
 </nav>
 
@@ -345,6 +450,10 @@ select option{background:#1a1a28}
             <div class="spinner"></div>
             <span class="btn-label">✦ &nbsp;Generate</span>
           </button>
+          <button class="gen-btn hidden" id="gen-bulk-btn" style="background:linear-gradient(135deg,#06d6a0,#059669)" onclick="generate(3)">
+            <span class="btn-label">✦ 3 variants (Business)</span>
+          </button>
+          <span class="priority-badge hidden" id="priority-badge">⚡ Priority</span>
           <div class="tone-wrap">
             <span class="tone-label">Tone:</span>
             <select class="tone-select" id="tone-select">
@@ -366,9 +475,16 @@ select option{background:#1a1a28}
             <div class="output-acts" id="output-acts" style="display:none">
               <button class="output-act" onclick="copyOutput()">📋 Copy</button>
               <button class="output-act" onclick="generate()">↻ Redo</button>
-              <button class="output-act" onclick="downloadOutput()">↓ Save</button>
+              <button class="output-act hidden" id="btn-txt" onclick="downloadOutput('txt')">↓ .txt</button>
+              <button class="output-act hidden" id="btn-docx" onclick="downloadOutput('docx')">↓ .docx</button>
+              <button class="output-act hidden" id="btn-pdf" onclick="downloadOutput('pdf')">↓ .pdf</button>
+              <button class="output-act history-toggle hidden" id="btn-history" onclick="toggleHistory()">🕐 History</button>
             </div>
           </div>
+          <div class="variant-tabs hidden" id="variant-tabs"></div>
+          <div class="output-export-hint hidden" id="output-export-hint"></div>
+          <div class="history-panel" id="history-panel"></div>
+          <div class="preset-row hidden" id="preset-row"></div>
           <div class="output-box" id="output-box">
             <span class="output-placeholder">Your generated content will appear here — fill in the fields above and hit Generate.</span>
           </div>
@@ -384,12 +500,18 @@ select option{background:#1a1a28}
 <div id="page-pricing" style="display:none;position:relative;z-index:1">
   <div class="pricing-hero">
     <h2>Simple, honest pricing</h2>
-    <p>Start free. Upgrade when you need more. No hidden fees, no surprises.</p>
+    <p>Start free. Subscribe when you need unlimited writing — or buy credits pay-as-you-go.</p>
     <div class="toggle-wrap">
       <span>Monthly</span>
       <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()"><div class="toggle-knob"></div></div>
       <span>Annual</span>
-      <span class="save-badge">Save 40%</span>
+      <span class="save-badge" id="save-badge">Save 25%</span>
+    </div>
+  </div>
+
+  <div class="pricing-note">
+    <div class="pricing-note-inner" id="pricing-status">
+      <strong>Subscriptions</strong> — Pro and Business renew automatically (monthly or annual). Cancel anytime from your Stripe receipt. Create a free account first, then checkout with the <strong>same email</strong> to unlock your plan.
     </div>
   </div>
 
@@ -401,14 +523,16 @@ select option{background:#1a1a28}
       <hr class="plan-divider">
       <ul class="plan-features">
         <li>3 generations per day</li>
-        <li>All 40+ templates</li>
-        <li>Standard speed</li>
+        <li>All 43 templates</li>
+        <li>Copy to clipboard</li>
+        <li>Standard processing speed</li>
         <li class="no">Unlimited generations</li>
+        <li class="no">Export .txt / .docx / .pdf</li>
         <li class="no">Save output history</li>
         <li class="no">Custom tone presets</li>
         <li class="no">Priority processing</li>
       </ul>
-      <button class="plan-btn plan-btn-ghost" onclick="showToast('You are on the free plan','info')">Current plan</button>
+      <button class="plan-btn plan-btn-ghost" id="plan-btn-free" onclick="handleFreePlan()">Start free</button>
     </div>
 
     <div class="plan plan-featured">
@@ -417,20 +541,20 @@ select option{background:#1a1a28}
       <div class="plan-price-wrap">
         <span class="plan-price" id="pro-price">$12</span>
         <span class="plan-per">/mo</span>
-        <span class="plan-orig" id="pro-orig" style="display:none">$20</span>
+        <span class="plan-orig" id="pro-orig" style="display:none">$12</span>
       </div>
       <p class="plan-tagline">Everything you need to write faster and better every day.</p>
       <hr class="plan-divider">
       <ul class="plan-features">
         <li>Unlimited generations</li>
-        <li>All 40+ templates</li>
-        <li>Priority processing</li>
+        <li>All 43 templates</li>
+        <li>Priority processing (faster, longer output)</li>
         <li>Save output history</li>
         <li>5 custom tone presets</li>
-        <li>Export as .txt / .docx</li>
+        <li>Export .txt, .docx & .pdf (resumes, letters, proposals)</li>
         <li class="no">Team seats</li>
       </ul>
-      <button class="plan-btn plan-btn-primary" onclick="handleCheckout('pro')">Get Pro → <span id="pro-cta-price">$12/mo</span></button>
+      <button class="plan-btn plan-btn-primary" id="plan-btn-pro" onclick="handleCheckout('pro')">Get Pro → <span id="pro-cta-price">$12/mo</span></button>
     </div>
 
     <div class="plan">
@@ -438,26 +562,50 @@ select option{background:#1a1a28}
       <div class="plan-price-wrap">
         <span class="plan-price" id="biz-price">$39</span>
         <span class="plan-per">/mo</span>
-        <span class="plan-orig" id="biz-orig" style="display:none">$65</span>
+        <span class="plan-orig" id="biz-orig" style="display:none">$39</span>
       </div>
       <p class="plan-tagline">For teams, agencies, and high-volume writers.</p>
       <hr class="plan-divider">
       <ul class="plan-features">
         <li>Everything in Pro</li>
-        <li>5 team seats</li>
+        <li>5 team seats — invite teammates</li>
         <li>Unlimited tone presets</li>
-        <li>Bulk generation (coming)</li>
-        <li>API access (coming)</li>
-        <li>Custom templates (coming)</li>
+        <li>Bulk generation (3 variants)</li>
+        <li>API access with keys</li>
+        <li class="no">Custom templates (coming soon)</li>
         <li>Priority support</li>
       </ul>
-      <button class="plan-btn plan-btn-ghost" onclick="handleCheckout('business')">Get Business</button>
+      <button class="plan-btn plan-btn-ghost" id="plan-btn-business" onclick="handleCheckout('business')">Get Business → <span id="biz-cta-price">$39/mo</span></button>
+    </div>
+  </div>
+
+  <div class="pricing-faq">
+    <h3>Subscription FAQ</h3>
+    <div class="faq-item">
+      <div class="faq-q">How do subscriptions work?</div>
+      <div class="faq-a">Choose Pro or Business, complete checkout via Stripe, and your account unlocks automatically when you sign in with the same email. Subscriptions renew each billing period until you cancel.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel anytime?</div>
+      <div class="faq-a">Yes. Cancel from your Stripe receipt or customer portal — you keep access through the end of your billing period.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Subscription vs credits?</div>
+      <div class="faq-a">Subscriptions give unlimited generations. Credits are one-time packs for occasional use — no recurring charge, and they never expire.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if I paid before creating an account?</div>
+      <div class="faq-a">Sign up with the same email you used at checkout. Your plan or credits will apply automatically.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How does API access work?</div>
+      <div class="faq-a">Business subscribers open <strong>Account</strong> to generate API keys. Full reference at <a href="/api-docs" style="color:var(--accent-bright)">/api-docs</a> — authentication, streaming, examples in cURL, Node, and Python.</div>
     </div>
   </div>
 
   <div class="credits-section">
     <h3 class="credits-title">Buy credits instead</h3>
-    <p class="credits-sub">No subscription. Pay as you go. Credits never expire.</p>
+    <p class="credits-sub">No subscription. Pay as you go. Credits never expire. Most templates cost 1 credit; longer documents cost 2–3.</p>
     <div class="packs-grid">
       <div class="pack" onclick="handleCheckout('pack-50')">
         <div class="pack-amount">50</div>
@@ -492,6 +640,42 @@ select option{background:#1a1a28}
   </div>
 </div><!-- end page-pricing -->
 
+<!-- ======================== ACCOUNT PAGE ======================== -->
+<div id="page-account" style="display:none;position:relative;z-index:1">
+  <div class="account-page">
+    <h2>Your account</h2>
+    <p class="sub">Manage your plan, usage, team, and API keys.</p>
+    <div class="account-grid" id="account-content">
+      <div class="account-card"><p style="color:var(--muted)">Log in to view your account.</p></div>
+    </div>
+  </div>
+</div><!-- end page-account -->
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay hidden" id="auth-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuthModal()">✕</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')">Log in</button>
+      <button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')">Sign up</button>
+    </div>
+    <div id="auth-login-form" class="auth-form">
+      <input type="email" id="login-email" placeholder="Email" autocomplete="email">
+      <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
+      <div class="auth-error" id="login-error"></div>
+      <button class="modal-cta" onclick="submitLogin()">Log in →</button>
+    </div>
+    <div id="auth-register-form" class="auth-form" style="display:none">
+      <input type="text" id="register-name" placeholder="Name (optional)" autocomplete="name">
+      <input type="email" id="register-email" placeholder="Email" autocomplete="email">
+      <input type="password" id="register-password" placeholder="Password (8+ characters)" autocomplete="new-password">
+      <div class="auth-error" id="register-error"></div>
+      <button class="modal-cta" onclick="submitRegister()">Create account →</button>
+      <p style="font-size:12px;color:var(--muted2);text-align:center">Paid with Stripe? Use the same email to unlock your plan.</p>
+    </div>
+  </div>
+</div>
+
 <!-- UPGRADE MODAL -->
 <div class="modal-overlay hidden" id="upgrade-modal">
   <div class="modal">
@@ -510,42 +694,98 @@ select option{background:#1a1a28}
   </div>
 </div>
 
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="logo">Write<span class="logo-dot">Flow</span> AI</div>
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/api-docs">API Docs</a>
+      <a href="mailto:hello@writeflow.ai">Contact</a>
+      <a href="#" onclick="showPage('pricing');return false">Pricing</a>
+    </div>
+    <div class="footer-copy">© 2026 WriteFlow AI. All rights reserved.</div>
+  </div>
+</footer>
+
 <div class="toast" id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" crossorigin="anonymous"></script>
 <script>
 // ================================================================ 
 // TOOL DEFINITIONS — 40+ templates across 8 categories
 // ================================================================
 const TOOLS = [
   // CAREER & JOB SEARCH
-  { id:'cover-letter', cat:'Career', icon:'📝', name:'Cover letter', desc:'Tailored cover letters that get you interviews', popular:true,
+  { id:'cover-letter', cat:'Career', icon:'📝', name:'Cover letter', desc:'Upload your resume + job posting for a tailored cover letter', popular:true,
     fields:[
-      {id:'name',label:'Your name',req:true,ph:'Alex Johnson',half:true},
-      {id:'role',label:'Job title applying for',req:true,ph:'Senior Product Manager',half:true},
-      {id:'company',label:'Company name',req:true,ph:'Acme Corp',half:true},
-      {id:'exp',label:'Years of experience',req:false,ph:'5 years',half:true},
-      {id:'skills',label:'Key skills & achievements',req:true,ph:'Led a team of 8\nGrew revenue by 40%\nExpert in Agile, SQL, Figma',type:'textarea'},
+      {id:'resume',label:'Upload your resume',type:'file',req:true,hint:'PDF, Word, or TXT — parsed in memory, never stored'},
+      {id:'jobdesc',label:'Job description',req:true,ph:'Paste the full job posting here — responsibilities, requirements, company info...',type:'textarea',rows:6},
+      {id:'name',label:'Your name (optional)',req:false,ph:'Leave blank to detect from resume',half:true},
+      {id:'role',label:'Job title (optional)',req:false,ph:'Leave blank to detect from posting',half:true},
+      {id:'company',label:'Company name (optional)',req:false,ph:'Leave blank to detect from posting',half:true},
+      {id:'notes',label:'Extra points to emphasize (optional)',req:false,ph:'Why you love this company, referral name, career pivot story...',type:'textarea'},
     ],
-    prompt:(f,tone)=>`Write a compelling cover letter for ${f.name} applying for ${f.role} at ${f.company}. Experience: ${f.exp}. Skills/achievements: ${f.skills}. Tone: ${tone}. 3-4 paragraphs, specific and tailored. No generic phrases. Ready to send.`
+    prompt:(f,tone)=>`Write a compelling, ready-to-send cover letter.
+
+CANDIDATE RESUME:
+${f.resume}
+
+TARGET JOB POSTING:
+${f.jobdesc}
+
+Applicant name: ${f.name || '(from resume)'}
+Role: ${f.role || '(from job posting)'}
+Company: ${f.company || '(from job posting)'}
+Extra notes: ${f.notes || 'none'}
+
+Instructions:
+- Match specific resume achievements to job requirements — cite real experience only
+- Mirror keywords from the job posting naturally (ATS-friendly)
+- 3-4 paragraphs, ${tone} tone, no generic filler
+- Open with a hook tied to the company or role, close with a clear call to action`
   },
-  { id:'resume-summary', cat:'Career', icon:'📄', name:'Resume summary', desc:'Powerful resume headline & summary section', popular:true,
+  { id:'resume-summary', cat:'Career', icon:'📄', name:'Resume tailor', desc:'Upload your resume + job posting to get tailored summary & bullets', popular:true,
     fields:[
-      {id:'name',label:'Your name',req:true,ph:'Jordan Lee',half:true},
-      {id:'role',label:'Target job title',req:true,ph:'Data Scientist',half:true},
-      {id:'years',label:'Total years experience',req:false,ph:'7 years',half:true},
-      {id:'industry',label:'Industry',req:false,ph:'FinTech',half:true},
-      {id:'skills',label:'Top 5 skills or achievements',req:true,ph:'Python, ML models, reduced churn 25%, team lead, published researcher',type:'textarea'},
+      {id:'resume',label:'Upload your current resume',type:'file',req:true,hint:'PDF, Word, or TXT — parsed in memory, never stored'},
+      {id:'jobdesc',label:'Target job description',req:true,ph:'Paste the job posting you are applying for...',type:'textarea',rows:6},
+      {id:'role',label:'Target job title (optional)',req:false,ph:'e.g. Senior Data Scientist',half:true},
+      {id:'focus',label:'Sections to prioritize (optional)',req:false,ph:'Summary + last 2 roles',half:true},
     ],
-    prompt:(f,tone)=>`Write a professional resume summary for ${f.name}, targeting the role of ${f.role} with ${f.years} of experience in ${f.industry}. Key skills: ${f.skills}. Tone: ${tone}. Include a punchy headline (1 line) then a 3-sentence summary paragraph. Quantify achievements. ATS-friendly.`
+    prompt:(f,tone)=>`Tailor this resume content for a specific job application.
+
+CURRENT RESUME:
+${f.resume}
+
+TARGET JOB POSTING:
+${f.jobdesc}
+
+Target role: ${f.role || '(from job posting)'}
+Focus areas: ${f.focus || 'summary and most relevant experience'}
+
+Instructions:
+- Rewrite ONLY using facts from the resume — never invent employers, dates, or credentials
+- Output in this structure:
+  1) HEADLINE (one punchy line)
+  2) PROFESSIONAL SUMMARY (3 sentences, ATS keywords from job posting)
+  3) TAILORED EXPERIENCE BULLETS (4-6 bullets for the most relevant roles, rewritten to match the job)
+  4) KEY SKILLS TO HIGHLIGHT (comma-separated, drawn from resume + job posting overlap)
+- Tone: ${tone}
+- Optimize for ATS and human recruiters`
   },
-  { id:'linkedin-bio', cat:'Career', icon:'💼', name:'LinkedIn bio', desc:'Standout LinkedIn summary that attracts recruiters', popular:true,
+  { id:'linkedin-bio', cat:'Career', icon:'💼', name:'LinkedIn bio', desc:'Standout LinkedIn summary — upload resume for richer results', popular:true,
     fields:[
+      {id:'resume',label:'Upload resume (optional)',type:'file',req:false,hint:'PDF, Word, or TXT'},
       {id:'name',label:'Your name',req:true,ph:'Marcus Chen',half:true},
       {id:'role',label:'Current role / industry',req:true,ph:'Startup Founder | Fintech',half:true},
-      {id:'achievements',label:'Top achievements',req:true,ph:'Built and sold a SaaS company\n10+ years in finance\nAngel investor in 12 startups',type:'textarea'},
+      {id:'achievements',label:'Top achievements (or leave blank if resume uploaded)',req:false,ph:'Built and sold a SaaS company\n10+ years in finance',type:'textarea'},
       {id:'goal',label:'What you\'re looking for',req:false,ph:'Open to advisory roles and board positions'},
     ],
-    prompt:(f,tone)=>`Write a LinkedIn About section for ${f.name}, ${f.role}. Achievements: ${f.achievements}. Goal: ${f.goal}. Tone: ${tone}. 3 short paragraphs. Open with a hook (not "I am a..."), show personality, quantify wins, end with what they want next. First person.`
+    prompt:(f,tone)=>`Write a LinkedIn About section for ${f.name}, ${f.role}.
+${f.resume ? `RESUME (reference for facts):\n${f.resume}\n` : ''}
+Achievements: ${f.achievements || '(from resume if provided)'}
+Goal: ${f.goal || 'not specified'}
+Tone: ${tone}. 3 short paragraphs. Open with a hook (not "I am a..."), show personality, quantify wins, end with what they want next. First person.`
   },
   { id:'resignation-letter', cat:'Career', icon:'🚪', name:'Resignation letter', desc:'Professional, graceful resignation letters',
     fields:[
@@ -567,15 +807,21 @@ const TOOLS = [
     ],
     prompt:(f,tone)=>`Write a salary negotiation email for ${f.name} at ${f.company}. Current offer: ${f.offer}. Target: ${f.target}. Justification: ${f.reason}. Tone: ${tone}. Confident but collegial. Reference market rates and their specific value. Leave room for compromise. Short.`
   },
-  { id:'interview-thank-you', cat:'Career', icon:'🙏', name:'Interview thank-you', desc:'Follow-up emails that keep you top of mind',
+  { id:'interview-thank-you', cat:'Career', icon:'🙏', name:'Interview thank-you', desc:'Follow-up emails that reference the role and your background', popular:false,
     fields:[
+      {id:'resume',label:'Upload resume (optional)',type:'file',req:false,hint:'Helps personalize your thank-you'},
+      {id:'jobdesc',label:'Job description (optional)',req:false,ph:'Paste the role description for context...',type:'textarea',rows:4},
       {id:'name',label:'Your name',req:true,ph:'Casey Morgan',half:true},
       {id:'interviewer',label:'Interviewer\'s name',req:true,ph:'Dr. Patel',half:true},
       {id:'company',label:'Company',req:true,ph:'Innovate Inc.',half:true},
       {id:'role',label:'Role you interviewed for',req:true,ph:'Head of Product',half:true},
       {id:'highlight',label:'A moment to reference',req:false,ph:'Our conversation about scaling the mobile team'},
     ],
-    prompt:(f,tone)=>`Write a post-interview thank-you email from ${f.name} to ${f.interviewer} at ${f.company} for the ${f.role} role. Reference: ${f.highlight||'the great conversation'}. Tone: ${tone}. Short (5-8 sentences). Reinforce enthusiasm + one key strength. Personal and memorable.`
+    prompt:(f,tone)=>`Write a post-interview thank-you email from ${f.name} to ${f.interviewer} at ${f.company} for the ${f.role} role.
+${f.resume ? `Candidate background:\n${f.resume}\n` : ''}
+${f.jobdesc ? `Role context:\n${f.jobdesc}\n` : ''}
+Interview moment to reference: ${f.highlight||'the great conversation'}
+Tone: ${tone}. Short (5-8 sentences). Tie one resume strength to the role. Personal and memorable.`
   },
   { id:'reference-request', cat:'Career', icon:'🤝', name:'Reference request', desc:'Ask for a reference with grace and clarity',
     fields:[
@@ -937,20 +1183,105 @@ const TOOLS = [
   },
 ];
 
+// Templates that produce standalone documents (resume, letter, proposal, etc.)
+const DOCUMENT_EXPORT_TOOLS = new Set([
+  'cover-letter', 'resume-summary', 'resignation-letter', 'sales-proposal',
+  'recommendation-letter', 'complaint-letter', 'press-release', 'blog-post-outline',
+  'personal-bio', 'startup-one-pager', 'terms-conditions', 'privacy-policy', 'job-posting',
+  'product-description', 'landing-page-copy', 'property-listing', 'rental-listing',
+  'airbnb-description', 'wedding-speech', 'farewell-message', 'thank-you-note',
+]);
+
+// Email-style templates — copy/paste only, with a tailored hint
+const EMAIL_COPY_TOOLS = new Set([
+  'job-offer-negotiation', 'interview-thank-you', 'reference-request',
+  'cold-email', 'follow-up-email', 'testimonial-request', 'partnership-pitch',
+  'apology-email', 'investor-email', 'customer-onboarding', 'support-response',
+  'churn-win-back', 'fundraising-appeal', 'newsletter',
+]);
+
+function toolSupportsDocExport(tool) {
+  return DOCUMENT_EXPORT_TOOLS.has(tool?.id);
+}
+
 // ================================================================ 
-// STATE
+// STATE (server-authoritative)
 // ================================================================
-const FREE_LIMIT = 3;
-let credits    = parseInt(localStorage.getItem('wf_credits') || '5');
-let freeToday  = parseInt(localStorage.getItem('wf_free_today') || '0');
-let freeDate   = localStorage.getItem('wf_free_date') || '';
-let isPro      = localStorage.getItem('wf_pro') === 'true';
+let currentUser = null;
+let usage = { freeRemaining: 3, freeLimit: 3, credits: 0, isPro: false, unlimited: false, plan: 'anonymous', features: {} };
+let presetLimit = 0;
+let appConfig = { stripeLinks: {}, allowDemoCheckout: false, creditCosts: {} };
+
+function getToolCreditCost(toolId) {
+  return appConfig.creditCosts?.[toolId] ?? 1;
+}
+
+function getActiveOutput() {
+  if (variantOutputs.length > 0) return variantOutputs[activeVariant] || '';
+  return currentOutput;
+}
+
+function resetVariantState() {
+  variantOutputs = [];
+  activeVariant = 0;
+  document.getElementById('variant-tabs').classList.add('hidden');
+  document.getElementById('variant-tabs').innerHTML = '';
+}
+
+function renderVariantTabs() {
+  const tabs = document.getElementById('variant-tabs');
+  if (variantOutputs.length < 2) {
+    tabs.classList.add('hidden');
+    tabs.innerHTML = '';
+    return;
+  }
+  tabs.classList.remove('hidden');
+  tabs.innerHTML = variantOutputs.map((_, i) =>
+    `<button type="button" class="variant-tab${i === activeVariant ? ' active' : ''}" onclick="selectVariant(${i})">Variant ${i + 1}</button>`
+  ).join('');
+}
+
+function selectVariant(index) {
+  if (!variantOutputs[index]) return;
+  activeVariant = index;
+  currentOutput = variantOutputs[index];
+  document.getElementById('output-box').textContent = currentOutput;
+  renderVariantTabs();
+  const wc = currentOutput.split(/\s+/).filter(Boolean).length;
+  document.getElementById('word-count').textContent = `${wc} words · ${currentOutput.length} characters`;
+  updateOutputExportButtons();
+}
+const PRICING = {
+  pro:      { monthly: 12, annual: 9 },
+  business: { monthly: 39, annual: 29 },
+};
+
 let annualBilling = false;
+
+function planDisplayPrice(plan) {
+  const p = PRICING[plan];
+  return annualBilling ? p.annual : p.monthly;
+}
+
+function planCtaLabel(plan) {
+  const amt = planDisplayPrice(plan);
+  return annualBilling ? `$${amt}/mo billed annually` : `$${amt}/mo`;
+}
+
+function planOrigPrice(plan) {
+  return `$${PRICING[plan].monthly}`;
+}
+
+function annualSavingsPercent(plan) {
+  const p = PRICING[plan];
+  return Math.round((1 - p.annual / p.monthly) * 100);
+}
 let currentTool = TOOLS[0];
 let currentOutput = '';
-
-const today = new Date().toDateString();
-if (freeDate !== today) { freeToday = 0; localStorage.setItem('wf_free_today','0'); localStorage.setItem('wf_free_date',today); }
+let variantOutputs = [];
+let activeVariant = 0;
+let tonePresets = [];
+let uploadedTexts = {};
 
 // ================================================================ 
 // SIDEBAR BUILD
@@ -1012,6 +1343,8 @@ function selectTool(id) {
   if (!tool) return;
   currentTool = tool;
   currentOutput = '';
+  resetVariantState();
+  uploadedTexts = {};
 
   // Sidebar highlight
   document.querySelectorAll('.sidebar-tool').forEach(el => el.classList.remove('active'));
@@ -1032,7 +1365,9 @@ function selectTool(id) {
   const tagsEl = document.getElementById('panel-tags');
   tagsEl.innerHTML = '';
   if (tool.popular) tagsEl.innerHTML += `<span class="panel-tag tag-popular">⭐ Popular</span>`;
-  tagsEl.innerHTML += `<span class="panel-tag tag-credit">⚡ 1 credit</span>`;
+  const cost = getToolCreditCost(tool.id);
+  const costLabel = usage.unlimited ? 'Unlimited' : `${cost} credit${cost === 1 ? '' : 's'}`;
+  tagsEl.innerHTML += `<span class="panel-tag tag-credit">⚡ ${costLabel}</span>`;
 
   // Build fields
   buildFields(tool);
@@ -1042,6 +1377,7 @@ function selectTool(id) {
   document.getElementById('output-acts').style.display = 'none';
   document.getElementById('word-count').textContent = '';
   document.getElementById('error-msg').classList.remove('show');
+  updateOutputExportButtons();
   updateLimitBar();
 }
 
@@ -1089,11 +1425,40 @@ function buildField(f) {
   label.innerHTML = f.label + (f.req ? '<span>*</span>' : '');
   wrap.appendChild(label);
 
+  if (f.type === 'file') {
+    const box = document.createElement('div');
+    box.className = 'file-upload-wrap';
+    box.id = 'file-wrap-' + f.id;
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.id = 'f-' + f.id;
+    input.accept = '.pdf,.doc,.docx,.txt,application/pdf,text/plain';
+    input.addEventListener('change', () => handleFileUpload(f.id, input, box));
+    const lbl = document.createElement('label');
+    lbl.className = 'file-upload-label';
+    lbl.setAttribute('for', 'f-' + f.id);
+    lbl.innerHTML = '📎 &nbsp;Choose file (PDF, Word, TXT)';
+    const meta = document.createElement('div');
+    meta.className = 'file-upload-meta';
+    meta.id = 'file-meta-' + f.id;
+    box.appendChild(input);
+    box.appendChild(lbl);
+    box.appendChild(meta);
+    if (f.hint) {
+      const hint = document.createElement('div');
+      hint.className = 'file-hint';
+      hint.textContent = f.hint;
+      box.appendChild(hint);
+    }
+    wrap.appendChild(box);
+    return wrap;
+  }
+
   let el;
   if (f.type === 'textarea') {
     el = document.createElement('textarea');
     el.placeholder = f.ph || '';
-    el.rows = 3;
+    el.rows = f.rows || 3;
   } else if (f.type === 'select') {
     el = document.createElement('select');
     (f.opts || []).forEach(o => {
@@ -1111,131 +1476,354 @@ function buildField(f) {
   return wrap;
 }
 
+async function handleFileUpload(fieldId, input, box) {
+  const meta = document.getElementById('file-meta-' + fieldId);
+  const file = input.files?.[0];
+  if (!file) return;
+
+  box.classList.add('loading');
+  meta.className = 'file-upload-meta';
+  meta.textContent = 'Reading ' + file.name + '…';
+
+  try {
+    const form = new FormData();
+    form.append('file', file);
+    const res = await fetch('/api/parse/document', { method: 'POST', body: form, credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+    uploadedTexts[fieldId] = data.text;
+    box.classList.add('has-file');
+    meta.className = 'file-upload-meta ok';
+    meta.textContent = `✓ ${data.filename} — ${data.chars.toLocaleString()} characters extracted${data.truncated ? ' (trimmed to fit)' : ''}`;
+    showToast('Document ready — text extracted', 'success');
+  } catch (err) {
+    uploadedTexts[fieldId] = '';
+    box.classList.remove('has-file');
+    meta.className = 'file-upload-meta err';
+    meta.textContent = '⚠ ' + err.message;
+    input.value = '';
+  } finally {
+    box.classList.remove('loading');
+  }
+}
+
 function getFieldValues() {
   const vals = {};
   currentTool.fields.forEach(f => {
-    const el = document.getElementById('f-' + f.id);
-    vals[f.id] = el ? el.value.trim() : '';
+    if (f.type === 'file') {
+      vals[f.id] = uploadedTexts[f.id] || '';
+    } else {
+      const el = document.getElementById('f-' + f.id);
+      vals[f.id] = el ? el.value.trim() : '';
+    }
   });
   return vals;
 }
 
 function validateFields() {
   const vals = getFieldValues();
-  return currentTool.fields.filter(f => f.req).every(f => vals[f.id]);
+  const missing = currentTool.fields.filter(f => {
+    if (!f.req) return false;
+    if (f.type === 'file') return !uploadedTexts[f.id];
+    return !vals[f.id];
+  });
+  if (missing.length) {
+    const err = document.getElementById('error-msg');
+    const names = missing.map(f => f.label.replace(' (optional)', '')).join(', ');
+    err.textContent = '⚠ Please complete required fields: ' + names;
+    return false;
+  }
+  return true;
 }
 
 // ================================================================ 
 // LIMIT BAR
 // ================================================================
 function updateLimitBar() {
-  const remaining = Math.max(0, FREE_LIMIT - freeToday);
-  const pct = (remaining / FREE_LIMIT) * 100;
+  const remaining = usage.freeRemaining ?? 0;
+  const limit = usage.freeLimit || 3;
+  const pct = usage.unlimited ? 100 : (remaining / limit) * 100;
   document.getElementById('limit-fill').style.width = pct + '%';
-  if (isPro) {
-    document.getElementById('limit-text').textContent = '∞ Unlimited generations — Pro plan';
-  } else if (credits > 0) {
-    document.getElementById('limit-text').textContent = `${credits} credits + ${remaining} free uses left today`;
+
+  if (usage.unlimited) {
+    document.getElementById('limit-text').textContent = `∞ Unlimited — ${usage.plan === 'business' ? 'Business' : 'Pro'} plan`;
+  } else if (usage.credits > 0) {
+    document.getElementById('limit-text').textContent = `${usage.credits} credits + ${remaining} free uses left today`;
   } else {
     document.getElementById('limit-text').textContent = `${remaining} free ${remaining === 1 ? 'use' : 'uses'} remaining today`;
   }
-  document.getElementById('credits-display').textContent = credits;
+  const pillAmt = document.getElementById('credits-display');
+  const pillLbl = document.getElementById('credits-label');
+  if (usage.unlimited) {
+    pillAmt.textContent = '∞';
+    pillLbl.textContent = 'unlimited';
+    pillLbl.style.color = 'var(--accent2)';
+  } else if (usage.credits > 0) {
+    pillAmt.textContent = usage.credits;
+    pillLbl.textContent = 'credits';
+    pillLbl.style.color = 'var(--muted)';
+  } else {
+    pillAmt.textContent = remaining;
+    pillLbl.textContent = remaining === 1 ? 'free today' : 'free today';
+    pillLbl.style.color = 'var(--muted)';
+  }
+
+  updateToolCreditTag();
+  updateFeatureGates();
+}
+
+function updateToolCreditTag() {
+  const tag = document.querySelector('#panel-tags .tag-credit');
+  if (!tag || !currentTool) return;
+  const cost = getToolCreditCost(currentTool.id);
+  tag.textContent = usage.unlimited
+    ? '⚡ Unlimited'
+    : `⚡ ${cost} credit${cost === 1 ? '' : 's'}`;
+}
+
+function updateFeatureGates() {
+  const f = usage.features || {};
+  document.getElementById('btn-upgrade').classList.toggle('hidden', !!usage.unlimited);
+  document.getElementById('btn-history').classList.toggle('hidden', !f.outputHistory);
+  document.getElementById('preset-row').classList.toggle('hidden', !f.tonePresetLimit);
+  document.getElementById('gen-bulk-btn').classList.toggle('hidden', !f.bulkGeneration);
+  document.getElementById('priority-badge').classList.toggle('hidden', !f.priorityProcessing);
+  updateOutputExportButtons();
+}
+
+function updateOutputExportButtons() {
+  const f = usage.features || {};
+  const docTool = toolSupportsDocExport(currentTool);
+  const hasOutput = !!currentOutput?.trim();
+
+  document.getElementById('btn-docx').classList.toggle('hidden', !docTool || !f.exportDocx);
+  document.getElementById('btn-txt').classList.toggle('hidden', !docTool || !f.exportTxt);
+  document.getElementById('btn-pdf').classList.toggle('hidden', !docTool || !f.exportDocx);
+
+  const hint = document.getElementById('output-export-hint');
+  const showHint = !docTool && hasOutput;
+  hint.classList.toggle('hidden', !showHint);
+  if (showHint) {
+    hint.textContent = EMAIL_COPY_TOOLS.has(currentTool.id)
+      ? 'Copy and paste into your email client — file export isn\'t needed for this template.'
+      : 'Copy and paste into the app or platform you\'re using — file export isn\'t needed for this template.';
+  }
+}
+
+function updateAuthUI() {
+  const loggedIn = !!currentUser;
+  document.getElementById('btn-login').classList.toggle('hidden', loggedIn);
+  document.getElementById('btn-logout').classList.toggle('hidden', !loggedIn);
+  document.getElementById('user-pill').classList.toggle('hidden', !loggedIn);
+  document.getElementById('nav-tab-account').classList.toggle('hidden', !loggedIn);
+  if (loggedIn) {
+    document.getElementById('user-email').textContent = currentUser.name || currentUser.email.split('@')[0];
+  }
+  updateFeatureGates();
+}
+
+async function refreshSession() {
+  try {
+    const res = await fetch('/api/auth/me', { credentials: 'include' });
+    const data = await res.json();
+    currentUser = data.user;
+    usage = data.usage;
+    updateLimitBar();
+    updateAuthUI();
+    updateFeatureGates();
+    updatePricingUI();
+    if (usage.unlimited) loadPresets();
+  } catch (e) {
+    console.error('Session refresh failed', e);
+  }
+}
+
+async function loadConfig() {
+  try {
+    const res = await fetch('/api/config', { credentials: 'include' });
+    const data = await res.json();
+    appConfig = data;
+    if (data.usage) usage = data.usage;
+    updateLimitBar();
+  } catch (e) {
+    console.error('Config load failed', e);
+  }
 }
 
 // ================================================================ 
 // GENERATE — Fixed to use backend proxy
 // ================================================================
-async function generate() {
+async function generate(variants) {
+  const variantCount = variants === 3 ? 3 : 0;
   if (!validateFields()) {
     document.getElementById('error-msg').classList.add('show');
     return;
   }
   document.getElementById('error-msg').classList.remove('show');
 
-  if (!isPro && credits <= 0 && freeToday >= FREE_LIMIT) {
-    openUpgradeModal(); return;
-  }
-
-  // Deduct
-  if (!isPro) {
-    if (credits > 0) { credits--; localStorage.setItem('wf_credits', credits); }
-    else { freeToday++; localStorage.setItem('wf_free_today', freeToday); }
-    updateLimitBar();
-  }
-
   const vals = getFieldValues();
   const tone = document.getElementById('tone-select').value;
   const prompt = currentTool.prompt(vals, tone);
 
-  // Loading state
   const btn = document.getElementById('gen-btn');
+  const bulkBtn = document.getElementById('gen-bulk-btn');
   btn.disabled = true;
+  bulkBtn.disabled = true;
   btn.classList.add('loading');
 
   const box = document.getElementById('output-box');
   box.className = 'output-box active';
-  box.innerHTML = '<span class="cursor-blink"></span>';
+  box.innerHTML = variantCount === 3
+    ? '<span class="output-placeholder">Generating variant 1 of 3…</span>'
+    : '<span class="cursor-blink"></span>';
   document.getElementById('output-acts').style.display = 'none';
   document.getElementById('word-count').textContent = '';
   currentOutput = '';
+  resetVariantState();
 
   try {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({
-        prompt: prompt,
-        isPro: isPro,
-        credits: credits
-      })
+        prompt,
+        toolId: currentTool.id,
+        toolName: currentTool.name,
+        tone,
+        variants: variantCount,
+      }),
     });
 
-    if (!res.ok) throw new Error('Server error: ' + res.status);
+    if (res.status === 403) {
+      const data = await res.json().catch(() => ({}));
+      showToast(data.error || 'Upgrade required', 'error');
+      if (data.upgrade) openUpgradeModal();
+      return;
+    }
+
+    if (res.status === 429) {
+      const data = await res.json().catch(() => ({}));
+      if (data.usage) usage = data.usage;
+      updateLimitBar();
+      openUpgradeModal();
+      if (data.message) showToast(data.message, 'error');
+      return;
+    }
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || 'Server error: ' + res.status);
+    }
 
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
     box.innerHTML = '';
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+    if (variantCount === 3) {
+      variantOutputs = ['', '', ''];
+      let streamIndex = 0;
 
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6).trim();
-        if (!data || data === '[DONE]') continue;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
 
-        try {
-          const event = JSON.parse(data);
-          if (event.type === 'content_block_delta' && event.delta?.text) {
-            currentOutput += event.delta.text;
-            box.textContent = currentOutput;
-          }
-        } catch (e) {
-          if (data.length > 5) {
-            currentOutput += data;
-            box.textContent = currentOutput;
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const raw = line.slice(6).trim();
+          if (!raw || raw === '[DONE]') continue;
+
+          let event;
+          try { event = JSON.parse(raw); } catch { continue; }
+
+          if (event.type === 'variant_start') {
+            streamIndex = event.index;
+            activeVariant = streamIndex;
+            box.textContent = '';
+            box.innerHTML = `<span class="output-placeholder">Generating ${event.label}…</span>`;
+            renderVariantTabs();
+          } else if (event.type === 'delta' && typeof event.index === 'number') {
+            if (box.querySelector('.output-placeholder')) box.innerHTML = '';
+            variantOutputs[event.index] = (variantOutputs[event.index] || '') + event.text;
+            if (event.index === activeVariant) {
+              currentOutput = variantOutputs[event.index];
+              box.textContent = currentOutput;
+            }
+          } else if (event.type === 'variant_end') {
+            renderVariantTabs();
           }
         }
       }
-    }
 
-    box.className = 'output-box';
-    document.getElementById('output-acts').style.display = 'flex';
-    const wc = currentOutput.split(/\s+/).filter(Boolean).length;
-    document.getElementById('word-count').textContent = `${wc} words · ${currentOutput.length} characters`;
+      const completed = variantOutputs.filter(v => v?.trim());
+      if (completed.length) {
+        activeVariant = 0;
+        currentOutput = variantOutputs[0];
+        box.className = 'output-box';
+        box.textContent = currentOutput;
+        renderVariantTabs();
+        document.getElementById('output-acts').style.display = 'flex';
+        const wc = currentOutput.split(/\s+/).filter(Boolean).length;
+        document.getElementById('word-count').textContent = `${wc} words · ${completed.length} variants`;
+        updateOutputExportButtons();
+        await refreshSession();
+      } else {
+        throw new Error('Empty response from AI');
+      }
+    } else {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6).trim();
+          if (!data || data === '[DONE]') continue;
+
+          try {
+            const event = JSON.parse(data);
+            if (event.type === 'content_block_delta' && event.delta?.text) {
+              currentOutput += event.delta.text;
+              box.textContent = currentOutput;
+            }
+          } catch (e) {
+            if (data.length > 5) {
+              currentOutput += data;
+              box.textContent = currentOutput;
+            }
+          }
+        }
+      }
+
+      if (currentOutput.trim()) {
+        box.className = 'output-box';
+        document.getElementById('output-acts').style.display = 'flex';
+        const wc = currentOutput.split(/\s+/).filter(Boolean).length;
+        document.getElementById('word-count').textContent = `${wc} words · ${currentOutput.length} characters`;
+        updateOutputExportButtons();
+        await refreshSession();
+      } else {
+        throw new Error('Empty response from AI');
+      }
+    }
 
   } catch (err) {
     box.className = 'output-box';
-    box.innerHTML = `<span style="color:#f43f5e">⚠ Error: ${err.message}<br><br>Make sure the backend server is running.</span>`;
+    box.innerHTML = `<span style="color:#f43f5e">⚠ Error: ${err.message}</span>`;
   }
 
   btn.disabled = false;
+  bulkBtn.disabled = false;
   btn.classList.remove('loading');
 }
 
@@ -1243,16 +1831,69 @@ async function generate() {
 // COPY / DOWNLOAD
 // ================================================================
 function copyOutput() {
-  if (!currentOutput) return;
-  navigator.clipboard.writeText(currentOutput).then(() => showToast('Copied to clipboard!', 'success'));
+  const text = getActiveOutput();
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!', 'success'));
 }
-function downloadOutput() {
-  if (!currentOutput) return;
-  const blob = new Blob([currentOutput], { type: 'text/plain' });
+
+function exportFilename(ext) {
+  const base = (currentTool?.id || 'writeflow-output').replace(/[^\w-]/g, '');
+  const suffix = variantOutputs.length > 1 ? `-variant-${activeVariant + 1}` : '';
+  return `${base}${suffix}.${ext}`;
+}
+
+function downloadOutput(format) {
+  const text = getActiveOutput();
+  if (!text) return;
+  if (!toolSupportsDocExport(currentTool)) return;
+  const f = usage.features || {};
+  if ((format === 'docx' || format === 'pdf') && !f.exportDocx) { openUpgradeModal(); return; }
+  if (format === 'txt' && !f.exportTxt) { openUpgradeModal(); return; }
+
+  if (format === 'docx') {
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head><body><pre style="font-family:Calibri,sans-serif;white-space:pre-wrap">${text.replace(/</g,'&lt;')}</pre></body></html>`;
+    const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = exportFilename('docx'); a.click();
+    URL.revokeObjectURL(url);
+    showToast('Downloaded as Word document', 'success');
+    return;
+  }
+
+  if (format === 'pdf') {
+    if (!window.jspdf?.jsPDF) {
+      showToast('PDF export failed to load — refresh and try again', 'error');
+      return;
+    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'letter' });
+    const margin = 15;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const maxWidth = pageWidth - margin * 2;
+    const lineHeight = 6;
+    const lines = doc.splitTextToSize(text, maxWidth);
+    let y = margin;
+    lines.forEach(line => {
+      if (y + lineHeight > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+      doc.text(line, margin, y);
+      y += lineHeight;
+    });
+    doc.save(exportFilename('pdf'));
+    showToast('Downloaded as PDF', 'success');
+    return;
+  }
+
+  const blob = new Blob([text], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = currentTool.id + '.txt'; a.click();
+  a.href = url; a.download = exportFilename('txt'); a.click();
   URL.revokeObjectURL(url);
+  showToast('Downloaded as text file', 'success');
 }
 
 // ================================================================ 
@@ -1272,10 +1913,70 @@ function filterTools(q) {
 // PAGE NAV
 // ================================================================
 function showPage(page) {
-  document.getElementById('page-tools').style.display = page === 'tools' ? '' : 'none';
-  document.getElementById('page-pricing').style.display = page === 'pricing' ? '' : 'none';
-  document.querySelectorAll('.nav-tab').forEach((t, i) => t.classList.toggle('active', (i===0 && page==='tools') || (i===1 && page==='pricing')));
+  if (page === 'account' && !currentUser) {
+    openAuthModal('login');
+    return;
+  }
+  document.getElementById('page-tools').style.display = page === 'tools' ? 'block' : 'none';
+  document.getElementById('page-pricing').style.display = page === 'pricing' ? 'block' : 'none';
+  document.getElementById('page-account').style.display = page === 'account' ? 'block' : 'none';
+  document.getElementById('nav-tab-tools').classList.toggle('active', page === 'tools');
+  document.getElementById('nav-tab-pricing').classList.toggle('active', page === 'pricing');
+  document.getElementById('nav-tab-account').classList.toggle('active', page === 'account');
+  if (page === 'pricing') updatePricingUI();
+  if (page === 'account') renderAccountPanel();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handleFreePlan() {
+  if (!currentUser) { openAuthModal('register'); return; }
+  showPage('tools');
+  showToast('You are on the free plan — 3 generations per day', 'info');
+}
+
+function updatePricingUI() {
+  const plan = usage.unlimited ? usage.plan : (currentUser ? 'free' : 'guest');
+  const freeBtn = document.getElementById('plan-btn-free');
+  const proBtn = document.getElementById('plan-btn-pro');
+  const bizBtn = document.getElementById('plan-btn-business');
+  const status = document.getElementById('pricing-status');
+
+  const resetBtn = (btn, label, isCurrent) => {
+    btn.classList.toggle('current', isCurrent);
+    btn.classList.toggle('plan-btn-primary', !isCurrent && btn.id === 'plan-btn-pro');
+    btn.classList.toggle('plan-btn-ghost', isCurrent || btn.id !== 'plan-btn-pro');
+    btn.disabled = isCurrent;
+    if (isCurrent) btn.textContent = '✓ Current plan';
+    else btn.innerHTML = label;
+  };
+
+  if (plan === 'pro') {
+    resetBtn(freeBtn, 'Start free', false);
+    resetBtn(proBtn, '', true);
+    resetBtn(bizBtn, `Get Business → <span id="biz-cta-price">${planCtaLabel('business')}</span>`, false);
+    if (status) status.innerHTML = '<strong>Pro plan active</strong> — You have unlimited generations. Manage billing from your Stripe receipt.';
+  } else if (plan === 'business') {
+    resetBtn(freeBtn, 'Start free', false);
+    resetBtn(proBtn, `Get Pro → <span id="pro-cta-price">${planCtaLabel('pro')}</span>`, false);
+    resetBtn(bizBtn, '', true);
+    if (status) status.innerHTML = '<strong>Business plan active</strong> — Unlimited generations for your team. Manage billing from your Stripe receipt.';
+  } else {
+    resetBtn(freeBtn, currentUser ? '✓ Current plan' : 'Start free — sign up', !!currentUser);
+    freeBtn.disabled = !!currentUser;
+    if (currentUser) freeBtn.classList.add('current');
+    proBtn.disabled = false;
+    proBtn.classList.remove('current');
+    proBtn.classList.add('plan-btn-primary');
+    proBtn.innerHTML = `Get Pro → <span id="pro-cta-price">${planCtaLabel('pro')}</span>`;
+    bizBtn.disabled = false;
+    bizBtn.classList.remove('current');
+    bizBtn.innerHTML = `Get Business → <span id="biz-cta-price">${planCtaLabel('business')}</span>`;
+    if (status) {
+      status.innerHTML = currentUser
+        ? '<strong>Free plan</strong> — 3 generations per day. Upgrade to Pro for unlimited writing, or buy a credit pack below.'
+        : '<strong>Subscriptions</strong> — Create a free account, then checkout with the <strong>same email</strong>. Pro and Business renew automatically until you cancel.';
+    }
+  }
 }
 
 // ================================================================ 
@@ -1285,11 +1986,18 @@ function toggleBilling() {
   annualBilling = !annualBilling;
   const tr = document.getElementById('billing-toggle');
   tr.classList.toggle('on', annualBilling);
-  document.getElementById('pro-price').textContent = annualBilling ? '$7' : '$12';
-  document.getElementById('biz-price').textContent = annualBilling ? '$23' : '$39';
+  document.getElementById('pro-price').textContent = '$' + planDisplayPrice('pro');
+  document.getElementById('biz-price').textContent = '$' + planDisplayPrice('business');
+  document.getElementById('pro-orig').textContent = planOrigPrice('pro');
+  document.getElementById('biz-orig').textContent = planOrigPrice('business');
   document.getElementById('pro-orig').style.display = annualBilling ? '' : 'none';
   document.getElementById('biz-orig').style.display = annualBilling ? '' : 'none';
-  document.getElementById('pro-cta-price').textContent = annualBilling ? '$7/mo billed annually' : '$12/mo';
+  document.getElementById('pro-cta-price').textContent = planCtaLabel('pro');
+  const bizCta = document.getElementById('biz-cta-price');
+  if (bizCta) bizCta.textContent = planCtaLabel('business');
+  const saveBadge = document.getElementById('save-badge');
+  if (saveBadge) saveBadge.textContent = 'Save ' + annualSavingsPercent('pro') + '%';
+  if (document.getElementById('page-pricing').style.display === 'block') updatePricingUI();
 }
 
 // ================================================================ 
@@ -1302,29 +2010,206 @@ document.getElementById('upgrade-modal').addEventListener('click', e => { if (e.
 // ================================================================ 
 // CHECKOUT
 // ================================================================
+function resolveStripeLink(plan) {
+  const links = appConfig.stripeLinks || {};
+  if (plan === 'pro') return annualBilling ? (links['pro-annual'] || links.pro) : links.pro;
+  if (plan === 'business') return annualBilling ? (links['business-annual'] || links.business) : links.business;
+  return links[plan] || '';
+}
+
 function handleCheckout(plan) {
-  const links = {
-    'pro':       'https://buy.stripe.com/YOUR_PRO_LINK',
-    'business':  'https://buy.stripe.com/YOUR_BIZ_LINK',
-    'pack-50':   'https://buy.stripe.com/YOUR_50_LINK',
-    'pack-200':  'https://buy.stripe.com/YOUR_200_LINK',
-    'pack-500':  'https://buy.stripe.com/YOUR_500_LINK',
-    'pack-1000': 'https://buy.stripe.com/YOUR_1000_LINK',
-  };
-  if (links[plan]?.includes('YOUR_')) {
-    const demo = { 'pro': () => { isPro=true; localStorage.setItem('wf_pro','true'); updateLimitBar(); closeUpgradeModal(); showToast('Pro activated (demo mode)!','success'); },
-      'pack-50':()=>addCredits(50),'pack-200':()=>addCredits(200),'pack-500':()=>addCredits(500),'pack-1000':()=>addCredits(1000),
-      'business':()=>{ isPro=true; localStorage.setItem('wf_pro','true'); updateLimitBar(); showToast('Business activated (demo mode)!','success'); }
-    };
-    if (demo[plan]) demo[plan]();
+  const url = resolveStripeLink(plan);
+  if (url) {
+    window.open(url, '_blank');
+    showToast('Complete checkout, then log in with the same email.', 'info');
     return;
   }
-  window.open(links[plan], '_blank');
+  if (appConfig.allowDemoCheckout) {
+    if (!currentUser) { openAuthModal('register'); return; }
+    fetch('/api/dev/checkout', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+      body: JSON.stringify({ plan }),
+    }).then(r => r.json()).then(data => {
+      if (data.user) { currentUser = data.user; usage = data.usage; updateLimitBar(); updateAuthUI(); updatePricingUI(); closeUpgradeModal(); }
+      showToast(data.demo ? 'Plan activated (dev demo)' : (data.error || 'Done'), data.demo ? 'success' : 'error');
+      if (usage.unlimited) loadPresets();
+    }).catch(() => showToast('Demo checkout failed', 'error'));
+    return;
+  }
+  if (!currentUser) {
+    openAuthModal('register');
+    showToast('Create an account, then complete Stripe checkout with the same email.', 'info');
+    return;
+  }
+  showToast('Add STRIPE_LINK_* URLs to your .env file to enable payments.', 'error');
 }
-function addCredits(n) {
-  credits += n; localStorage.setItem('wf_credits', credits);
-  updateLimitBar(); closeUpgradeModal();
-  showToast(`${n} credits added (demo mode)!`, 'success');
+
+// ================================================================ 
+// AUTH
+// ================================================================
+function openAuthModal(tab) {
+  switchAuthTab(tab || 'login');
+  document.getElementById('auth-modal').classList.remove('hidden');
+}
+function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
+document.getElementById('auth-modal').addEventListener('click', e => { if (e.target.id === 'auth-modal') closeAuthModal(); });
+
+function switchAuthTab(tab) {
+  document.getElementById('auth-tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('auth-tab-register').classList.toggle('active', tab === 'register');
+  document.getElementById('auth-login-form').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('auth-register-form').style.display = tab === 'register' ? '' : 'none';
+}
+
+async function submitLogin() {
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.classList.remove('show');
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    currentUser = data.user;
+    usage = data.usage;
+    updateLimitBar(); updateAuthUI(); updatePricingUI(); closeAuthModal();
+    showToast('Welcome back!', 'success');
+    if (usage.unlimited) loadPresets();
+    if (document.getElementById('page-account').style.display === 'block') renderAccountPanel();
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+  }
+}
+
+async function submitRegister() {
+  const name = document.getElementById('register-name').value;
+  const email = document.getElementById('register-email').value;
+  const password = document.getElementById('register-password').value;
+  const errEl = document.getElementById('register-error');
+  errEl.classList.remove('show');
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+      body: JSON.stringify({ name, email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Registration failed');
+    currentUser = data.user;
+    usage = data.usage;
+    updateLimitBar(); updateAuthUI(); updatePricingUI(); closeAuthModal();
+    showToast('Account created!', 'success');
+    if (usage.unlimited) loadPresets();
+    showPage('account');
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+  }
+}
+
+async function logout() {
+  await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+  currentUser = null;
+  tonePresets = [];
+  document.getElementById('history-panel').classList.remove('open');
+  await refreshSession();
+  showPage('tools');
+  showToast('Logged out', 'info');
+}
+
+// ================================================================ 
+// HISTORY & PRESETS (Pro)
+// ================================================================
+async function loadHistory() {
+  try {
+    const res = await fetch('/api/history', { credentials: 'include' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const panel = document.getElementById('history-panel');
+    if (!data.history?.length) {
+      panel.innerHTML = '<p style="font-size:13px;color:var(--muted)">No saved generations yet.</p>';
+      return;
+    }
+    panel.innerHTML = data.history.map(h => `
+      <div class="history-item" onclick="loadHistoryItem('${h.id}')">
+        <div class="history-title">${h.tool_name || 'Generation'}</div>
+        <div class="history-meta">${new Date(h.created_at).toLocaleString()} · ${h.word_count || 0} words</div>
+      </div>`).join('');
+    window._historyCache = Object.fromEntries(data.history.map(h => [h.id, h]));
+  } catch (e) { console.error(e); }
+}
+
+function loadHistoryItem(id) {
+  const item = window._historyCache?.[id];
+  if (!item) return;
+  resetVariantState();
+  currentOutput = item.output;
+  document.getElementById('output-box').textContent = currentOutput;
+  document.getElementById('output-acts').style.display = 'flex';
+  document.getElementById('word-count').textContent = `${item.word_count || 0} words`;
+  updateOutputExportButtons();
+}
+
+async function toggleHistory() {
+  const panel = document.getElementById('history-panel');
+  const open = panel.classList.toggle('open');
+  if (open) await loadHistory();
+}
+
+async function loadPresets() {
+  try {
+    const res = await fetch('/api/presets', { credentials: 'include' });
+    if (!res.ok) return;
+    const data = await res.json();
+    tonePresets = data.presets || [];
+    renderPresets();
+  } catch (e) { console.error(e); }
+}
+
+function renderPresets() {
+  const row = document.getElementById('preset-row');
+  const f = usage.features || {};
+  if (!f.tonePresetLimit) { row.classList.add('hidden'); return; }
+  row.classList.remove('hidden');
+  const limitLabel = f.tonePresetLimit < 0
+    ? `${tonePresets.length} presets (unlimited)`
+    : `${tonePresets.length}/${f.tonePresetLimit} presets`;
+  const chips = tonePresets.map(p =>
+    `<button class="preset-chip" onclick="applyPreset('${p.value.replace(/'/g,"\\'")}')">${p.name}<span class="del" onclick="event.stopPropagation();deletePreset('${p.id}')">✕</span></button>`
+  ).join('');
+  const canAdd = f.tonePresetLimit < 0 || tonePresets.length < f.tonePresetLimit;
+  row.innerHTML = `<span class="preset-limit">${limitLabel}</span>` + chips + (canAdd ? `<button class="preset-chip" onclick="saveCurrentPreset()">+ Save tone</button>` : '');
+}
+
+async function deletePreset(id) {
+  await fetch('/api/presets/' + id, { method: 'DELETE', credentials: 'include' });
+  await loadPresets();
+  showToast('Preset removed', 'info');
+}
+
+function applyPreset(value) {
+  const sel = document.getElementById('tone-select');
+  if ([...sel.options].some(o => o.value === value)) sel.value = value;
+  else showToast('Custom tone: ' + value, 'info');
+}
+
+async function saveCurrentPreset() {
+  const name = prompt('Name this tone preset:');
+  if (!name) return;
+  const value = document.getElementById('tone-select').value;
+  try {
+    const res = await fetch('/api/presets', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+      body: JSON.stringify({ name, value }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    await loadPresets();
+    showToast('Tone preset saved', 'success');
+  } catch (e) { showToast(e.message, 'error'); }
 }
 
 // ================================================================ 
@@ -1338,13 +2223,131 @@ function showToast(msg, type = 'info') {
 }
 
 // ================================================================ 
+// ACCOUNT PAGE
+// ================================================================
+async function renderAccountPanel() {
+  const el = document.getElementById('account-content');
+  const f = usage.features || {};
+  if (!currentUser) {
+    el.innerHTML = '<div class="account-card"><p style="color:var(--muted)">Please <a href="#" onclick="openAuthModal(\'login\');return false" style="color:var(--accent-bright)">log in</a> to view your account.</p></div>';
+    return;
+  }
+
+  const badgeClass = usage.plan === 'business' ? 'plan-badge biz' : 'plan-badge';
+  const usageLine = usage.unlimited
+    ? '<div class="account-stat"><span>Generations</span><strong>∞ Unlimited</strong></div>'
+    : `<div class="account-stat"><span>Free generations today</span><strong>${usage.freeRemaining} of ${usage.freeLimit} left</strong></div>
+       <div class="account-stat"><span>Paid credit packs</span><strong>${usage.credits} <span style="font-size:12px;color:var(--muted2);font-weight:400">(from one-time purchases)</span></strong></div>`;
+
+  let html = `
+    <div class="account-card">
+      <h3>Profile <span class="${badgeClass}">${f.label || usage.plan}</span></h3>
+      <div class="account-stat"><span>Email</span><strong>${currentUser.email}</strong></div>
+      ${currentUser.name ? `<div class="account-stat"><span>Name</span><strong>${currentUser.name}</strong></div>` : ''}
+    </div>
+    <div class="account-card">
+      <h3>Usage</h3>
+      ${usageLine}
+    </div>
+    <div class="account-card">
+      <h3>Your plan includes</h3>
+      <ul class="feature-check">
+        <li>✓ All 43 templates</li>
+        ${f.unlimitedGenerations ? '<li>✓ Unlimited generations</li>' : '<li>✓ 3 free generations per day</li>'}
+        ${f.priorityProcessing ? '<li>✓ Priority processing</li>' : '<li style="opacity:0.4">— Priority processing (Pro+)</li>'}
+        ${f.outputHistory ? '<li>✓ Output history</li>' : '<li style="opacity:0.4">— Output history (Pro+)</li>'}
+        ${f.exportTxt ? '<li>✓ Export .txt, .docx & .pdf (document templates)</li>' : '<li style="opacity:0.4">— Export files (Pro+)</li>'}
+        ${f.tonePresetLimit ? `<li>✓ Tone presets${f.tonePresetLimit > 0 ? ` (up to ${f.tonePresetLimit})` : ' (unlimited)'}</li>` : ''}
+        ${f.bulkGeneration ? '<li>✓ Bulk generation (3 variants)</li>' : ''}
+        ${f.apiAccess ? '<li>✓ API access</li>' : ''}
+        ${f.teamSeats ? '<li>✓ Team seats (up to 5)</li>' : ''}
+        ${f.prioritySupport ? '<li>✓ Priority support</li>' : ''}
+      </ul>
+      ${!usage.unlimited ? `<button class="btn btn-upgrade" style="margin-top:16px;width:100%" onclick="showPage('pricing')">Upgrade plan →</button>` : ''}
+    </div>`;
+
+  if (f.prioritySupport) {
+    html += `<div class="account-card"><h3>⚡ Priority support</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6">Business customers get fast-track support. <a href="mailto:${appConfig.contactEmail || 'hello@writeflow.ai'}?subject=Business%20Priority%20Support" style="color:var(--accent-bright)">Email us directly →</a></p></div>`;
+  }
+
+  if (f.teamSeats && currentUser.plan === 'business') {
+    const teamRes = await fetch('/api/team', { credentials: 'include' });
+    const teamData = teamRes.ok ? await teamRes.json() : null;
+    html += `<div class="account-card"><h3>👥 Team (${teamData?.seats?.used || 0}/${teamData?.seats?.max || 5} seats)</h3>`;
+    if (teamData?.members?.length) {
+      html += teamData.members.map(m =>
+        `<div class="member-row"><span>${m.name || m.email} <span style="color:var(--muted2)">${m.role}</span></span>${m.role !== 'owner' ? `<button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="removeTeamMember('${m.id}')">Remove</button>` : ''}</div>`
+      ).join('');
+    }
+    html += `<div class="settings-input"><input type="email" id="team-invite-email" placeholder="Teammate's email"><button class="btn btn-upgrade" onclick="inviteTeammate()">Invite</button></div></div>`;
+  } else if (f.teamSeats) {
+    html += `<div class="account-card"><h3>👥 Team</h3><p style="font-size:14px;color:var(--muted)">You're on a Business team with unlimited generations.</p></div>`;
+  }
+
+  if (f.apiAccess) {
+    const keysRes = await fetch('/api/keys', { credentials: 'include' });
+    const keysData = keysRes.ok ? await keysRes.json() : { keys: [] };
+    html += `<div class="account-card"><h3>🔑 API keys</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Call <code>POST /api/v1/generate</code> with <code>Authorization: Bearer wf_...</code> — <a href="/api-docs" style="color:var(--accent-bright)">Read API docs →</a></p>`;
+    if (keysData.keys?.length) {
+      html += keysData.keys.map(k =>
+        `<div class="member-row"><span><code>${k.key_prefix}</code> <span style="color:var(--muted2)">${new Date(k.created_at).toLocaleDateString()}</span></span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="revokeApiKey('${k.id}')">Revoke</button></div>`
+      ).join('');
+    } else {
+      html += '<p style="font-size:13px;color:var(--muted2);margin:8px 0">No API keys yet.</p>';
+    }
+    html += `<button class="btn btn-ghost" style="margin-top:8px" onclick="createApiKey()">+ Generate API key</button></div>`;
+  } else if (usage.plan !== 'business') {
+    html += `<div class="account-card"><h3>🔑 API access</h3><p style="font-size:14px;color:var(--muted)">Available on the <strong>Business</strong> plan. <a href="#" onclick="showPage('pricing');return false" style="color:var(--accent-bright)">View pricing →</a> · <a href="/api-docs" style="color:var(--accent-bright)">API docs</a></p></div>`;
+  }
+
+  el.innerHTML = html;
+}
+
+async function inviteTeammate() {
+  const email = document.getElementById('team-invite-email')?.value;
+  if (!email) return;
+  const res = await fetch('/api/team/invite', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+    body: JSON.stringify({ email }),
+  });
+  const data = await res.json();
+  showToast(data.message || data.error, res.ok ? 'success' : 'error');
+  if (res.ok) renderAccountPanel();
+}
+
+async function removeTeamMember(userId) {
+  const res = await fetch('/api/team/members/' + userId, { method: 'DELETE', credentials: 'include' });
+  if (res.ok) { renderAccountPanel(); showToast('Member removed', 'info'); }
+}
+
+async function createApiKey() {
+  const res = await fetch('/api/keys', { method: 'POST', credentials: 'include' });
+  const data = await res.json();
+  if (!res.ok) { showToast(data.error, 'error'); return; }
+  prompt('Copy your API key now (shown once):', data.key?.key);
+  renderAccountPanel();
+}
+
+async function revokeApiKey(id) {
+  await fetch('/api/keys/' + id, { method: 'DELETE', credentials: 'include' });
+  renderAccountPanel();
+  showToast('API key revoked', 'info');
+}
+
+// ================================================================ 
 // INIT
 // ================================================================
 buildMarquee();
 buildSidebar();
 buildMobileCats();
 selectTool(TOOLS[0].id);
-updateLimitBar();
+(async () => {
+  await loadConfig();
+  await refreshSession();
+  updateAuthUI();
+})();
 </script>
 </body>
 </html>
