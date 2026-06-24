@@ -1,25 +1,21 @@
 # Render Blueprint — https://render.com/docs/blueprint-spec
-# Connect your GitHub repo: Dashboard → New → Blueprint → select this repo
+# New → Blueprint → connect github.com/jmwilson92/writeflow-ai
 
 services:
   - type: web
     name: writeflow
     runtime: node
     region: oregon
-    plan: starter
+    plan: free
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /health
     autoDeploy: true
-    disk:
-      name: writeflow-data
-      mountPath: /opt/render/project/src/data
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATABASE_PATH
-        value: /opt/render/project/src/data/writeflow.db
+      - key: NODE_VERSION
+        value: "20"
       - key: ALLOW_DEMO_CHECKOUT
         value: "false"
       - key: JWT_SECRET
@@ -28,27 +24,28 @@ services:
         generateValue: true
       - key: ANTHROPIC_API_KEY
         sync: false
-      - key: STRIPE_SECRET_KEY
-        sync: false
-      - key: STRIPE_WEBHOOK_SECRET
-        sync: false
-      - key: STRIPE_LINK_PRO
-        sync: false
-      - key: STRIPE_LINK_PRO_ANNUAL
-        sync: false
-      - key: STRIPE_LINK_BUSINESS
-        sync: false
-      - key: STRIPE_LINK_BUSINESS_ANNUAL
-        sync: false
-      - key: STRIPE_LINK_PACK_50
-        sync: false
-      - key: STRIPE_LINK_PACK_200
-        sync: false
-      - key: STRIPE_LINK_PACK_500
-        sync: false
-      - key: STRIPE_LINK_PACK_1000
-        sync: false
-      - key: ALLOWED_ORIGINS
-        sync: false
       - key: CONTACT_EMAIL
         value: hello@writeflow.ai
+      # Stripe — add these in Render dashboard after deploy (can be empty at first)
+      - key: STRIPE_SECRET_KEY
+        value: ""
+      - key: STRIPE_WEBHOOK_SECRET
+        value: ""
+      - key: STRIPE_LINK_PRO
+        value: ""
+      - key: STRIPE_LINK_PRO_ANNUAL
+        value: ""
+      - key: STRIPE_LINK_BUSINESS
+        value: ""
+      - key: STRIPE_LINK_BUSINESS_ANNUAL
+        value: ""
+      - key: STRIPE_LINK_PACK_50
+        value: ""
+      - key: STRIPE_LINK_PACK_200
+        value: ""
+      - key: STRIPE_LINK_PACK_500
+        value: ""
+      - key: STRIPE_LINK_PACK_1000
+        value: ""
+      - key: ALLOWED_ORIGINS
+        value: ""
