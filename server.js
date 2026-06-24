@@ -21,6 +21,7 @@ const parseRoutes = require('./routes/parse');
 const teamRoutes = require('./routes/team');
 const keysRoutes = require('./routes/keys');
 const v1Routes = require('./routes/v1');
+const billingRoutes = require('./routes/billing');
 const { getEffectivePlan, isPaidPlan } = require('./lib/entitlements');
 
 const app = express();
@@ -82,6 +83,7 @@ app.get('/health', (req, res) => {
     uptime: process.uptime(),
     anthropic: !!process.env.ANTHROPIC_API_KEY,
     stripe: !!process.env.STRIPE_SECRET_KEY,
+    stripeWebhook: !!process.env.STRIPE_WEBHOOK_SECRET,
   });
 });
 
@@ -95,6 +97,7 @@ app.use('/api/parse', apiLimiter, parseRoutes);
 app.use('/api/team', teamRoutes);
 app.use('/api/keys', keysRoutes);
 app.use('/api/v1', v1Routes);
+app.use('/api/billing', billingRoutes);
 
 // Page routes (before static — avoids 404 on /api-docs etc.)
 app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'privacy.html')));

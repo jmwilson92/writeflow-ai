@@ -2020,10 +2020,19 @@ function resolveStripeLink(plan) {
 }
 
 function handleCheckout(plan) {
-  const url = resolveStripeLink(plan);
+  let url = resolveStripeLink(plan);
   if (url) {
+    if (currentUser?.email) {
+      try {
+        const checkout = new URL(url);
+        checkout.searchParams.set('prefilled_email', currentUser.email);
+        url = checkout.toString();
+      } catch { /* use raw url */ }
+    }
     window.open(url, '_blank');
-    showToast('Complete checkout, then log in with the same email.', 'info');
+    showToast(currentUser
+      ? 'Complete checkout — use the same email shown in Stripe.'
+      : 'Complete checkout, then log in with the same email.', 'info');
     return;
   }
   if (appConfig.allowDemoCheckout) {
@@ -2270,7 +2279,9 @@ async function renderAccountPanel() {
         ${f.teamSeats ? '<li>✓ Team seats (up to 5)</li>' : ''}
         ${f.prioritySupport ? '<li>✓ Priority support</li>' : ''}
       </ul>
-      ${!usage.unlimited ? `<button class="btn btn-upgrade" style="margin-top:16px;width:100%" onclick="showPage('pricing')">Upgrade plan →</button>` : ''}
+      ${!usage.unlimited ? `<button class="btn btn-upgrade" style="margin-top:16px;width:100%" onclick="showPage('pricing')">Upgrade plan →</button>
+        <button class="btn btn-ghost" style="margin-top:8px;width:100%" onclick="syncBilling()">Restore purchase from Stripe</button>
+        <p style="font-size:12px;color:var(--muted2);margin-top:8px;line-height:1.45">Paid but still on Free? Use the same email at checkout, then click restore.</p>` : ''}
     </div>`;
 
   if (f.prioritySupport) {
@@ -2310,6 +2321,30 @@ async function renderAccountPanel() {
   }
 
   el.innerHTML = html;
+}
+
+async function syncBilling() {
+  if (!currentUser) { openAuthModal('login'); return; }
+  try {
+    const res = await fetch('/api/billing/sync', { method: 'POST', credentials: 'include' });
+    const data = await res.json();
+    if (data.user) {
+      currentUser = data.user;
+      usage = data.usage;
+      updateLimitBar();
+      updateAuthUI();
+      updatePricingUI();
+    }
+    if (data.ok) {
+      showToast(`Plan updated to ${data.plan || 'paid'}!`, 'success');
+      renderAccountPanel();
+      if (usage.unlimited) loadPresets();
+    } else {
+      showToast(data.message || data.error || 'No purchase found for this email', 'error');
+    }
+  } catch (e) {
+    showToast('Could not sync with Stripe', 'error');
+  }
 }
 
 async function inviteTeammate() {

@@ -1,5 +1,10 @@
 const express = require('express');
-const { grantPlan, grantCredits } = require('../lib/entitlements');
+const {
+  CREDIT_PACKS,
+  resolvePlanMetadata,
+  applyCheckoutSession,
+} = require('../lib/stripeBilling');
+const { grantPlan } = require('../lib/entitlements');
 
 const router = express.Router();
 
@@ -7,20 +12,17 @@ const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const stripe = stripeSecret ? require('stripe')(stripeSecret) : null;
 
-const CREDIT_PACKS = {
-  'pack-50': 50,
-  'pack-200': 200,
-  'pack-500': 500,
-  'pack-1000': 1000,
-};
-
-function planFromMetadata(plan) {
-  if (plan === 'pro' || plan === 'business') return plan;
-  if (CREDIT_PACKS[plan]) return null;
-  return null;
+async function customerEmailFromId(customerId) {
+  if (!stripe || !customerId || typeof customerId !== 'string') return null;
+  try {
+    const customer = await stripe.customers.retrieve(customerId);
+    return customer.email?.trim().toLowerCase() || null;
+  } catch {
+    return null;
+  }
 }
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   if (!stripe || !webhookSecret) {
     return res.status(503).send('Stripe not configured');
   }
@@ -37,33 +39,32 @@ router.post('/', (req, res) => {
   try {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-      const email = session.customer_details?.email || session.customer_email;
-      const plan = session.metadata?.plan;
-
-      if (!email) {
-        console.warn('Checkout completed without email');
-      } else if (plan) {
-        const mapped = planFromMetadata(plan);
-        if (mapped) {
-          grantPlan(email, mapped);
-          console.log(`✓ Plan granted: ${email} → ${mapped}`);
-        } else if (CREDIT_PACKS[plan]) {
-          grantCredits(email, CREDIT_PACKS[plan]);
-          console.log(`✓ Credits granted: ${email} → +${CREDIT_PACKS[plan]}`);
-        }
+      const applied = await applyCheckoutSession(stripe, session);
+      if (applied) {
+        console.log(`✓ Checkout applied: ${applied.email} → ${applied.type}`, applied);
+      } else {
+        const email = session.customer_details?.email || session.customer_email;
+        console.warn('Checkout completed but no plan/credits applied', {
+          email,
+          metadata: session.metadata,
+        });
       }
     }
 
     if (event.type === 'customer.subscription.deleted' || event.type === 'customer.subscription.updated') {
       const sub = event.data.object;
-      const email = sub.customer_email;
+      const email = sub.customer_email || await customerEmailFromId(sub.customer);
       const planMeta = sub.metadata?.plan;
+
       if (email && event.type === 'customer.subscription.deleted') {
         grantPlan(email, 'free');
         console.log(`✓ Subscription ended: ${email}`);
-      } else if (email && planMeta && sub.status === 'active') {
-        const mapped = planFromMetadata(planMeta);
-        if (mapped) grantPlan(email, mapped);
+      } else if (email && sub.status === 'active') {
+        const mapped = resolvePlanMetadata(planMeta);
+        if (mapped) {
+          grantPlan(email, mapped);
+          console.log(`✓ Subscription active: ${email} → ${mapped}`);
+        }
       }
     }
   } catch (err) {
