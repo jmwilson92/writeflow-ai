@@ -1627,8 +1627,8 @@ async function refreshSession() {
   try {
     const res = await fetch('/api/auth/me', { credentials: 'include' });
     const data = await res.json();
-    currentUser = data.user;
-    usage = data.usage;
+    currentUser = data.user || null;
+    if (data.usage) usage = data.usage;
     updateLimitBar();
     updateAuthUI();
     updateFeatureGates();
@@ -1636,6 +1636,8 @@ async function refreshSession() {
     if (usage.unlimited) loadPresets();
   } catch (e) {
     console.error('Session refresh failed', e);
+    currentUser = null;
+    updateAuthUI();
   }
 }
 
@@ -2111,11 +2113,16 @@ async function submitRegister() {
 }
 
 async function logout() {
-  await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+  try {
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+  } catch (e) { console.error('Logout failed', e); }
   currentUser = null;
   tonePresets = [];
   document.getElementById('history-panel').classList.remove('open');
-  await refreshSession();
+  document.getElementById('history-panel').innerHTML = '';
+  updateLimitBar();
+  updateAuthUI();
+  updatePricingUI();
   showPage('tools');
   showToast('Logged out', 'info');
 }
