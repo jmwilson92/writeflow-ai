@@ -2041,7 +2041,7 @@ function handleCheckout(plan) {
     showToast('Create an account, then complete Stripe checkout with the same email.', 'info');
     return;
   }
-  showToast('Add STRIPE_LINK_* URLs to your .env file to enable payments.', 'error');
+  showToast('Payments not configured yet — add Stripe Payment Link URLs in your Render environment variables.', 'error');
 }
 
 // ================================================================ 
