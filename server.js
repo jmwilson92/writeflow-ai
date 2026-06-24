@@ -53,7 +53,16 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), stripeRoutes);
+const stripeWebhookRaw = express.raw({ type: 'application/json' });
+app.get('/api/webhooks/stripe', (req, res) => {
+  res.json({ ok: true, message: 'Stripe webhook endpoint — Stripe must send POST requests here.' });
+});
+app.use('/api/webhooks/stripe', stripeWebhookRaw, stripeRoutes);
+// Fallback when Stripe dashboard URL is set to site root (missing /api/webhooks/stripe path)
+app.post('/', stripeWebhookRaw, (req, res, next) => {
+  if (req.headers['stripe-signature']) return stripeRoutes(req, res, next);
+  next();
+});
 
 app.use(express.json({ limit: '64kb' }));
 app.use(cookieParser());
