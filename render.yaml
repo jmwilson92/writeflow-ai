@@ -28,26 +28,26 @@ services:
         sync: false
       - key: CONTACT_EMAIL
         value: hello@writeflow.ai
-      # Stripe — add these in Render dashboard after deploy (can be empty at first)
+      # Stripe — set values in Render dashboard only (sync: false = blueprint won't wipe them)
       - key: STRIPE_SECRET_KEY
-        value: ""
+        sync: false
       - key: STRIPE_WEBHOOK_SECRET
-        value: ""
+        sync: false
       - key: STRIPE_LINK_PRO
-        value: ""
+        sync: false
       - key: STRIPE_LINK_PRO_ANNUAL
-        value: ""
+        sync: false
       - key: STRIPE_LINK_BUSINESS
-        value: ""
+        sync: false
       - key: STRIPE_LINK_BUSINESS_ANNUAL
-        value: ""
+        sync: false
       - key: STRIPE_LINK_PACK_50
-        value: ""
+        sync: false
       - key: STRIPE_LINK_PACK_200
-        value: ""
+        sync: false
       - key: STRIPE_LINK_PACK_500
-        value: ""
+        sync: false
       - key: STRIPE_LINK_PACK_1000
-        value: ""
+        sync: false
       - key: ALLOWED_ORIGINS
-        value: ""
+        sync: false
