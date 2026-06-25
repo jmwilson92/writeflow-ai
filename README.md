@@ -1,4 +1,4 @@
-# WriteFlow AI
+# Sparknous
 
 Production-ready AI writing SaaS — 43 professional templates powered by Claude.
 
@@ -73,7 +73,7 @@ See `LAUNCH-GUIDE.md` for the full Render walkthrough (Blueprint + manual setup)
 ## Project structure
 
 ```
-writeflow/
+sparknous/
 ├── index.html          # Frontend app
 ├── server.js           # Entry point
 ├── lib/                # DB, auth, entitlements
@@ -95,11 +95,11 @@ writeflow/
 | `GET /api/history` | Pro generation history |
 | `GET /api/presets` | Pro tone presets |
 | `GET /api/config` | Public config + usage |
-| `POST /api/v1/generate` | Business API (Bearer `wf_...`) |
+| `POST /api/v1/generate` | Business API (Bearer `sn_...`) |
 | `GET /health` | Health check |
 
 **API documentation:** [http://localhost:3000/api-docs](http://localhost:3000/api-docs) (or `/api-docs` on your deployed domain)
 
 ## License
 
-Proprietary — WriteFlow AI
+Proprietary — Sparknous

@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   const allowDemo = process.env.ALLOW_DEMO_CHECKOUT === 'true' && process.env.NODE_ENV !== 'production';
 
   res.json({
-    appName: 'WriteFlow AI',
+    appName: 'Sparknous',
     stripeLinks: {
       pro: process.env.STRIPE_LINK_PRO || '',
       'pro-annual': process.env.STRIPE_LINK_PRO_ANNUAL || '',
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
       'pack-1000': process.env.STRIPE_LINK_PACK_1000 || '',
     },
     allowDemoCheckout: allowDemo,
-    contactEmail: process.env.CONTACT_EMAIL || 'hello@writeflow.ai',
+    contactEmail: process.env.CONTACT_EMAIL || 'hello@sparknous.com',
     creditCosts: CREDIT_COSTS,
     usage: getUsageSnapshot({ user: req.user, ip: req.ip }),
   });

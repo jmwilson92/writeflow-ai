@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://writeflow.ai/sitemap.xml
+Sitemap: https://sparknous.com/sitemap.xml

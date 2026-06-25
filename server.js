@@ -148,7 +148,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
   console.log(`
-  ✦ WriteFlow AI — production server
+  ✦ Sparknous — production server
   → Listening on ${HOST}:${PORT}
   → Health: /health
   → Mode: ${isProd ? 'production' : 'development'}

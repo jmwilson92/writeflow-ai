@@ -1,4 +1,4 @@
-# WriteFlow AI — Production Launch Guide
+# Sparknous — Production Launch Guide
 
 ## What you have (v2.0)
 
@@ -98,7 +98,7 @@ npm start
 
 ### After deploy
 
-- Your URL: `https://writeflow.onrender.com` (or your service name)
+- Your URL: `https://your-app.onrender.com` (or your service name)
 - Stripe webhook: `https://YOUR-URL.onrender.com/api/webhooks/stripe`
 - Update `ALLOWED_ORIGINS` to your Render URL (and custom domain when added)
 

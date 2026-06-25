@@ -9,7 +9,7 @@ const MAX_PROMPT_LENGTH = parseInt(process.env.MAX_PROMPT_LENGTH || '12000', 10)
 
 router.use((req, res, next) => {
   const user = resolveApiKeyUser(req.headers.authorization);
-  if (!user) return res.status(401).json({ error: 'Invalid or missing API key. Use Authorization: Bearer wf_...' });
+  if (!user) return res.status(401).json({ error: 'Invalid or missing API key. Use Authorization: Bearer sn_...' });
   req.user = user;
   next();
 });

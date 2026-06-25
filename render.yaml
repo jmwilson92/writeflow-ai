@@ -27,7 +27,7 @@ services:
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: CONTACT_EMAIL
-        value: hello@writeflow.ai
+        value: hello@sparknous.com
       # Stripe — set values in Render dashboard only (sync: false = blueprint won't wipe them)
       - key: STRIPE_SECRET_KEY
         sync: false

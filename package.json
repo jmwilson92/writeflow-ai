@@ -1,5 +1,5 @@
 {
-  "name": "writeflow-ai",
+  "name": "sparknous",
   "version": "2.0.0",
   "description": "AI SaaS writing tools powered by Claude",
   "main": "server.js",
